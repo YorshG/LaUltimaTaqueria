@@ -1,6 +1,6 @@
 # Propuesta inicial de contenido y balance
 
-Estado del documento: **propuesta para revisión — v2, actualizada tras revisión de Codex/YorshG en el PR #2**. No integrada ni aprobada como código. Todos los valores numéricos son hipótesis ajustables (ver `docs/PROTOTYPE_SCOPE.md` y `prompts/CLAUDE_KICKOFF.md`). Este documento no modifica arquitectura, no agrega monetización, servidores, cuentas ni multijugador, y no contiene código de juego.
+Estado del documento: **propuesta para revisión — v3, actualizada tras alinear contratos con `docs/preproduction` (segunda corrección de Codex/YorshG en el PR #2)**. No integrada ni aprobada como código. Todos los valores numéricos son hipótesis ajustables (ver `docs/PROTOTYPE_SCOPE.md` y `prompts/CLAUDE_KICKOFF.md`). Este documento no modifica arquitectura, no agrega monetización, servidores, cuentas ni multijugador, y no contiene código de juego.
 
 Convenciones usadas en todo el documento:
 
@@ -18,7 +18,7 @@ Identificadores técnicos en **inglés** `snake_case` (corregido en esta revisi�
 - **[Decisión aprobada]** Tablero 5×5, tres carriles, cadenas ortogonales de 3+ ingredientes iguales, cadena de 4 = +50% satisfacción, cadena de 5+ = efecto especial por ingrediente (`docs/CORE_RULES.md`).
 - **[Decisión aprobada]** Se alimenta, no se mata. Tono familiar, mexicano, respetuoso, exportable (`docs/GAME_DESIGN.md`).
 - **[Hipótesis, ya marcada como tal en CORE_RULES]** Reputación inicial: 100.
-- **[Decisión de revisión PR #2]** Duración objetivo de partida actualizada de "~3 minutos" a **4–5 minutos**, tras revisar que la suma de oleadas + pausas + jefe de la v1 excedía el objetivo original de 3 minutos.
+- **[Decisión de revisión PR #2]** Duración objetivo de partida actualizada del objetivo anterior más corto a **4–5 minutos**, tras revisar que la suma de oleadas + pausas + jefe de la v1 excedía ese objetivo anterior.
 - **[Decisión de revisión PR #2]** Se confirma que la pausa de selección de mejora (una de tres) ocurre también después de la oleada 5, antes de iniciar el combate contra el jefe.
 - **[Decisión aprobada]** Recetas mixtas quedan fuera del prototipo hasta validar la combinación básica; todas las recetas de esta propuesta usan un único ingrediente por cadena.
 
@@ -33,6 +33,15 @@ Identificadores técnicos en **inglés** `snake_case` (corregido en esta revisi�
 7. Se reescribió el comportamiento de "olfateo" del jefe para que sea puramente cosmético (animación + sonido de anticipación), sin afectar el objetivo automático fijo ("más cercano", con desempate central/izquierdo/derecho de `docs/CORE_RULES.md`).
 8. Se movió el campo `"teaches"` dentro de los bloques JSON de las oleadas 3, 4 y 5 (en la v1 quedaba fuera del JSON, solo en el texto).
 9. Se suavizó la afirmación de "oleada 1 sin superposición de monstruos" a hipótesis validable, ya que depende de la unidad de velocidad real que aún no está definida (ver pregunta abierta existente sobre `speed`).
+
+### Cambios respecto a la v2 (segunda corrección del PR #2, alineación con contratos de `docs/preproduction`)
+
+1. Se renombró la etiqueta de defensas fuertes de `safety` a `strong_defense`, alineada con el contrato ahora definido en `docs/CONTENT_MODEL.md` y `docs/CORE_RULES.md`.
+2. El límite de una defensa fuerte por partida pasa a documentarse principalmente como regla del sistema de generación de ofertas (excluye el resto de mejoras `strong_defense` tras seleccionar una); los `conflicts` cruzados entre `safety_shield`, `patient_service` y `second_chance` se conservan como validación redundante, no como mecanismo principal.
+3. Se eliminó por completo el gesto cosmético repetido de "olfateo" del jefe en fase 2. La transición al 60% de hambre restante ahora se comunica con una animación y sonido breves, únicos, en el momento del cambio de fase.
+4. Se aclaró que las animaciones de transición de fases 2 y 3 son solo retroalimentación visual/sonora: no detienen la simulación ni el avance del jefe.
+5. Se retiró la mención literal a "~3 minutos" como duración histórica; se describe ahora como "el objetivo anterior más corto".
+6. Se eliminó la pregunta abierta sobre la claridad del olfateo cosmético (ya no aplica) y la pregunta sobre el mecanismo de límite de defensas fuertes, ya que esta revisión lo resuelve explícitamente.
 
 ---
 
@@ -88,13 +97,13 @@ Tres monstruos con arquetipos claramente diferenciados: **básico/enseñanza**, 
 - **Comportamiento general:** aparece solo, ocupa el carril central, hambre total 300 (como en `docs/CONTENT_MODEL.md`). Se alimenta igual que cualquier monstruo: el objetivo automático sigue siendo el fijo de `docs/CORE_RULES.md` (más cercano al mostrador, desempate central/izquierdo/derecho). El jefe no cambia esa regla.
 - **Fases (por umbral de hambre restante):**
   1. **Fase 1 (100%–60%):** velocidad normal, come con calma.
-  2. **Fase 2 (60%–30%):** velocidad 1.25×. Cada cierto intervalo hace un gesto de "olfateo": una animación y sonido de impaciencia **puramente cosméticos**, sin ningún efecto mecánico (no cambia velocidad adicional, no cambia el objetivo automático, no inflige daño). Su único propósito es anticipar al jugador que el jefe está por acelerar.
-  3. **Fase 3 (30%–0%):** velocidad 1.4×, con una breve pausa visual de transición (sin penalización ni beneficio de juego, solo respiro narrativo).
+  2. **Fase 2 (60%–30%):** velocidad 1.25×. Al cruzar el umbral del 60% de hambre restante, una animación y sonido breves comunican directamente el cambio de fase (la aceleración); es una señal única en el momento de la transición, no un gesto repetido de anticipación. Esta animación no detiene la simulación ni el avance del jefe.
+  3. **Fase 3 (30%–0%):** velocidad 1.4×, con una breve animación de transición (sin penalización ni beneficio de juego, solo retroalimentación visual/sonora). Esta animación tampoco detiene la simulación ni el avance del jefe.
 - **Contrajuego:** resistencia y ritmo, no "arma correcta" — no hay resistencias a ingredientes específicos.
-- **Comunicación anticipada:** barra de hambre del jefe siempre visible; el gesto de "olfateo" de fase 2 y la pausa de fase 3 son las únicas señales de transición, visuales y sonoras.
+- **Comunicación anticipada:** barra de hambre del jefe siempre visible; las señales de transición de fase 2 (60%) y fase 3 (30%) son animación y sonido breves, sin pausar la simulación ni el avance del jefe.
 
 ```json
-{"id":"boss_big_glutton","display_name_key":"boss.big_glutton","hunger":300,"reputation_damage_on_breach":40,"lane":1,"phases":[{"threshold":1.0,"speed_multiplier":1.0,"behavior_tag":"calm"},{"threshold":0.6,"speed_multiplier":1.25,"behavior_tag":"impatient_telegraph_cosmetic_only"},{"threshold":0.3,"speed_multiplier":1.4,"behavior_tag":"final_bite"}]}
+{"id":"boss_big_glutton","display_name_key":"boss.big_glutton","hunger":300,"reputation_damage_on_breach":40,"lane":1,"phases":[{"threshold":1.0,"speed_multiplier":1.0,"behavior_tag":"calm"},{"threshold":0.6,"speed_multiplier":1.25,"behavior_tag":"phase2_transition_cue_cosmetic_only"},{"threshold":0.3,"speed_multiplier":1.4,"behavior_tag":"final_bite"}]}
 ```
 
 > **[Hipótesis]** El jefe ocupa siempre el carril central y no genera monstruos adicionales durante su combate. **[Alternativa]** invocar refuerzos en fase 3 se descarta por ampliar el alcance de contenido y de IA de spawn.
@@ -144,7 +153,7 @@ Los tres tipos combinados, mayor densidad. **[Decisión de revisión PR #2]** Al
 
 ## 4. Mejoras roguelite (15)
 
-Rareza provisional: `common`, `rare`, `epic`. Las mejoras etiquetadas `"tags":["safety"]` son defensas fuertes; se limita a una por partida mediante `conflicts` cruzados entre ellas (`safety_shield`, `patient_service`, `second_chance`).
+Rareza provisional: `common`, `rare`, `epic`. Las mejoras etiquetadas `"tags":["strong_defense"]` son defensas fuertes. El sistema de generación de ofertas excluye el resto de mejoras con esa etiqueta después de seleccionar una, garantizando máximo una por partida (contrato de `docs/CONTENT_MODEL.md`); los `conflicts` cruzados entre ellas (`safety_shield`, `patient_service`, `second_chance`) se conservan como validación redundante, no como mecanismo principal.
 
 ```json
 [
@@ -154,15 +163,15 @@ Rareza provisional: `common`, `rare`, `epic`. Las mejoras etiquetadas `"tags":["
   {"id":"chain5_effect_boost","display_name_key":"upgrade.chain5_effect_boost","rarity":"epic","effect":{"stat":"special_effect_power_multiplier","operation":"multiply","value":1.3},"conflicts":[],"notes":"Hace más fuerte el efecto especial determinista de cadena 5 (ej. aturdimiento o restauración); no agrega azar."},
   {"id":"steady_hands","display_name_key":"upgrade.steady_hands","rarity":"common","effect":{"stat":"input_forgiveness","operation":"add","value":0.1},"conflicts":[]},
   {"id":"reputation_boost","display_name_key":"upgrade.reputation_boost","rarity":"common","effect":{"stat":"reputation_max","operation":"add","value":15},"conflicts":[],"notes":"Aumenta el máximo de reputación al elegirla; no cura ni restaura reputación perdida."},
-  {"id":"safety_shield","display_name_key":"upgrade.safety_shield","rarity":"rare","effect":{"stat":"reputation_shield_charges","operation":"add","value":1},"conflicts":["patient_service","second_chance"],"tags":["safety"]},
+  {"id":"safety_shield","display_name_key":"upgrade.safety_shield","rarity":"rare","effect":{"stat":"reputation_shield_charges","operation":"add","value":1},"conflicts":["patient_service","second_chance"],"tags":["strong_defense"]},
   {"id":"slow_salsa","display_name_key":"upgrade.slow_salsa","rarity":"common","effect":{"stat":"monster_speed_global","operation":"multiply","value":0.9},"conflicts":[]},
   {"id":"slow_salsa_plus","display_name_key":"upgrade.slow_salsa_plus","rarity":"epic","effect":{"stat":"monster_speed_global","operation":"multiply","value":0.75},"conflicts":["slow_salsa"]},
   {"id":"extra_bite","display_name_key":"upgrade.extra_bite","rarity":"common","effect":{"stat":"satisfaction_flat_bonus","operation":"add","value":5},"conflicts":[],"notes":"Suma satisfacción fija a cada platillo, útil incluso en cadenas de 3."},
-  {"id":"patient_service","display_name_key":"upgrade.patient_service","rarity":"rare","effect":{"stat":"reputation_damage_taken","operation":"multiply","value":0.85},"conflicts":["safety_shield","second_chance"],"tags":["safety"],"notes":"Reduce el daño de reputación recibido cuando un monstruo llega al mostrador."},
+  {"id":"patient_service","display_name_key":"upgrade.patient_service","rarity":"rare","effect":{"stat":"reputation_damage_taken","operation":"multiply","value":0.85},"conflicts":["safety_shield","second_chance"],"tags":["strong_defense"],"notes":"Reduce el daño de reputación recibido cuando un monstruo llega al mostrador."},
   {"id":"assist_serve","display_name_key":"upgrade.assist_serve","rarity":"rare","effect":{"stat":"chain4_splash_satisfaction","operation":"add","value":10},"conflicts":[],"notes":"Una cadena de 4+ también reduce un poco el hambre del segundo monstruo más cercano en el mismo carril; no cambia el objetivo principal fijo (más cercano)."},
   {"id":"warm_welcome","display_name_key":"upgrade.warm_welcome","rarity":"common","effect":{"stat":"first_dish_bonus_per_wave","operation":"set","value":1.0},"conflicts":[],"notes":"El primer platillo servido en cada oleada tiene el doble de satisfacción."},
   {"id":"last_stand","display_name_key":"upgrade.last_stand","rarity":"epic","effect":{"stat":"low_reputation_satisfaction_bonus","operation":"add","value":0.25},"conflicts":[],"notes":"Cuando la reputación cae por debajo de 20% del máximo, la satisfacción de los platillos aumenta 25%. Condición basada en estado, no en azar."},
-  {"id":"second_chance","display_name_key":"upgrade.second_chance","rarity":"epic","effect":{"stat":"extra_life_charges","operation":"add","value":1},"conflicts":["safety_shield","patient_service"],"tags":["safety"]}
+  {"id":"second_chance","display_name_key":"upgrade.second_chance","rarity":"epic","effect":{"stat":"extra_life_charges","operation":"add","value":1},"conflicts":["safety_shield","patient_service"],"tags":["strong_defense"]}
 ]
 ```
 
@@ -224,7 +233,7 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 ### 7.1 Riesgos de balance
 
 - **Duración de partida:** con el nuevo objetivo de 4–5 minutos (decisión de esta revisión), la suma de oleadas (25+30+35+35+40 = 165 s ≈ 2:45) más 5 pausas de mejora y el combate contra el jefe encaja razonablemente; de todas formas debe medirse con el prototipo, no se da por hecho.
-- **Mutua exclusión de defensas `safety`:** con tres mejoras defensivas fuertes limitadas a una por partida (`safety_shield`, `patient_service`, `second_chance`), vigilar que ninguna se sienta claramente superior a las otras dos, o el limitador de una-por-partida no cumplirá su propósito de balance.
+- **Mutua exclusión de defensas `strong_defense`:** con tres mejoras defensivas fuertes limitadas a una por partida por el sistema de ofertas (`safety_shield`, `patient_service`, `second_chance`), vigilar que ninguna se sienta claramente superior a las otras dos, o el límite por etiqueta no cumplirá su propósito de balance.
 - **`salsa_tank` en oleada 3 (dos apariciones):** si el jugador no adoptó `taco_power` o `taco_golden`, dos tanques en 35 s podrían sentirse injustos. Tiempos de spawn son hipótesis.
 - **Autoapuntado + `swift_hopper`:** relacionado con la pregunta abierta existente "¿Autoapuntar se siente justo?" (`docs/OPEN_QUESTIONS.md`).
 - **`assist_serve` (splash a segundo monstruo):** vigilar que no vuelva trivial a `salsa_tank` cuando hay varios monstruos en el mismo carril.
@@ -243,15 +252,16 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 - Se verificó que ninguna mejora contradiga reglas fijas de `docs/CORE_RULES.md` (objetivo automático "más cercano", cadena mínima de 3, cadena 5+ determinista).
 - Se movió `"teaches"` al interior del JSON en las oleadas 3, 4 y 5.
 - Se confirmó que solo se modificó `docs/INITIAL_CONTENT_PROPOSAL.md`.
+- Se confirmó que la etiqueta de defensas fuertes usa el contrato oficial `strong_defense` y que el límite de una por partida se documenta desde el sistema de ofertas, no solo desde `conflicts`.
+- Se confirmó que no quedan referencias al gesto cosmético de "olfateo" del jefe en el resumen, la sección de jefe, el JSON ni las preguntas abiertas.
+- Se confirmó que la rama se actualizó (rebase) contra `docs/preproduction` antes de este commit.
 
 ### 7.4 Preguntas abiertas para Jorge y su hermano
 
 1. ¿Se aprueba formalmente el nuevo objetivo de duración (4–5 min) en `docs/DECISIONS.md`, o prefieren que ese registro lo haga alguien del equipo directamente?
-2. ¿La regla de "una defensa `safety` por partida" (vía `conflicts` cruzados) es el mecanismo correcto, o prefieren un límite explícito a nivel de sistema de selección de mejoras en vez de conflictos de contenido?
-3. ¿La escala relativa de `speed`/`hunger`/`reputation_damage` propuesta es aceptable como punto de partida para que Codex defina las unidades reales de implementación, o prefieren fijar antes una unidad de referencia (por ejemplo, celdas por segundo)?
-4. ¿Se desea, para una siguiente iteración, un efecto especial de cadena 5 también para `meat`, o se mantiene la asimetría (solo tortilla y veggie) como parte del diseño?
-5. ¿El texto de "olfateo" cosmético del jefe (fase 2) es suficientemente claro así, o prefieren quitarlo del todo y dejar la fase 2 sin telegrafiado adicional?
+2. ¿La escala relativa de `speed`/`hunger`/`reputation_damage` propuesta es aceptable como punto de partida para que Codex defina las unidades reales de implementación, o prefieren fijar antes una unidad de referencia (por ejemplo, celdas por segundo)?
+3. ¿Se desea, para una siguiente iteración, un efecto especial de cadena 5 también para `meat`, o se mantiene la asimetría (solo tortilla y veggie) como parte del diseño?
 
 ---
 
-*Fin de la propuesta v2. Ningún archivo fuera de `docs/INITIAL_CONTENT_PROPOSAL.md` fue modificado.*
+*Fin de la propuesta v3. Ningún archivo fuera de `docs/INITIAL_CONTENT_PROPOSAL.md` fue modificado.*
