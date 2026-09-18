@@ -5,7 +5,7 @@ Estado del documento: **propuesta para revisión — v3, actualizada tras alinea
 Convenciones usadas en todo el documento:
 
 - **[Decisión aprobada]** — ya registrado en `docs/DECISIONS.md` o derivado directo de reglas vigentes.
-- **[Decisión de revisión PR #2]** — confirmado explícitamente por el dueño del repositorio en la revisión de esta propuesta; pendiente de que se registre formalmente en `docs/DECISIONS.md` si así lo deciden.
+- **[Decisión de revisión PR #2]** — confirmado durante la revisión de esta propuesta. Cuando la decisión ya aparece en `docs/DECISIONS.md`, se trata como **[Decisión aprobada]** en el resto del documento.
 - **[Hipótesis]** — propuesta de este documento, sujeta a prueba y ajuste.
 - **[Alternativa]** — camino distinto que no se eligió como propuesta principal, incluido para discusión.
 
@@ -18,8 +18,8 @@ Identificadores técnicos en **inglés** `snake_case` (corregido en esta revisi�
 - **[Decisión aprobada]** Tablero 5×5, tres carriles, cadenas ortogonales de 3+ ingredientes iguales, cadena de 4 = +50% satisfacción, cadena de 5+ = efecto especial por ingrediente (`docs/CORE_RULES.md`).
 - **[Decisión aprobada]** Se alimenta, no se mata. Tono familiar, mexicano, respetuoso, exportable (`docs/GAME_DESIGN.md`).
 - **[Hipótesis, ya marcada como tal en CORE_RULES]** Reputación inicial: 100.
-- **[Decisión de revisión PR #2]** Duración objetivo de partida actualizada del objetivo anterior más corto a **4–5 minutos**, tras revisar que la suma de oleadas + pausas + jefe de la v1 excedía ese objetivo anterior.
-- **[Decisión de revisión PR #2]** Se confirma que la pausa de selección de mejora (una de tres) ocurre también después de la oleada 5, antes de iniciar el combate contra el jefe.
+- **[Decisión aprobada]** Duración objetivo de partida: **4–5 minutos**, incluyendo cinco oleadas, cinco elecciones de mejora y jefe; debe medirse con el prototipo.
+- **[Decisión aprobada]** La pausa de selección de mejora (una de tres) ocurre también después de la oleada 5, antes de iniciar el combate contra el jefe.
 - **[Decisión aprobada]** Recetas mixtas quedan fuera del prototipo hasta validar la combinación básica; todas las recetas de esta propuesta usan un único ingrediente por cadena.
 
 ### Cambios respecto a la v1 (resumen de la revisión)
@@ -147,7 +147,7 @@ Primer contacto con `swift_hopper`, en solitario y luego combinado.
 ```json
 {"id":"wave_05","duration_target_sec":40,"spawns":[{"at_sec":2,"monster_id":"nibbler","lane":0},{"at_sec":6,"monster_id":"swift_hopper","lane":2},{"at_sec":10,"monster_id":"salsa_tank","lane":1},{"at_sec":16,"monster_id":"nibbler","lane":2},{"at_sec":22,"monster_id":"swift_hopper","lane":0},{"at_sec":28,"monster_id":"salsa_tank","lane":1},{"at_sec":34,"monster_id":"nibbler","lane":1}],"teaches":"full_mix_mastery"}
 ```
-Los tres tipos combinados, mayor densidad. **[Decisión de revisión PR #2]** Al resolverse esta oleada, se ofrece la pausa de selección de mejora (una de tres) igual que tras cualquier otra oleada, y solo después comienza el combate contra `boss_big_glutton`.
+Los tres tipos combinados, mayor densidad. **[Decisión aprobada]** Al resolverse esta oleada, se ofrece la pausa de selección de mejora (una de tres) igual que tras cualquier otra oleada, y solo después comienza el combate contra `boss_big_glutton`.
 
 ---
 
@@ -232,7 +232,7 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 
 ### 7.1 Riesgos de balance
 
-- **Duración de partida:** con el nuevo objetivo de 4–5 minutos (decisión de esta revisión), la suma de oleadas (25+30+35+35+40 = 165 s ≈ 2:45) más 5 pausas de mejora y el combate contra el jefe encaja razonablemente; de todas formas debe medirse con el prototipo, no se da por hecho.
+- **Duración de partida:** con el objetivo aprobado de 4–5 minutos, la suma de oleadas (25+30+35+35+40 = 165 s ≈ 2:45) más 5 pausas de mejora y el combate contra el jefe encaja razonablemente; de todas formas debe medirse con el prototipo, no se da por hecho.
 - **Mutua exclusión de defensas `strong_defense`:** con tres mejoras defensivas fuertes limitadas a una por partida por el sistema de ofertas (`safety_shield`, `patient_service`, `second_chance`), vigilar que ninguna se sienta claramente superior a las otras dos, o el límite por etiqueta no cumplirá su propósito de balance.
 - **`salsa_tank` en oleada 3 (dos apariciones):** si el jugador no adoptó `taco_power` o `taco_golden`, dos tanques en 35 s podrían sentirse injustos. Tiempos de spawn son hipótesis.
 - **Autoapuntado + `swift_hopper`:** relacionado con la pregunta abierta existente "¿Autoapuntar se siente justo?" (`docs/OPEN_QUESTIONS.md`).
@@ -258,9 +258,8 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 
 ### 7.4 Preguntas abiertas para Jorge y su hermano
 
-1. ¿Se aprueba formalmente el nuevo objetivo de duración (4–5 min) en `docs/DECISIONS.md`, o prefieren que ese registro lo haga alguien del equipo directamente?
-2. ¿La escala relativa de `speed`/`hunger`/`reputation_damage` propuesta es aceptable como punto de partida para que Codex defina las unidades reales de implementación, o prefieren fijar antes una unidad de referencia (por ejemplo, celdas por segundo)?
-3. ¿Se desea, para una siguiente iteración, un efecto especial de cadena 5 también para `meat`, o se mantiene la asimetría (solo tortilla y veggie) como parte del diseño?
+1. ¿La escala relativa de `speed`/`hunger`/`reputation_damage` propuesta es aceptable como punto de partida para que Codex defina las unidades reales de implementación, o prefieren fijar antes una unidad de referencia (por ejemplo, celdas por segundo)?
+2. ¿Se desea, para una siguiente iteración, un efecto especial de cadena 5 también para `meat`, o se mantiene la asimetría (solo tortilla y veggie) como parte del diseño?
 
 ---
 
