@@ -1,5 +1,31 @@
 # La Última Taquería
 
-Videojuego móvil independiente en fase de preproducción.
+Juego móvil 2D vertical de puzzle y supervivencia roguelite. El jugador combina ingredientes para preparar platillos y alimentar monstruos antes de que dañen la reputación de la última taquería abierta.
 
-La documentación completa se prepara en la rama `docs/preproduction` antes de iniciar el prototipo en Godot.
+## Estado
+
+Preproducción. Aún no existe una versión jugable ni un proyecto Godot.
+
+## Objetivo del prototipo
+
+Validar si combinar ingredientes mientras se gestionan tres carriles produce partidas claras, divertidas y con deseo inmediato de repetir. Duración objetivo: aproximadamente 3 minutos.
+
+## Equipo
+
+- Jorge: Product Owner y aprobación.
+- Hermano de Jorge: coevaluación y pruebas.
+- Codex: arquitectura, implementación, integración y builds.
+- Claude: sistemas, contenido, balance y módulos expresamente asignados.
+
+## Lectura recomendada
+
+1. [Alcance](docs/PROTOTYPE_SCOPE.md)
+2. [Diseño](docs/GAME_DESIGN.md)
+3. [Reglas](docs/CORE_RULES.md)
+4. [Arquitectura](docs/ARCHITECTURE.md)
+5. [Backlog](planning/BACKLOG.md)
+6. [Colaboración](docs/COLLABORATION.md)
+
+## Flujo Git
+
+`main` contiene trabajo estable aprobado; `uat` será integración; cada cambio se realiza en `feature/*` o `docs/*` mediante Pull Request.
