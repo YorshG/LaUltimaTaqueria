@@ -17,12 +17,16 @@ Mantener abierta la última taquería durante una invasión de monstruos hambrie
 
 - **10–15 segundos:** localizar combinación, deslizar, crear platillo, ver al monstruo reaccionar.
 - **Oleada:** atender amenazas crecientes, mantener reputación y completar el objetivo pedagógico.
-- **Partida:** superar cinco oleadas, elegir mejoras y atender al jefe; o perder reputación.
-- **Metaprogresión del prototipo:** monedas y récord local, sin árbol complejo.
+- **Partida:** superar cinco oleadas normales, elegir una mejora después de cada una y después atender al jefe; o perder reputación.
+- **Metaprogresión del prototipo:** monedas como marcador y récord local, sin tienda, desbloqueos ni árbol de progreso.
+
+## Ritmo objetivo
+
+Una partida completa debe durar entre 4 y 5 minutos, incluidas las cinco elecciones de mejora y el encuentro posterior con el jefe. Es un objetivo que debe medirse en dispositivo, no una garantía de balance.
 
 ## Victoria y derrota
 
-Victoria al satisfacer al jefe y terminar la quinta oleada. Derrota cuando la reputación llega a cero.
+Victoria al completar las cinco oleadas normales y satisfacer al jefe posterior. Derrota cuando la reputación llega a cero.
 
 ## Diferenciadores
 

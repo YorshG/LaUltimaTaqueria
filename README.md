@@ -8,7 +8,7 @@ Preproducción. Aún no existe una versión jugable ni un proyecto Godot.
 
 ## Objetivo del prototipo
 
-Validar si combinar ingredientes mientras se gestionan tres carriles produce partidas claras, divertidas y con deseo inmediato de repetir. Duración objetivo: aproximadamente 3 minutos.
+Validar si trazar cadenas de ingredientes mientras se gestionan tres carriles produce partidas claras, divertidas y con deseo inmediato de repetir. Duración objetivo: 4–5 minutos.
 
 ## Equipo
 

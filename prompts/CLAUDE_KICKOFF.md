@@ -4,7 +4,7 @@ Actúa como diseñador de sistemas y balance de **La Última Taquería**. Lee pr
 
 ## Contexto
 
-Juego móvil vertical para una mano. En un tablero 5 × 5 se arrastran cadenas ortogonales de 3+ ingredientes iguales. Los platillos alimentan automáticamente monstruos que avanzan por tres carriles. Cinco oleadas, mejoras entre ellas y jefe final. Partida objetivo: ~3 minutos. Tono familiar, colorido y mexicano respetuoso. Alimentar, no matar.
+Juego móvil vertical para una mano. En un tablero 5 × 5 se arrastran cadenas ortogonales de 3+ ingredientes iguales; no se intercambian fichas como en un match-3 tradicional. Los platillos alimentan automáticamente monstruos que avanzan por tres carriles. Hay cinco oleadas normales, una mejora después de cada una y un jefe posterior. Partida objetivo: 4–5 minutos. Tono familiar, colorido y mexicano respetuoso. Alimentar, no matar.
 
 ## Entrega
 
