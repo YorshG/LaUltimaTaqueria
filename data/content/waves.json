@@ -1,0 +1,162 @@
+[
+  {
+    "id": "wave_01",
+    "duration_target_sec": 25,
+    "spawns": [
+      {
+        "at_sec": 2,
+        "monster_id": "nibbler",
+        "lane": 1
+      },
+      {
+        "at_sec": 8,
+        "monster_id": "nibbler",
+        "lane": 0
+      },
+      {
+        "at_sec": 14,
+        "monster_id": "nibbler",
+        "lane": 2
+      },
+      {
+        "at_sec": 20,
+        "monster_id": "nibbler",
+        "lane": 1
+      }
+    ],
+    "teaches": "basic_match"
+  },
+  {
+    "id": "wave_02",
+    "duration_target_sec": 30,
+    "spawns": [
+      {
+        "at_sec": 3,
+        "monster_id": "nibbler",
+        "lane": 0
+      },
+      {
+        "at_sec": 9,
+        "monster_id": "nibbler",
+        "lane": 2
+      },
+      {
+        "at_sec": 15,
+        "monster_id": "salsa_tank",
+        "lane": 1
+      },
+      {
+        "at_sec": 24,
+        "monster_id": "nibbler",
+        "lane": 1
+      }
+    ],
+    "teaches": "chain4_bonus_vs_high_hunger"
+  },
+  {
+    "id": "wave_03",
+    "duration_target_sec": 35,
+    "spawns": [
+      {
+        "at_sec": 2,
+        "monster_id": "salsa_tank",
+        "lane": 0
+      },
+      {
+        "at_sec": 6,
+        "monster_id": "nibbler",
+        "lane": 1
+      },
+      {
+        "at_sec": 12,
+        "monster_id": "nibbler",
+        "lane": 2
+      },
+      {
+        "at_sec": 20,
+        "monster_id": "salsa_tank",
+        "lane": 2
+      },
+      {
+        "at_sec": 28,
+        "monster_id": "nibbler",
+        "lane": 0
+      }
+    ],
+    "teaches": "resource_prioritization"
+  },
+  {
+    "id": "wave_04",
+    "duration_target_sec": 35,
+    "spawns": [
+      {
+        "at_sec": 3,
+        "monster_id": "swift_hopper",
+        "lane": 1
+      },
+      {
+        "at_sec": 8,
+        "monster_id": "nibbler",
+        "lane": 0
+      },
+      {
+        "at_sec": 14,
+        "monster_id": "salsa_tank",
+        "lane": 2
+      },
+      {
+        "at_sec": 22,
+        "monster_id": "swift_hopper",
+        "lane": 0
+      },
+      {
+        "at_sec": 30,
+        "monster_id": "nibbler",
+        "lane": 1
+      }
+    ],
+    "teaches": "fast_threat_response"
+  },
+  {
+    "id": "wave_05",
+    "duration_target_sec": 40,
+    "spawns": [
+      {
+        "at_sec": 2,
+        "monster_id": "nibbler",
+        "lane": 0
+      },
+      {
+        "at_sec": 6,
+        "monster_id": "swift_hopper",
+        "lane": 2
+      },
+      {
+        "at_sec": 10,
+        "monster_id": "salsa_tank",
+        "lane": 1
+      },
+      {
+        "at_sec": 16,
+        "monster_id": "nibbler",
+        "lane": 2
+      },
+      {
+        "at_sec": 22,
+        "monster_id": "swift_hopper",
+        "lane": 0
+      },
+      {
+        "at_sec": 28,
+        "monster_id": "salsa_tank",
+        "lane": 1
+      },
+      {
+        "at_sec": 34,
+        "monster_id": "nibbler",
+        "lane": 1
+      }
+    ],
+    "teaches": "full_mix_mastery"
+  }
+]
