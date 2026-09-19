@@ -6,7 +6,7 @@ Estados: pendiente, en curso, revisión, terminado.
 |---|---|---|---|---|---|---|---|
 | PRE-01 | Aprobar documentación M0 | Jorge | — | Decisiones y bloqueantes resueltos | P0 | S | terminado |
 | PRE-02 | Crear contenido inicial | Claude | PRE-01 | Entrega según prompt y JSON válido | P0 | M | terminado |
-| PRE-03 | Confirmar entorno físico Android | Jorge/Codex | PRE-01 | Versión de Android del Galaxy S24 Ultra registrada | P0 | XS | en curso |
+| PRE-03 | Confirmar entorno físico iOS | Jorge/Codex | PRE-01 | iPhone 17/iOS 27.0 y iPhone 16 Pro Max/versión iOS registrados | P0 | XS | en curso |
 | TEC-01 | Crear proyecto Godot vertical | Codex | PRE-01 | Abre sin error y escena raíz corre | P0 | S | pendiente |
 | TEC-02 | Registrar y validar contenido | Codex | PRE-02,TEC-01 | Rechaza IDs/referencias/rangos/claves/efectos inválidos con errores claros | P0 | M | pendiente |
 | BRD-01 | Renderizar tablero 5 × 5 | Codex | TEC-01 | 25 celdas adaptables | P0 | S | pendiente |
@@ -25,7 +25,7 @@ Estados: pendiente, en curso, revisión, terminado.
 | SAV-02 | Recuperar guardado inválido | Codex | SAV-01 | Ausente, parcial o corrupto no impide iniciar ni destruye un estado válido | P0 | S | pendiente |
 | TST-01 | Pruebas de reglas centrales | Codex | BRD-04,LANE-02 | Suite con semillas fijas y validación de contenido pasa | P0 | M | pendiente |
 | TST-02 | Pruebas de reinicio y observación | Codex/Jorge | TST-01,SAV-02 | Reinicios repetidos estables y registro separa hechos de interpretaciones | P1 | S | pendiente |
-| AND-01 | Exportar APK | Codex | M3,PRE-03 | Instala y abre en Galaxy S24 Ultra | P0 | M | pendiente |
-| AND-02 | Medir build Android | Codex | AND-01 | Registra frame, memoria, carga y temperatura con build/commit | P0 | S | pendiente |
-| VAL-01 | Dos pruebas independientes | Jorge/hermano | AND-02 | Formatos completos, sin coaching y con build/commit | P0 | S | pendiente |
+| IOS-01 | Exportar build iOS | Codex | M3,PRE-03 | Compila en Xcode, instala y abre en iPhone 17 | P0 | M | pendiente |
+| IOS-02 | Medir build iOS | Codex | IOS-01 | Registra frame, memoria, carga y temperatura en iPhone 17 y humo en iPhone 16 Pro Max con build/commit | P0 | S | pendiente |
+| VAL-01 | Dos pruebas independientes | Jorge/hermano | IOS-02 | Formatos completos, sin coaching y con build/commit | P0 | S | pendiente |
 | VAL-02 | Decisión continuar/iterar/pivotar | Equipo | VAL-01 | Decisión respaldada por hallazgos | P0 | S | pendiente |
