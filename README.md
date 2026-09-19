@@ -4,7 +4,7 @@ Juego móvil 2D vertical de puzzle y supervivencia roguelite. El jugador combina
 
 ## Estado
 
-Preproducción. Aún no existe una versión jugable ni un proyecto Godot.
+M0 / preproducción aprobada e integrada en `main`. Preparación de M1: entorno local, rama `uat` y arranque de TEC-01. Aún no existe una versión jugable.
 
 ## Objetivo del prototipo
 
