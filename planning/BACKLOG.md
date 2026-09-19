@@ -8,7 +8,7 @@ Estados: pendiente, en curso, revisión, terminado.
 | PRE-02 | Crear contenido inicial | Claude | PRE-01 | Entrega según prompt y JSON válido | P0 | M | terminado |
 | PRE-03 | Confirmar entorno físico iOS | Jorge/Codex | PRE-01 | iPhone 17/iOS 27.0 y iPhone 16 Pro Max/versión iOS registrados | P0 | XS | en curso |
 | TEC-01 | Crear proyecto Godot vertical | Codex | PRE-01 | Abre sin error y escena raíz corre | P0 | S | terminado |
-| TEC-02 | Registrar y validar contenido | Codex | PRE-02,TEC-01 | Rechaza IDs/referencias/rangos/claves/efectos inválidos con errores claros | P0 | M | pendiente |
+| TEC-02 | Registrar y validar contenido | Codex | PRE-02,TEC-01 | Rechaza IDs/referencias/rangos/claves/efectos inválidos con errores claros | P0 | M | terminado |
 | BRD-01 | Renderizar tablero 5 × 5 | Codex | TEC-01 | 25 celdas adaptables | P0 | S | terminado |
 | BRD-02 | Capturar cadena ortogonal | Codex | BRD-01 | Acepta 3+, rechaza diagonal/repetida y no intercambia fichas | P0 | M | pendiente |
 | BRD-03 | Resolver caída y relleno determinista | Codex | BRD-02 | Misma semilla y gestos producen el mismo tablero sin huecos | P0 | M | pendiente |
