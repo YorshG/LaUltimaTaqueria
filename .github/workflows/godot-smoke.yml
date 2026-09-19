@@ -14,13 +14,18 @@ on:
 jobs:
   smoke:
     runs-on: ubuntu-latest
-    container:
-      image: barichello/godot-ci:4.7.2
     timeout-minutes: 10
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Godot 4.7.2
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
 
       - name: Verify Godot version
         run: godot --version
