@@ -5,6 +5,8 @@
 1. Confirmar versión estable de Godot y entorno de exportación Android al iniciar implementación.
 2. Confirmar la versión de Android instalada en el Galaxy S24 Ultra de pruebas.
 
+Los contratos de contenido, efectos, modificadores y velocidad quedaron resueltos en M0; ya no son preguntas bloqueantes.
+
 ## Validables con prototipo
 
 - ¿5 × 5 ofrece suficiente espacio?
