@@ -1,0 +1,37 @@
+[
+  {
+    "id": "nibbler",
+    "display_name_key": "monster.nibbler",
+    "tags": [
+      "basic"
+    ],
+    "speed": 55,
+    "hunger": 30,
+    "reputation_damage": 10,
+    "initial_value_hypothesis": true
+  },
+  {
+    "id": "salsa_tank",
+    "display_name_key": "monster.salsa_tank",
+    "tags": [
+      "tank",
+      "slow"
+    ],
+    "speed": 30,
+    "hunger": 70,
+    "reputation_damage": 25,
+    "initial_value_hypothesis": true
+  },
+  {
+    "id": "swift_hopper",
+    "display_name_key": "monster.swift_hopper",
+    "tags": [
+      "fast",
+      "priority"
+    ],
+    "speed": 90,
+    "hunger": 18,
+    "reputation_damage": 15,
+    "initial_value_hypothesis": true
+  }
+]
