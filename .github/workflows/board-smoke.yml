@@ -1,0 +1,38 @@
+name: BoardView Smoke
+
+on:
+  push:
+    branches:
+      - feature/brd-01-board-render
+  pull_request:
+    paths:
+      - "scenes/board/**"
+      - "scripts/board/**"
+      - "scenes/Main.tscn"
+      - "tests/board_view_test.gd"
+      - ".github/workflows/board-smoke.yml"
+
+jobs:
+  board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Godot 4.7.2
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
+
+      - name: Import project
+        run: godot --headless --path . --editor --quit
+
+      - name: Run BoardView test
+        run: godot --headless --path . --script res://tests/board_view_test.gd
+
+      - name: Run main scene
+        run: godot --headless --path . --scene res://scenes/Main.tscn --quit-after 3
