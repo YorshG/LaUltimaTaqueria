@@ -171,7 +171,7 @@ func _validate_ingredients(items: Array, localization: Dictionary, errors: Array
 		_require_localization(item.get("display_name_key"), localization, "ingredient %s" % id, errors)
 		_require_positive_number(item.get("base_satisfaction"), "ingredient %s base_satisfaction" % id, errors)
 		var tier = item.get("tier", null)
-		if typeof(tier) != TYPE_INT or tier < 1:
+		if not _is_integer_number(tier) or int(tier) < 1:
 			errors.append("ingredient %s tier must be an integer >= 1" % id)
 		var effect = item.get("special_effect", null)
 		if effect not in SPECIAL_EFFECTS:
@@ -211,7 +211,7 @@ func _validate_recipes(
 			errors.append("recipe %s references unknown ingredient: %s" % [id, ingredient_id])
 			continue
 		var count = recipe_ingredients[ingredient_id]
-		if typeof(count) != TYPE_INT or count < 3:
+		if not _is_integer_number(count) or int(count) < 3:
 			errors.append("recipe %s ingredient count must be an integer >= 3" % id)
 		var expected_effect = ingredient_index[ingredient_id].get("special_effect", null)
 		if item.get("effect", null) != expected_effect:
@@ -245,7 +245,7 @@ func _validate_boss(item: Dictionary, localization: Dictionary, errors: Array) -
 	_require_positive_number(item.get("hunger"), "boss hunger", errors)
 	_require_non_negative_number(item.get("reputation_damage_on_breach"), "boss reputation_damage_on_breach", errors)
 	var lane = item.get("lane", null)
-	if typeof(lane) != TYPE_INT or lane < 0 or lane > 2:
+	if not _is_integer_number(lane) or int(lane) < 0 or int(lane) > 2:
 		errors.append("boss lane must be 0, 1, or 2")
 	var phases = item.get("phases", null)
 	if typeof(phases) != TYPE_ARRAY or phases.is_empty():
@@ -287,7 +287,7 @@ func _validate_waves(items: Array, monster_index: Dictionary, errors: Array) -> 
 			if typeof(monster_id) != TYPE_STRING or not monster_index.has(monster_id):
 				errors.append("wave %s spawn %d references unknown monster: %s" % [id, i, monster_id])
 			var lane = spawn.get("lane", null)
-			if typeof(lane) != TYPE_INT or lane < 0 or lane > 2:
+			if not _is_integer_number(lane) or int(lane) < 0 or int(lane) > 2:
 				errors.append("wave %s spawn %d lane must be 0, 1, or 2" % [id, i])
 			var at_sec = spawn.get("at_sec", null)
 			if not _is_finite_number(at_sec) or float(at_sec) < 0.0:
@@ -424,6 +424,13 @@ func _require_finite_number(value, label: String, errors: Array) -> void:
 func _require_ratio(value, label: String, errors: Array) -> void:
 	if not _is_finite_number(value) or float(value) < 0.0 or float(value) > 1.0:
 		errors.append("%s must be in [0, 1]" % label)
+
+
+func _is_integer_number(value) -> bool:
+	if not _is_finite_number(value):
+		return false
+	var number := float(value)
+	return is_equal_approx(number, round(number))
 
 
 func _is_finite_number(value) -> bool:
