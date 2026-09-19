@@ -31,7 +31,7 @@ func _test_motion_model() -> void:
 	_expect(is_equal_approx(medium.progress, 0.055), "speed 55 must advance 0.055 lane/s")
 	_expect(is_equal_approx(fast.progress, 0.09), "speed 90 must advance 0.09 lane/s")
 
-	var before_medium := medium.progress
+	var before_medium: float = medium.progress
 	slow.global_speed_multiplier = 0.5
 	slow.advance(1.0)
 	_expect(is_equal_approx(medium.progress, before_medium), "changing slow runner must not move medium runner")
