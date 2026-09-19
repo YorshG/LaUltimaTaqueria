@@ -1,0 +1,37 @@
+name: Godot TEC-01 Smoke
+
+on:
+  push:
+    branches:
+      - feature/tec-01-godot-ios-bootstrap
+  pull_request:
+    paths:
+      - "project.godot"
+      - "scenes/**"
+      - "scripts/**"
+      - ".github/workflows/godot-smoke.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Godot 4.7.2
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
+
+      - name: Verify Godot version
+        run: godot --version
+
+      - name: Import project headlessly
+        run: godot --headless --path . --editor --quit
+
+      - name: Run bootstrap scene headlessly
+        run: godot --headless --path . --scene res://scenes/Main.tscn --quit-after 3
