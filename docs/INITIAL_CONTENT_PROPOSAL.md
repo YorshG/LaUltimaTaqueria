@@ -1,6 +1,6 @@
 # Propuesta inicial de contenido y balance
 
-Estado del documento: **propuesta para revisión — v5, corrección solicitada en la validación del PR #2 (`warm_welcome` ya no queda como elección sin efecto si se obtiene en la quinta selección de mejora)**. No integrada ni aprobada como código. Todos los valores numéricos son hipótesis ajustables (ver `docs/PROTOTYPE_SCOPE.md` y `prompts/CLAUDE_KICKOFF.md`). Este documento no modifica arquitectura, no agrega monetización, servidores, cuentas ni multijugador, y no contiene código de juego.
+Estado del documento: **propuesta para revisión — v6, corrección solicitada en la validación del PR #2 (el efecto de cadena 5+ pasa a estar definido por ingrediente, sin contradicción con `docs/CORE_RULES.md`, y `meat` deja de ser el único ingrediente sin efecto)**. No integrada ni aprobada como código. Todos los valores numéricos son hipótesis ajustables (ver `docs/PROTOTYPE_SCOPE.md` y `prompts/CLAUDE_KICKOFF.md`). Este documento no modifica arquitectura, no agrega monetización, servidores, cuentas ni multijugador, y no contiene código de juego.
 
 Convenciones usadas en todo el documento:
 
@@ -60,6 +60,17 @@ Identificadores técnicos en **inglés** `snake_case` (corregido en esta revisi�
 2. **Condición renombrada a `first_dish_of_encounter`.** Se agrega este valor al catálogo cerrado de `condition` de `conditional_satisfaction` (sección 4.1, sigue como **[Hipótesis]**) y se retira `first_dish_of_wave`. Un "encuentro" se define como cualquiera de las cinco oleadas normales o el combate contra `boss_big_glutton`; el primer platillo servido en cada uno de esos seis encuentros duplica su satisfacción. No se modifica `docs/CORE_RULES.md`: solo se define la semántica de una condición de contenido ya hipotética.
 3. **Actualizados en consecuencia:** el JSON de `warm_welcome` (4.2), su descripción visible y localización (4.3 y sección 8), y la nota de diseño que antes excluía al jefe.
 4. Se revalidaron sintácticamente los 13 bloques JSON del documento tras el cambio.
+
+### Cambios respecto a la v5 (segunda corrección solicitada en la validación del PR #2)
+
+1. **Contradicción con `docs/CORE_RULES.md` resuelta.** La regla central dice "cadena de 5 o más: efecto especial definido por ingrediente", pero los tres ingredientes declaraban `special_effect:"none"` y el efecto real vivía en dos recetas aparte (`taco_golden`, `taco_veggie_refreshing`); `meat` no tenía ningún efecto de cadena 5+. El ingrediente pasa a ser la única fuente de verdad (5.1).
+2. **`meat` recibe efecto de cadena 5+ (`bonus_satisfaction_burst`).** Nueva **[Hipótesis]** coherente con su rol ofensivo: un golpe de satisfacción extra sobre el mismo objetivo, en vez de control (`brief_stun` de tortilla) o soporte (`reputation_small_restore` de veggie).
+3. **Recetas de 5 a 3.** Se retiran `taco_golden` y `taco_veggie_refreshing`: quedaban redundantes frente al `ingredient.special_effect` de su propio ingrediente y eran una segunda fuente de verdad del mismo efecto. Las tres recetas restantes (`taco_simple`, `taco_meat_simple`, `taco_veggie_simple`) cubren cadenas 3, 4 y 5+ del mismo ingrediente; se mantiene dentro del rango de 3–5 recetas de `docs/PROTOTYPE_SCOPE.md`.
+4. **Resolución de cadena documentada explícitamente (5.2):** cadena 3 = satisfacción base de la receta; cadena 4 = ×1.5 (regla global de `docs/CORE_RULES.md`, no dato por receta); cadena 5+ = la misma satisfacción de cadena 4 más el `special_effect` del ingrediente. `recipe.effect` deja de definirse de forma independiente: siempre iguala al `special_effect` del ingrediente de esa receta.
+5. **Localización, sinergias y notas actualizadas:** se retiran `recipe.taco_golden` y `recipe.taco_veggie_refreshing` de la sección 8; se actualizan las notas de `chain5_effect_boost` (4.2) y la sinergia `chain5_effect_boost` + `reputation_boost` (4.4) para referenciar el efecto por ingrediente en vez de la receta retirada.
+6. **Pregunta abierta resuelta:** la pregunta 7.4 sobre un efecto de cadena 5 para `meat` se elimina de las preguntas pendientes; queda registrada como resuelta en esta revisión.
+7. **Disponibilidad de ofertas de mejora confirmada sin cambios:** la validación independiente del PR #2 revisó exhaustivamente el sistema de ofertas y no encontró problema — siempre hay al menos 3 mejoras elegibles, y el mínimo antes de la quinta selección es 7. No requirió cambios en este documento.
+8. Se revalidaron sintácticamente los 13 bloques JSON y las referencias cruzadas (ingredientes de recetas, oleadas, claves de localización) tras el cambio.
 
 ---
 
@@ -204,7 +215,7 @@ Campos que este documento añade al ejemplo de mejora de `docs/CONTENT_MODEL.md`
   {"id":"taco_power_1","display_name_key":"upgrade.taco_power_1","description_key":"upgrade.taco_power_1.desc","rarity":"common","tags":["offense"],"effect":{"type":"modify_satisfaction","stat":"satisfaction_multiplier","operation":"multiply","value":1.15},"conflicts":["taco_power_2"],"synergies":["chain4_boost","extra_bite","warm_welcome"]},
   {"id":"taco_power_2","display_name_key":"upgrade.taco_power_2","description_key":"upgrade.taco_power_2.desc","rarity":"epic","tags":["offense"],"effect":{"type":"modify_satisfaction","stat":"satisfaction_multiplier","operation":"multiply","value":1.5},"conflicts":["taco_power_1"],"synergies":["chain4_boost","extra_bite","last_stand"]},
   {"id":"chain4_boost","display_name_key":"upgrade.chain4_boost","description_key":"upgrade.chain4_boost.desc","rarity":"rare","tags":["offense"],"effect":{"type":"modify_chain_bonus","stat":"chain4_satisfaction_bonus","operation":"add","value":0.1},"conflicts":[],"synergies":["taco_power_1","taco_power_2","steady_hands","assist_serve","warm_welcome"],"notes":"Sube el bono existente de cadena de 4 de +50% a +60%; no reduce el mínimo de cadena de 3, refuerza la regla vigente."},
-  {"id":"chain5_effect_boost","display_name_key":"upgrade.chain5_effect_boost","description_key":"upgrade.chain5_effect_boost.desc","rarity":"epic","tags":["offense"],"effect":{"type":"modify_special_effect","stat":"special_effect_power_multiplier","operation":"multiply","value":1.3},"conflicts":[],"synergies":["steady_hands","reputation_boost"],"notes":"Refuerza el efecto especial determinista de las cadenas de 5+ (aturdimiento de taco_golden, restauración de taco_veggie_refreshing); no agrega azar."},
+  {"id":"chain5_effect_boost","display_name_key":"upgrade.chain5_effect_boost","description_key":"upgrade.chain5_effect_boost.desc","rarity":"epic","tags":["offense"],"effect":{"type":"modify_special_effect","stat":"special_effect_power_multiplier","operation":"multiply","value":1.3},"conflicts":[],"synergies":["steady_hands","reputation_boost"],"notes":"Refuerza el efecto especial determinista de las cadenas de 5+ definido por cada ingrediente (`brief_stun` de tortilla, `bonus_satisfaction_burst` de meat, `reputation_small_restore` de veggie); no agrega azar."},
   {"id":"steady_hands","display_name_key":"upgrade.steady_hands","description_key":"upgrade.steady_hands.desc","rarity":"common","tags":["utility"],"effect":{"type":"modify_input","stat":"input_forgiveness","operation":"add","value":0.1},"conflicts":[],"synergies":["chain4_boost","chain5_effect_boost"],"notes":"[Hipótesis] +0.1 = +10% de margen de detección al tocar cada celda durante el trazo; la unidad real depende de Codex y de la prueba en dispositivo."},
   {"id":"reputation_boost","display_name_key":"upgrade.reputation_boost","description_key":"upgrade.reputation_boost.desc","rarity":"common","tags":["defense"],"effect":{"type":"modify_reputation","stat":"reputation_max","operation":"add","value":15},"conflicts":[],"synergies":["chain5_effect_boost","patient_service"],"notes":"Aumenta el máximo de reputación al elegirla; no cura ni restaura reputación perdida."},
   {"id":"safety_shield","display_name_key":"upgrade.safety_shield","description_key":"upgrade.safety_shield.desc","rarity":"rare","tags":["strong_defense"],"effect":{"type":"grant_charge","stat":"reputation_shield_charges","operation":"add","value":1},"conflicts":["patient_service","second_chance"],"synergies":["slow_salsa","slow_salsa_plus"],"notes":"Una carga: anula por completo el daño de reputación del siguiente monstruo que llegue al mostrador y se consume."},
@@ -257,7 +268,7 @@ Las sinergias son simétricas y solo orientan el diseño y la prueba de combinac
 | `chain4_boost` + `steady_hands` | Trazar cadenas largas resulta más fácil. |
 | `chain4_boost` + `warm_welcome` | Abrir el encuentro con una cadena de 4 duplicada. |
 | `chain5_effect_boost` + `steady_hands` | Trazar cadenas de 5 resulta más fácil y su efecto es más fuerte. |
-| `chain5_effect_boost` + `reputation_boost` | La restauración de taco_veggie_refreshing escala y hay más reputación que recuperar. |
+| `chain5_effect_boost` + `reputation_boost` | La restauración de `reputation_small_restore` (cadena 5+ de veggie) escala y hay más reputación que recuperar. |
 | `reputation_boost` + `patient_service` | Más reserva de reputación y menos daño por golpe. |
 | `safety_shield` + `slow_salsa` | Más tiempo para reaccionar; el escudo cubre el error que aún ocurra. |
 | `safety_shield` + `slow_salsa_plus` | Más tiempo para reaccionar; el escudo cubre el error que aún ocurra. |
@@ -268,41 +279,42 @@ Las sinergias son simétricas y solo orientan el diseño y la prueba de combinac
 
 ---
 
-## 5. Ingredientes (3) y recetas (5)
+## 5. Ingredientes (3) y recetas (3)
 
 ### 5.1 Ingredientes
 
+**[Decisión de revisión PR #2]** `docs/CORE_RULES.md` fija que "cadena de 5 o más: efecto especial definido por ingrediente" — es decir, el ingrediente es la única fuente de verdad del efecto de cadena 5+. La v5 de esta propuesta contradecía esa regla: los tres ingredientes declaraban `special_effect:"none"` y el efecto real vivía en dos recetas especiales aparte (`taco_golden`, `taco_veggie_refreshing`), dejando a `meat` sin ningún efecto de cadena 5+. Esta revisión resuelve la contradicción moviendo el efecto determinista a `ingredient.special_effect` para los tres ingredientes.
+
 ```json
 [
-  {"id":"tortilla","display_name_key":"ingredient.tortilla","tier":1,"color_hint":"gold","base_satisfaction":10,"special_effect":"none"},
-  {"id":"meat","display_name_key":"ingredient.meat","tier":1,"color_hint":"terracota","base_satisfaction":12,"special_effect":"none"},
-  {"id":"veggie","display_name_key":"ingredient.veggie","tier":1,"color_hint":"verde","base_satisfaction":8,"special_effect":"none"}
+  {"id":"tortilla","display_name_key":"ingredient.tortilla","tier":1,"color_hint":"gold","base_satisfaction":10,"special_effect":"brief_stun"},
+  {"id":"meat","display_name_key":"ingredient.meat","tier":1,"color_hint":"terracota","base_satisfaction":12,"special_effect":"bonus_satisfaction_burst"},
+  {"id":"veggie","display_name_key":"ingredient.veggie","tier":1,"color_hint":"verde","base_satisfaction":8,"special_effect":"reputation_small_restore"}
 ]
 ```
 
-- **Tortilla:** base versátil, satisfacción media; opción "segura" y abundante para cadenas tempranas.
-- **Meat (carne):** mayor satisfacción por unidad; mejor para monstruos de hambre alta (`salsa_tank`).
-- **Veggie (verdura):** menor satisfacción por unidad; su cadena de 5 da un efecto de apoyo defensivo.
+- **Tortilla:** base versátil, satisfacción media; opción "segura" y abundante para cadenas tempranas. Cadena de 5+: `brief_stun` — detiene un instante al monstruo objetivo.
+- **Meat (carne):** mayor satisfacción por unidad; mejor para monstruos de hambre alta (`salsa_tank`). Cadena de 5+: `bonus_satisfaction_burst` — satisfacción extra de un solo golpe sobre el mismo objetivo. **[Hipótesis]** Coherente con su rol ofensivo (más satisfacción por unidad, mejor contra hambre alta): en vez de control (tortilla) o soporte (veggie), `meat` refuerza lo que ya hace bien, un golpe de satisfacción más grande contra el objetivo actual.
+- **Veggie (verdura):** menor satisfacción por unidad. Cadena de 5+: `reputation_small_restore` — pequeña recuperación real de reputación (a diferencia de la mejora `reputation_boost`, que solo sube el máximo).
+
+> **[Hipótesis]** Catálogo cerrado de `ingredient.special_effect`: `none` (reservado para futuros ingredientes sin efecto de cadena 5+, sin uso actual), `brief_stun`, `bonus_satisfaction_burst`, `reputation_small_restore`. Las magnitudes de `brief_stun` (duración), `bonus_satisfaction_burst` (cantidad extra) y `reputation_small_restore` (cantidad) no están definidas en esta propuesta y quedan para Codex/prototipo (ver 7.5).
 
 ### 5.2 Recetas
 
+Resolución de cadena por tamaño, la misma para las tres recetas: cadena 3 = satisfacción base de `recipe.satisfaction` (**[Decisión aprobada]**, `docs/CORE_RULES.md`); cadena 4 = ×1.5 sobre esa base (**[Decisión aprobada]**, regla global, no un dato por receta); cadena 5+ = la misma satisfacción de cadena 4 más el efecto determinista de `ingredient.special_effect` del ingrediente de la receta. Por eso ya no existen recetas separadas para cadena 5 (`taco_golden`, `taco_veggie_refreshing` se retiran de v6): habría sido una segunda fuente de verdad del efecto de cadena 5+, contradiciendo a `docs/CORE_RULES.md`.
+
 ```json
 [
-  {"id":"taco_simple","display_name_key":"recipe.taco_simple","ingredients":{"tortilla":3},"satisfaction":30,"targeting":"nearest","effect":"none","feedback":"platillo básico, sonido corto y alegre"},
-  {"id":"taco_meat_simple","display_name_key":"recipe.taco_meat_simple","ingredients":{"meat":3},"satisfaction":36,"targeting":"nearest","effect":"none","feedback":"sonido de sartén, golpe de satisfacción mayor"},
-  {"id":"taco_veggie_simple","display_name_key":"recipe.taco_veggie_simple","ingredients":{"veggie":3},"satisfaction":24,"targeting":"nearest","effect":"none","feedback":"sonido fresco, salpicado verde breve"},
-  {"id":"taco_golden","display_name_key":"recipe.taco_golden","ingredients":{"tortilla":5},"satisfaction":50,"targeting":"nearest","effect":"brief_stun","feedback":"destello dorado, el monstruo se detiene un instante a saborear"},
-  {"id":"taco_veggie_refreshing","display_name_key":"recipe.taco_veggie_refreshing","ingredients":{"veggie":5},"satisfaction":40,"targeting":"nearest","effect":"reputation_small_restore","feedback":"brisa fresca, pequeño ícono de + reputación sobre el mostrador"}
+  {"id":"taco_simple","display_name_key":"recipe.taco_simple","ingredients":{"tortilla":3},"satisfaction":30,"targeting":"nearest","effect":"brief_stun","feedback":"platillo básico, sonido corto y alegre; en cadena 5+ un destello dorado detiene un instante al monstruo"},
+  {"id":"taco_meat_simple","display_name_key":"recipe.taco_meat_simple","ingredients":{"meat":3},"satisfaction":36,"targeting":"nearest","effect":"bonus_satisfaction_burst","feedback":"sonido de sartén, golpe de satisfacción mayor; en cadena 5+ un golpe extra de satisfacción sobre el mismo objetivo"},
+  {"id":"taco_veggie_simple","display_name_key":"recipe.taco_veggie_simple","ingredients":{"veggie":3},"satisfaction":24,"targeting":"nearest","effect":"reputation_small_restore","feedback":"sonido fresco, salpicado verde breve; en cadena 5+ brisa fresca con pequeño ícono de + reputación"}
 ]
 ```
 
-- `taco_simple`, `taco_meat_simple`, `taco_veggie_simple`: platillos básicos de cadena 3, uno por ingrediente.
-- `taco_golden` (cadena 5 de tortilla): efecto `brief_stun` — detiene un instante al monstruo objetivo.
-- `taco_veggie_refreshing` (cadena 5 de veggie): efecto `reputation_small_restore` — pequeña recuperación de reputación (esta sí es una restauración real, a diferencia de la mejora `reputation_boost`, que solo sube el máximo).
+- Cada receta usa un único ingrediente y su `effect` es siempre igual al `special_effect` del ingrediente correspondiente: `taco_simple` → `brief_stun` (tortilla), `taco_meat_simple` → `bonus_satisfaction_burst` (meat), `taco_veggie_simple` → `reputation_small_restore` (veggie). El campo está presente por contrato (`docs/CONTENT_MODEL.md`) en las tres recetas, pero **solo se activa cuando la cadena alcanza 5 o más**; en cadenas de 3 y 4 no produce ningún efecto, solo la satisfacción correspondiente.
+- `recipe.effect` nunca se define de forma independiente al `ingredient.special_effect` de su ingrediente: si cambia uno, debe cambiar el otro. Esto evita las dos fuentes de verdad contradictorias señaladas en la validación del PR #2.
 
-> **[Alternativa]** Un efecto especial de cadena 5 también para `meat` queda para una segunda iteración, fuera del rango de 3–5 recetas pedido.
-
-> **[Hipótesis]** Catálogo cerrado de `recipe.effect` usado aquí: `none`, `brief_stun`, `reputation_small_restore`; `targeting`: `nearest` (único valor, fijo por `docs/CORE_RULES.md`). Las magnitudes de `brief_stun` (duración) y `reputation_small_restore` (cantidad) no están definidas en esta propuesta y quedan para Codex/prototipo (ver 7.5). Codex debe adoptar/ajustar este catálogo junto con el de `effect.type` (sección 4.1).
+> **[Hipótesis]** `targeting`: `nearest` (único valor, fijo por `docs/CORE_RULES.md`). Codex debe adoptar/ajustar este catálogo junto con el de `ingredient.special_effect` (5.1) y el de `effect.type` (sección 4.1).
 
 ---
 
@@ -327,11 +339,12 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 
 - **Duración de partida:** con el objetivo aprobado de 4–5 minutos, la suma de oleadas (25+30+35+35+40 = 165 s ≈ 2:45) más 5 pausas de mejora y el combate contra el jefe encaja razonablemente; de todas formas debe medirse con el prototipo, no se da por hecho.
 - **Mutua exclusión de defensas `strong_defense`:** con tres mejoras defensivas fuertes limitadas a una por partida por el sistema de ofertas (`safety_shield`, `patient_service`, `second_chance`), vigilar que ninguna se sienta claramente superior a las otras dos, o el límite por etiqueta no cumplirá su propósito de balance.
-- **`salsa_tank` en oleada 3 (dos apariciones):** si el jugador no adoptó `taco_power` o `taco_golden`, dos tanques en 35 s podrían sentirse injustos. Tiempos de spawn son hipótesis.
+- **`salsa_tank` en oleada 3 (dos apariciones):** si el jugador no adoptó `taco_power` o no logra cadenas de 5 de tortilla (`brief_stun`), dos tanques en 35 s podrían sentirse injustos. Tiempos de spawn son hipótesis.
+- **`bonus_satisfaction_burst` de `meat` (nuevo en v6):** su magnitud aún no está definida (ver 7.5); si es demasiado alta podría volver trivial a `salsa_tank` sin necesitar cadenas de 4/5 de otros ingredientes. Medir con el prototipo junto con `brief_stun` y `reputation_small_restore`.
 - **Autoapuntado + `swift_hopper`:** relacionado con la pregunta abierta existente "¿Autoapuntar se siente justo?" (`docs/OPEN_QUESTIONS.md`).
 - **`assist_serve` (splash a segundo monstruo):** vigilar que no vuelva trivial a `salsa_tank` cuando hay varios monstruos en el mismo carril. Además, extiende la regla de objetivo único de `docs/CORE_RULES.md` (el platillo afecta también a un segundo monstruo), lo que Codex debe aceptar explícitamente.
 - **Multiplicadores apilables:** `taco_power_*`, `warm_welcome` y `last_stand` se combinan de forma multiplicativa según el orden propuesto en 4.1; una partida con `taco_power_2` + `last_stand` + cadenas de 4 puede escalar demasiado. Medir con el prototipo.
-- **`slow_salsa_plus` sobre el jefe:** si `monster_speed_global` también afecta a `boss_big_glutton`, ×0.75 sobre sus fases 1.25× y 1.4× podría anular la presión del combate final. Depende de la pregunta 7.4.3.
+- **`slow_salsa_plus` sobre el jefe:** si `monster_speed_global` también afecta a `boss_big_glutton`, ×0.75 sobre sus fases 1.25× y 1.4× podría anular la presión del combate final. Depende de la pregunta 7.4.2.
 - **`steady_hands` (`modify_input`):** su efecto depende de cómo se detecte el toque en cada celda; es la única mejora que actúa sobre la entrada y no sobre la simulación, y podría no ser perceptible en un tablero 5×5. Validar en el Galaxy S24 Ultra antes de conservarla.
 - **`second_chance` y `reputation_boost`:** ambas dependen de una reputación máxima aún provisional (100); si esa base cambia, los valores 15 y 0.25 deben reescalarse.
 - **Textos con cifras embebidas:** las descripciones de la sección 8 citan valores hipotéticos (15%, 50%, 25%…). Si el balance cambia un valor, el texto debe actualizarse a mano, con riesgo de desincronización.
@@ -343,6 +356,7 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 - Se asumió que las mejoras se ofrecen de a tres opciones por pausa (`docs/CORE_RULES.md`), por lo que 15 mejoras alcanzan para 5 pausas sin repetición si se desea.
 - Se asumió que el jefe no genera monstruos adicionales ni tiene resistencias por ingrediente.
 - Se asumió que las sinergias son solo informativas y que la generación de ofertas no las usa para ponderar.
+- Se asumió que el efecto de cadena 5+ de un ingrediente (`ingredient.special_effect`) se activa una sola vez por cadena resuelta, igual que el efecto de cadena 4, y no se acumula con el de otro ingrediente en la misma jugada.
 
 ### 7.3 Validaciones realizadas
 
@@ -353,25 +367,28 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 - Todas las claves `display_name_key` y `description_key` del documento existen en la sección 8, y no hay claves huérfanas; nombres ≤ 24 caracteres y descripciones ≤ 110 caracteres para dejar margen de expansión de texto.
 - Las recetas referencian ingredientes existentes, las oleadas monstruos existentes, los carriles están entre 0 y 2 y los tiempos son finitos y no negativos.
 - Las rutas de archivos citadas en el documento existen en el repositorio y, fuera del historial de cambios del inicio, no quedan referencias a la etiqueta anterior de defensas fuertes ni a la duración objetivo anterior.
-- Se mantienen sin cambios los valores de monstruos, jefe, oleadas, ingredientes y recetas, y las decisiones aprobadas (4–5 minutos, quinta mejora antes del jefe, máximo una `strong_defense`).
+- Se mantienen sin cambios los valores de monstruos, jefe, oleadas y mejoras (excepto la condición de `warm_welcome`, v5), y las decisiones aprobadas (4–5 minutos, quinta mejora antes del jefe, máximo una `strong_defense`); ingredientes y recetas sí cambian en v6 para resolver la contradicción con `docs/CORE_RULES.md` señalada en la validación del PR #2.
+- Se verificó que `docs/CORE_RULES.md` ("cadena de 5 o más: efecto especial definido por ingrediente") ya no se contradice con el documento: los tres ingredientes (`tortilla`, `meat`, `veggie`) declaran un `special_effect` propio y las tres recetas restantes solo lo reflejan (`recipe.effect` = `ingredient.special_effect` de su ingrediente), sin una segunda fuente de verdad.
+- La validación independiente del PR #2 confirmó que la disponibilidad de ofertas de mejora no tiene problema: siempre existen al menos 3 opciones elegibles, y antes de la quinta selección el mínimo posible es 7; no hay riesgo de quedarse sin opciones válidas.
 - Se verificó que la rama contiene por completo `docs/preproduction` (ancestro directo, 0 commits pendientes) y que su diferencia con esa rama es solo `docs/INITIAL_CONTENT_PROPOSAL.md`.
 - No se modificó `docs/CONTENT_MODEL.md` ni ningún otro archivo distinto de `docs/INITIAL_CONTENT_PROPOSAL.md`.
 
 ### 7.4 Preguntas abiertas para Jorge y su hermano
 
 1. ¿La escala relativa de `speed`/`hunger`/`reputation_damage` propuesta es aceptable como punto de partida para que Codex defina las unidades reales de implementación, o prefieren fijar antes una unidad de referencia (por ejemplo, celdas por segundo)?
-2. ¿Se desea, para una siguiente iteración, un efecto especial de cadena 5 también para `meat`, o se mantiene la asimetría (solo tortilla y veggie) como parte del diseño?
-3. ¿Las mejoras `slow_salsa` y `slow_salsa_plus` deben afectar también al jefe, o solo a los monstruos de las oleadas normales?
+2. ¿Las mejoras `slow_salsa` y `slow_salsa_plus` deben afectar también al jefe, o solo a los monstruos de las oleadas normales?
+
+> La pregunta anterior sobre un efecto especial de cadena 5 para `meat` se resolvió en esta revisión (v6): `meat` ahora tiene `special_effect:"bonus_satisfaction_burst"`, igual que `tortilla` y `veggie`; ya no queda como pregunta abierta.
 
 ### 7.5 Pendientes para Codex antes de implementar
 
-1. **Adoptar o ajustar el catálogo `effect.type` de 4.1** (y el de `recipe.effect` de 5.2), decidir si pasa a `docs/CONTENT_MODEL.md` y, en ese caso, actualizar el contrato. Hasta entonces es solo **[Hipótesis]**.
+1. **Adoptar o ajustar el catálogo `effect.type` de 4.1** (y el de `ingredient.special_effect` de 5.1, que ahora es la fuente de verdad del efecto de cadena 5+ y del que `recipe.effect` de 5.2 solo es un reflejo), decidir si pasa a `docs/CONTENT_MODEL.md` y, en ese caso, actualizar el contrato. Hasta entonces es solo **[Hipótesis]**.
 2. **Decidir sobre las extensiones de contrato** `description_key`, `synergies`, `effect.params`, catálogo de `tags` y `notes` (4.1).
 3. **Conflictos simétricos:** el documento los declara en ambos sentidos. Confirmar que la regla "sin ciclos inválidos" de `docs/CONTENT_MODEL.md` no rechaza un conflicto mutuo entre dos mejoras; si lo hiciera, indicar en qué sentido declararlos.
 4. **Orden de aplicación de modificadores de satisfacción** propuesto en 4.1.
-5. **Magnitudes aún sin definir:** duración de `brief_stun`, cantidad de `reputation_small_restore` y unidad real de `input_forgiveness`.
+5. **Magnitudes aún sin definir:** duración de `brief_stun`, cantidad extra de `bonus_satisfaction_burst`, cantidad de `reputation_small_restore` y unidad real de `input_forgiveness`.
 6. **Textos con cifras:** decidir si las descripciones se mantienen con cifras fijas o si se usa interpolación de valores desde los datos (por ejemplo, un marcador `{value}` reemplazado al mostrar el texto); esta propuesta no la introduce por ampliar el contrato.
-7. **`monster_speed_global` sobre el jefe**, según la respuesta a la pregunta 7.4.3.
+7. **`monster_speed_global` sobre el jefe**, según la respuesta a la pregunta 7.4.2.
 
 ---
 
@@ -391,8 +408,6 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
   "recipe.taco_simple": "Taco sencillo",
   "recipe.taco_meat_simple": "Taco de carne",
   "recipe.taco_veggie_simple": "Taco de verdura",
-  "recipe.taco_golden": "Taco dorado",
-  "recipe.taco_veggie_refreshing": "Taco fresco",
   "rarity.common": "Común",
   "rarity.rare": "Rara",
   "rarity.epic": "Épica",
@@ -436,8 +451,9 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 
 - Los textos de las descripciones incluyen cifras que reflejan los valores hipotéticos de la sección 4.2; si un valor cambia, la descripción debe actualizarse (ver riesgo en 7.1 y pendiente 7.5.6).
 - Los nombres de monstruos, jefe, ingredientes y recetas conservan los nombres en español ya usados en la propuesta (por ejemplo "tanque salsero", "chapulín veloz", "El Gran Glotón").
-- No se agregaron claves para efectos de receta (`brief_stun`, `reputation_small_restore`) porque en esta propuesta no se muestran como texto visible; si la interfaz los muestra, deberán agregarse.
+- No se agregaron claves para los efectos de cadena 5+ (`brief_stun`, `bonus_satisfaction_burst`, `reputation_small_restore`) porque en esta propuesta no se muestran como texto visible; si la interfaz los muestra, deberán agregarse.
+- `recipe.taco_golden` y `recipe.taco_veggie_refreshing` se retiran de la localización en v6 junto con sus recetas (ver 5.2): dejan de existir como identificadores independientes, ya que su identidad de cadena 5+ ahora la da el `ingredient.special_effect` del ingrediente base de `taco_simple`/`taco_veggie_simple`.
 
 ---
 
-*Fin de la propuesta v5. Ningún archivo fuera de `docs/INITIAL_CONTENT_PROPOSAL.md` fue modificado.*
+*Fin de la propuesta v6. Ningún archivo fuera de `docs/INITIAL_CONTENT_PROPOSAL.md` fue modificado.*
