@@ -10,6 +10,7 @@ on:
       - "scripts/board/**"
       - "scenes/Main.tscn"
       - "tests/board_view_test.gd"
+      - "tests/chain_path_test.gd"
       - ".github/workflows/board-smoke.yml"
 
 jobs:
@@ -33,6 +34,9 @@ jobs:
 
       - name: Run BoardView test
         run: godot --headless --path . --script res://tests/board_view_test.gd
+
+      - name: Run chain path test
+        run: godot --headless --path . --script res://tests/chain_path_test.gd
 
       - name: Run main scene
         run: godot --headless --path . --scene res://scenes/Main.tscn --quit-after 3
