@@ -2,10 +2,26 @@
 
 ## Bloqueantes antes de implementar
 
-1. Confirmar versión estable de Godot y entorno de exportación Android al iniciar implementación.
-2. Confirmar la versión de Android instalada en el Galaxy S24 Ultra de pruebas.
+No quedan bloqueantes documentales o de contrato para iniciar TEC-01.
 
-Los contratos de contenido, efectos, modificadores y velocidad quedaron resueltos en M0; ya no son preguntas bloqueantes.
+## Pendiente para entorno Android
+
+- Registrar la versión de Android instalada en el Galaxy S24 Ultra de pruebas (PRE-03).
+
+## Entorno seleccionado
+
+- Godot 4.7.2 stable.
+- GDScript para la implementación del prototipo.
+- OpenJDK 17.
+- Android SDK Platform 35.
+- Android SDK Build-Tools 35.0.1.
+- Android SDK Platform-Tools 35.0.0 o posterior.
+- Android SDK Command-line Tools (latest).
+- NDK r28b (28.1.13356709).
+- CMake 3.10.2.4988404.
+- Android Studio estable para administrar el SDK; al iniciar M1, la estable vigente es Quail 4 (2026.1.4 Patch 1).
+
+Los contratos de contenido, efectos, modificadores y velocidad quedaron resueltos en M0.
 
 ## Validables con prototipo
 

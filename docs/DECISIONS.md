@@ -29,3 +29,8 @@ Fecha inicial: 2026-09-18.
 | Textos de balance con cifras fijas, actualizados junto con los datos | Aprobada para prototipo | Evita introducir interpolación antes de validar el núcleo |
 | Magnitudes iniciales 5+: stun 1.0 s, burst +12, restauración +5 | Hipótesis de prototipo | Valores iniciales medibles y ajustables sin cambiar contrato |
 | Escala de velocidad relativa: 100 = 0.10 carriles/s; jefe base 25 | Hipótesis de prototipo | Permite implementar y medir sin congelar balance final |
+| M0 / preproducción aprobada e integrada en main | Aprobada | PR #1 fusionado por el Product Owner |
+| Rama `uat` como integración a partir de M1 | Aprobada | Mantiene `main` estable mientras se implementa y prueba |
+| Godot 4.7.2 stable + GDScript para el prototipo | Aprobada para implementación | Versión estable vigente; alcance 2D y lógica de prototipo no requieren C# |
+| Toolchain Android de Godot 4.7: JDK 17, Platform 35, Build-Tools 35.0.1, NDK r28b, CMake 3.10.2.4988404 | Aprobada para implementación | Alineado con la documentación oficial de exportación Android de Godot 4.7 |
+| Android Studio estable para administrar SDK | Aprobada para implementación | Simplifica instalación y mantenimiento del toolchain Android en macOS |
