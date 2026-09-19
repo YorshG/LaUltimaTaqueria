@@ -1,0 +1,25 @@
+{
+  "id": "boss_big_glutton",
+  "display_name_key": "boss.big_glutton",
+  "speed": 25,
+  "hunger": 300,
+  "reputation_damage_on_breach": 40,
+  "lane": 1,
+  "phases": [
+    {
+      "threshold": 1,
+      "speed_multiplier": 1,
+      "behavior_tag": "calm"
+    },
+    {
+      "threshold": 0.6,
+      "speed_multiplier": 1.25,
+      "behavior_tag": "phase2_transition_cue_cosmetic_only"
+    },
+    {
+      "threshold": 0.3,
+      "speed_multiplier": 1.4,
+      "behavior_tag": "final_bite"
+    }
+  ]
+}

@@ -1,14 +1,16 @@
-name: Godot TEC-01 Smoke
+name: Godot CI
 
 on:
   push:
     branches:
-      - feature/tec-01-godot-ios-bootstrap
+      - "feature/**"
   pull_request:
     paths:
       - "project.godot"
       - "scenes/**"
       - "scripts/**"
+      - "tests/**"
+      - "data/content/**"
       - ".github/workflows/godot-smoke.yml"
 
 jobs:
@@ -35,3 +37,6 @@ jobs:
 
       - name: Run bootstrap scene headlessly
         run: godot --headless --path . --scene res://scenes/Main.tscn --quit-after 3
+
+      - name: Validate content registry
+        run: godot --headless --path . --script res://tests/content_registry_test.gd

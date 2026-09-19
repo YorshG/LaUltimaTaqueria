@@ -1,0 +1,35 @@
+[
+  {
+    "id": "taco_simple",
+    "display_name_key": "recipe.taco_simple",
+    "ingredients": {
+      "tortilla": 3
+    },
+    "satisfaction": 30,
+    "targeting": "nearest",
+    "effect": "brief_stun",
+    "feedback": "platillo básico, sonido corto y alegre; en cadena 5+ un destello dorado detiene un instante al monstruo"
+  },
+  {
+    "id": "taco_meat_simple",
+    "display_name_key": "recipe.taco_meat_simple",
+    "ingredients": {
+      "meat": 3
+    },
+    "satisfaction": 36,
+    "targeting": "nearest",
+    "effect": "bonus_satisfaction_burst",
+    "feedback": "sonido de sartén, golpe de satisfacción mayor; en cadena 5+ un golpe extra de satisfacción sobre el mismo objetivo"
+  },
+  {
+    "id": "taco_veggie_simple",
+    "display_name_key": "recipe.taco_veggie_simple",
+    "ingredients": {
+      "veggie": 3
+    },
+    "satisfaction": 24,
+    "targeting": "nearest",
+    "effect": "reputation_small_restore",
+    "feedback": "sonido fresco, salpicado verde breve; en cadena 5+ brisa fresca con pequeño ícono de + reputación"
+  }
+]
