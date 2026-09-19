@@ -12,16 +12,16 @@ Después de cada relleno se comprueba que exista al menos una cadena ortogonal v
 
 - Cadena de 3: platillo básico.
 - Cadena de 4: +50% de satisfacción.
-- Cadena de 5 o más: efecto especial definido por ingrediente.
+- Cadena de 5 o más: conserva el bono de +50% de la cadena de 4 y activa una vez el efecto especial definido por ingrediente.
 - Las recetas mixtas se habilitarán después de validar la combinación básica.
 
 ## Objetivos
 
-El platillo selecciona automáticamente al monstruo más cercano al mostrador que pueda recibir su efecto. Empates: carril central, izquierdo, derecho. La interfaz debe anticipar el objetivo.
+El platillo selecciona automáticamente al monstruo más cercano al mostrador que pueda recibir su efecto. Empates: carril central, izquierdo, derecho. La interfaz debe anticipar el objetivo. Ese es siempre el objetivo primario; una mejora puede definir un efecto secundario sobre otro objetivo sin cambiar esta regla primaria.
 
 ## Monstruos y reputación
 
-Cada monstruo tiene velocidad y satisfacción requerida. Los platillos reducen su hambre; al llegar a cero sale satisfecho. Si llega al mostrador, consume reputación y se retira. Reputación inicial provisional: 100.
+Cada monstruo tiene velocidad relativa y satisfacción requerida. La escala y fórmula de velocidad se definen en `docs/CONTENT_MODEL.md`; los modificadores globales de velocidad también afectan al jefe. Los platillos reducen su hambre; al llegar a cero sale satisfecho. Si llega al mostrador, consume reputación y se retira. Reputación inicial provisional: 100.
 
 ## Oleadas
 

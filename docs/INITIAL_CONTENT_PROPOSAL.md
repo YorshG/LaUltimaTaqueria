@@ -1,6 +1,6 @@
 # Propuesta inicial de contenido y balance
 
-Estado del documento: **propuesta para revisión — v6, corrección solicitada en la validación del PR #2 (el efecto de cadena 5+ pasa a estar definido por ingrediente, sin contradicción con `docs/CORE_RULES.md`, y `meat` deja de ser el único ingrediente sin efecto)**. No integrada ni aprobada como código. Todos los valores numéricos son hipótesis ajustables (ver `docs/PROTOTYPE_SCOPE.md` y `prompts/CLAUDE_KICKOFF.md`). Este documento no modifica arquitectura, no agrega monetización, servidores, cuentas ni multijugador, y no contiene código de juego.
+Estado del documento: **contenido integrado en `docs/preproduction` y alineado con los contratos M0**. Los valores de balance siguen siendo hipótesis ajustables; la forma y semántica de los datos quedan congeladas para iniciar implementación. Todos los valores numéricos son hipótesis ajustables (ver `docs/PROTOTYPE_SCOPE.md` y `prompts/CLAUDE_KICKOFF.md`). Este documento no modifica arquitectura, no agrega monetización, servidores, cuentas ni multijugador, y no contiene código de juego.
 
 Convenciones usadas en todo el documento:
 
@@ -123,7 +123,7 @@ Tres monstruos con arquetipos claramente diferenciados: **básico/enseñanza**, 
 ### Big glutton (antes "El Gran Glotón", `boss_big_glutton`)
 
 - **Identidad:** el monstruo más grande y viejo de la invasión; tono cómico-solemne, nunca amenazante de forma violenta.
-- **Comportamiento general:** aparece solo, ocupa el carril central, hambre total 300 (como en `docs/CONTENT_MODEL.md`). Se alimenta igual que cualquier monstruo: el objetivo automático sigue siendo el fijo de `docs/CORE_RULES.md` (más cercano al mostrador, desempate central/izquierdo/derecho). El jefe no cambia esa regla.
+- **Comportamiento general:** aparece solo, ocupa el carril central, velocidad base relativa 25 y hambre total 300 (contrato M0 en `docs/CONTENT_MODEL.md`). Se alimenta igual que cualquier monstruo: el objetivo automático sigue siendo el fijo de `docs/CORE_RULES.md` (más cercano al mostrador, desempate central/izquierdo/derecho). El jefe no cambia esa regla.
 - **Fases (por umbral de hambre restante):**
   1. **Fase 1 (100%–60%):** velocidad normal, come con calma.
   2. **Fase 2 (60%–30%):** velocidad 1.25×. Al cruzar el umbral del 60% de hambre restante, una animación y sonido breves comunican directamente el cambio de fase (la aceleración); es una señal única en el momento de la transición, no un gesto repetido de anticipación. Esta animación no detiene la simulación ni el avance del jefe.
@@ -132,7 +132,7 @@ Tres monstruos con arquetipos claramente diferenciados: **básico/enseñanza**, 
 - **Comunicación anticipada:** barra de hambre del jefe siempre visible; las señales de transición de fase 2 (60%) y fase 3 (30%) son animación y sonido breves, sin pausar la simulación ni el avance del jefe.
 
 ```json
-{"id":"boss_big_glutton","display_name_key":"boss.big_glutton","hunger":300,"reputation_damage_on_breach":40,"lane":1,"phases":[{"threshold":1.0,"speed_multiplier":1.0,"behavior_tag":"calm"},{"threshold":0.6,"speed_multiplier":1.25,"behavior_tag":"phase2_transition_cue_cosmetic_only"},{"threshold":0.3,"speed_multiplier":1.4,"behavior_tag":"final_bite"}]}
+{"id":"boss_big_glutton","display_name_key":"boss.big_glutton","speed":25,"hunger":300,"reputation_damage_on_breach":40,"lane":1,"phases":[{"threshold":1.0,"speed_multiplier":1.0,"behavior_tag":"calm"},{"threshold":0.6,"speed_multiplier":1.25,"behavior_tag":"phase2_transition_cue_cosmetic_only"},{"threshold":0.3,"speed_multiplier":1.4,"behavior_tag":"final_bite"}]}
 ```
 
 > **[Hipótesis]** El jefe ocupa siempre el carril central y no genera monstruos adicionales durante su combate. **[Alternativa]** invocar refuerzos en fase 3 se descarta por ampliar el alcance de contenido y de IA de spawn.
@@ -184,29 +184,19 @@ Los tres tipos combinados, mayor densidad. **[Decisión aprobada]** Al resolvers
 
 Rareza provisional: `common`, `rare`, `epic`. Las mejoras etiquetadas `"tags":["strong_defense"]` son defensas fuertes. El sistema de generación de ofertas excluye el resto de mejoras con esa etiqueta después de seleccionar una, garantizando máximo una por partida (contrato de `docs/CONTENT_MODEL.md`); los `conflicts` cruzados entre ellas (`safety_shield`, `patient_service`, `second_chance`) se conservan como validación redundante, no como mecanismo principal.
 
-### 4.1 Catálogo cerrado de `effect.type` — **[Hipótesis]**
+### 4.1 Catálogos y semántica — **[Contrato M0]**
 
-`docs/CONTENT_MODEL.md` exige que el tipo de efecto pertenezca a un catálogo cerrado, pero solo muestra un tipo de ejemplo (`modify_satisfaction`) y no formaliza la lista completa. Como el catálogo aún no existe, esta sección lo propone como **[Hipótesis]**. **Codex debe adoptar o ajustar este contrato antes de cualquier implementación**; este documento no modifica `docs/CONTENT_MODEL.md`, y mientras Codex no lo resuelva ninguna mejora de esta propuesta debe considerarse cargable por el `ContentRegistry`.
+Los catálogos, campos y reglas propuestos originalmente en esta sección fueron adoptados y formalizados en `docs/CONTENT_MODEL.md`. Esa ruta es ahora la fuente de verdad para:
 
-| `effect.type` | `stat` permitido (operación) | `params` | Semántica propuesta |
-|---|---|---|---|
-| `modify_satisfaction` | `satisfaction_multiplier` (`multiply`), `satisfaction_flat_bonus` (`add`) | — | Modifica la satisfacción de cada platillo servido. |
-| `modify_chain_bonus` | `chain4_satisfaction_bonus` (`add`) | — | Ajusta el bono de cadena de 4 (base +0.5 según `docs/CORE_RULES.md`). |
-| `modify_special_effect` | `special_effect_power_multiplier` (`multiply`) | — | Escala la potencia del efecto especial determinista de cadenas de 5+. |
-| `add_splash_satisfaction` | `chain4_splash_satisfaction` (`add`) | — | Una cadena de 4+ quita hambre extra al segundo monstruo más cercano del mismo carril; el objetivo principal no cambia. |
-| `conditional_satisfaction` | `satisfaction_multiplier` (`multiply`) | `condition` ∈ {`first_dish_of_encounter`, `reputation_below_ratio`}; `threshold` (0–1) solo con `reputation_below_ratio` | Multiplicador de satisfacción que solo aplica si se cumple la condición. `first_dish_of_encounter`: un "encuentro" es cualquiera de las cinco oleadas normales o el combate contra el jefe; aplica al primer platillo servido en cada uno de los seis. |
-| `modify_reputation` | `reputation_max` (`add`), `reputation_damage_taken` (`multiply`) | — | Cambia el máximo de reputación o el daño que se recibe al llegar un monstruo al mostrador. |
-| `grant_charge` | `reputation_shield_charges` (`add`), `extra_life_charges` (`add`) | `restore_ratio` (0–1) solo con `extra_life_charges` | Otorga cargas de un solo uso. Escudo: anula por completo el daño de reputación del siguiente monstruo que llegue al mostrador. Vida extra: si la reputación llega a 0, consume una carga y restaura reputación a `restore_ratio` × máximo. |
-| `modify_monster_stat` | `monster_speed_global` (`multiply`) | — | Multiplica la velocidad de todos los monstruos. |
-| `modify_input` | `input_forgiveness` (`add`) | — | Margen adicional de detección al tocar celdas durante el trazo (0.1 = +10%). |
+- `effect.type`, `stat`, `operation`, `params`, rarezas y tags.
+- `description_key`, `synergies` y `notes`.
+- conflictos simétricos y sinergias informativas.
+- `first_dish_of_encounter` y `reputation_below_ratio`.
+- orden determinista de modificadores de satisfacción.
+- unidad de `input_forgiveness`.
+- aplicación de `monster_speed_global` también al jefe.
 
-Otros catálogos cerrados usados por las mejoras, también **[Hipótesis]** salvo donde se indica: `operation` ∈ {`add`, `multiply`} (no se usa `set`); `rarity` ∈ {`common`, `rare`, `epic`}; `tags` ∈ {`offense`, `defense`, `utility`, `strong_defense`} (`strong_defense` ya es contrato oficial).
-
-Orden de aplicación propuesto para modificadores de satisfacción **[Hipótesis]**: (1) satisfacción base de la receta; (2) `+ satisfaction_flat_bonus`; (3) × (1 + bono de cadena: 0.5 en cadena de 4, más `chain4_satisfaction_bonus`); (4) × todos los multiplicadores acumulados (`taco_power_*`, `warm_welcome`, `last_stand`), que se combinan de forma multiplicativa. Debe confirmarse con Codex (ver 7.5).
-
-Reglas de validación asociadas, coherentes con la sección "Validación obligatoria" de `docs/CONTENT_MODEL.md`: `type`, `stat`, `operation`, `rarity` y `tags` deben pertenecer a los catálogos anteriores; `stat` debe ser uno de los permitidos para su `type`; `params` solo con las claves indicadas; `conflicts` y `synergies` deben referenciar ids existentes, sin autorreferencias; ninguna mejora puede figurar a la vez en `conflicts` y `synergies` de otra. Ningún dato ejecuta scripts ni expresiones.
-
-Campos que este documento añade al ejemplo de mejora de `docs/CONTENT_MODEL.md`, todos **[Hipótesis]** sujetos a la decisión de Codex: `description_key` (clave de localización de la descripción visible), `synergies` (lista informativa de ids, solo para diseño y balance: no cambia la generación de ofertas ni tiene efecto mecánico), `effect.params` (parámetros por tipo, ver tabla) y `notes` (solo documentación; el cargador puede ignorarlo o Codex puede retirarlo).
+Si este documento y `docs/CONTENT_MODEL.md` difieren, prevalece `docs/CONTENT_MODEL.md`.
 
 ### 4.2 Datos
 
@@ -287,9 +277,9 @@ Las sinergias son simétricas y solo orientan el diseño y la prueba de combinac
 
 ```json
 [
-  {"id":"tortilla","display_name_key":"ingredient.tortilla","tier":1,"color_hint":"gold","base_satisfaction":10,"special_effect":"brief_stun"},
-  {"id":"meat","display_name_key":"ingredient.meat","tier":1,"color_hint":"terracota","base_satisfaction":12,"special_effect":"bonus_satisfaction_burst"},
-  {"id":"veggie","display_name_key":"ingredient.veggie","tier":1,"color_hint":"verde","base_satisfaction":8,"special_effect":"reputation_small_restore"}
+  {"id":"tortilla","display_name_key":"ingredient.tortilla","tier":1,"color_hint":"gold","base_satisfaction":10,"special_effect":"brief_stun","special_effect_params":{"duration_sec":1.0}},
+  {"id":"meat","display_name_key":"ingredient.meat","tier":1,"color_hint":"terracota","base_satisfaction":12,"special_effect":"bonus_satisfaction_burst","special_effect_params":{"amount":12}},
+  {"id":"veggie","display_name_key":"ingredient.veggie","tier":1,"color_hint":"verde","base_satisfaction":8,"special_effect":"reputation_small_restore","special_effect_params":{"amount":5}}
 ]
 ```
 
@@ -297,7 +287,7 @@ Las sinergias son simétricas y solo orientan el diseño y la prueba de combinac
 - **Meat (carne):** mayor satisfacción por unidad; mejor para monstruos de hambre alta (`salsa_tank`). Cadena de 5+: `bonus_satisfaction_burst` — satisfacción extra de un solo golpe sobre el mismo objetivo. **[Hipótesis]** Coherente con su rol ofensivo (más satisfacción por unidad, mejor contra hambre alta): en vez de control (tortilla) o soporte (veggie), `meat` refuerza lo que ya hace bien, un golpe de satisfacción más grande contra el objetivo actual.
 - **Veggie (verdura):** menor satisfacción por unidad. Cadena de 5+: `reputation_small_restore` — pequeña recuperación real de reputación (a diferencia de la mejora `reputation_boost`, que solo sube el máximo).
 
-> **[Hipótesis]** Catálogo cerrado de `ingredient.special_effect`: `none` (reservado para futuros ingredientes sin efecto de cadena 5+, sin uso actual), `brief_stun`, `bonus_satisfaction_burst`, `reputation_small_restore`. Las magnitudes de `brief_stun` (duración), `bonus_satisfaction_burst` (cantidad extra) y `reputation_small_restore` (cantidad) no están definidas en esta propuesta y quedan para Codex/prototipo (ver 7.5).
+> **[Contrato M0 + hipótesis de balance]** El catálogo y parámetros viven en `docs/CONTENT_MODEL.md`. Valores iniciales: `brief_stun.duration_sec=1.0`, `bonus_satisfaction_burst.amount=12`, `reputation_small_restore.amount=5`. No se permite `none` en ingredientes jugables del prototipo.
 
 ### 5.2 Recetas
 
@@ -314,7 +304,7 @@ Resolución de cadena por tamaño, la misma para las tres recetas: cadena 3 = sa
 - Cada receta usa un único ingrediente y su `effect` es siempre igual al `special_effect` del ingrediente correspondiente: `taco_simple` → `brief_stun` (tortilla), `taco_meat_simple` → `bonus_satisfaction_burst` (meat), `taco_veggie_simple` → `reputation_small_restore` (veggie). El campo está presente por contrato (`docs/CONTENT_MODEL.md`) en las tres recetas, pero **solo se activa cuando la cadena alcanza 5 o más**; en cadenas de 3 y 4 no produce ningún efecto, solo la satisfacción correspondiente.
 - `recipe.effect` nunca se define de forma independiente al `ingredient.special_effect` de su ingrediente: si cambia uno, debe cambiar el otro. Esto evita las dos fuentes de verdad contradictorias señaladas en la validación del PR #2.
 
-> **[Hipótesis]** `targeting`: `nearest` (único valor, fijo por `docs/CORE_RULES.md`). Codex debe adoptar/ajustar este catálogo junto con el de `ingredient.special_effect` (5.1) y el de `effect.type` (sección 4.1).
+> **[Contrato M0]** `targeting`: `nearest` durante el prototipo. Los catálogos de ingrediente, receta y mejora están formalizados en `docs/CONTENT_MODEL.md`.
 
 ---
 
@@ -373,22 +363,27 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 - Se verificó que la rama contiene por completo `docs/preproduction` (ancestro directo, 0 commits pendientes) y que su diferencia con esa rama es solo `docs/INITIAL_CONTENT_PROPOSAL.md`.
 - No se modificó `docs/CONTENT_MODEL.md` ni ningún otro archivo distinto de `docs/INITIAL_CONTENT_PROPOSAL.md`.
 
-### 7.4 Preguntas abiertas para Jorge y su hermano
+### 7.4 Decisiones cerradas en M0
 
-1. ¿La escala relativa de `speed`/`hunger`/`reputation_damage` propuesta es aceptable como punto de partida para que Codex defina las unidades reales de implementación, o prefieren fijar antes una unidad de referencia (por ejemplo, celdas por segundo)?
-2. ¿Las mejoras `slow_salsa` y `slow_salsa_plus` deben afectar también al jefe, o solo a los monstruos de las oleadas normales?
+- La escala de `speed` es relativa: 100 = 0.10 longitudes de carril por segundo; puede ajustarse como dato global tras medir.
+- `boss_big_glutton` usa velocidad base relativa 25 y sus multiplicadores de fase.
+- `slow_salsa` y `slow_salsa_plus` sí afectan al jefe.
+- Los efectos 5+ tienen parámetros iniciales: stun 1.0 s, burst +12 satisfacción y restauración +5 reputación.
+- `input_forgiveness=0.10` significa un margen adicional equivalente al 10% del menor lado de la celda.
+- Las cifras visibles permanecen fijas en localización durante el prototipo y deben actualizarse en el mismo commit que cambie el balance.
 
-> La pregunta anterior sobre un efecto especial de cadena 5 para `meat` se resolvió en esta revisión (v6): `meat` ahora tiene `special_effect:"bonus_satisfaction_burst"`, igual que `tortilla` y `veggie`; ya no queda como pregunta abierta.
+### 7.5 Contratos resueltos por Codex en M0
 
-### 7.5 Pendientes para Codex antes de implementar
+Los siete pendientes previos quedaron resueltos y formalizados en `docs/CONTENT_MODEL.md`, `docs/CORE_RULES.md` y `docs/DECISIONS.md`:
 
-1. **Adoptar o ajustar el catálogo `effect.type` de 4.1** (y el de `ingredient.special_effect` de 5.1, que ahora es la fuente de verdad del efecto de cadena 5+ y del que `recipe.effect` de 5.2 solo es un reflejo), decidir si pasa a `docs/CONTENT_MODEL.md` y, en ese caso, actualizar el contrato. Hasta entonces es solo **[Hipótesis]**.
-2. **Decidir sobre las extensiones de contrato** `description_key`, `synergies`, `effect.params`, catálogo de `tags` y `notes` (4.1).
-3. **Conflictos simétricos:** el documento los declara en ambos sentidos. Confirmar que la regla "sin ciclos inválidos" de `docs/CONTENT_MODEL.md` no rechaza un conflicto mutuo entre dos mejoras; si lo hiciera, indicar en qué sentido declararlos.
-4. **Orden de aplicación de modificadores de satisfacción** propuesto en 4.1.
-5. **Magnitudes aún sin definir:** duración de `brief_stun`, cantidad extra de `bonus_satisfaction_burst`, cantidad de `reputation_small_restore` y unidad real de `input_forgiveness`.
-6. **Textos con cifras:** decidir si las descripciones se mantienen con cifras fijas o si se usa interpolación de valores desde los datos (por ejemplo, un marcador `{value}` reemplazado al mostrar el texto); esta propuesta no la introduce por ampliar el contrato.
-7. **`monster_speed_global` sobre el jefe**, según la respuesta a la pregunta 7.4.2.
+1. Catálogos `effect.type` e `ingredient.special_effect`: adoptados.
+2. `description_key`, `synergies`, `effect.params`, tags y notes: adoptados con semántica explícita.
+3. Conflictos: simétricos; los ciclos prohibidos aplican a dependencias/requisitos, no a conflictos.
+4. Orden de modificadores: congelado para el prototipo.
+5. Magnitudes iniciales y unidad de `input_forgiveness`: definidas.
+6. Textos con cifras: fijos durante M0/M1; actualización manual obligatoria junto al dato.
+7. `monster_speed_global`: afecta también al jefe.
+
 
 ---
 

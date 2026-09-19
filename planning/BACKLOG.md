@@ -4,8 +4,8 @@ Estados: pendiente, en curso, revisión, terminado.
 
 | ID | Tarea | Responsable | Dep. | Aceptación | Pri. | Tamaño | Estado |
 |---|---|---|---|---|---|---|---|
-| PRE-01 | Aprobar documentación M0 | Jorge | — | Decisiones y bloqueantes resueltos | P0 | S | pendiente |
-| PRE-02 | Crear contenido inicial | Claude | PRE-01 | Entrega según prompt y JSON válido | P0 | M | pendiente |
+| PRE-01 | Aprobar documentación M0 | Jorge | — | Decisiones y bloqueantes resueltos | P0 | S | revisión |
+| PRE-02 | Crear contenido inicial | Claude | PRE-01 | Entrega según prompt y JSON válido | P0 | M | terminado |
 | PRE-03 | Confirmar entorno físico Android | Jorge/Codex | PRE-01 | Versión de Android del Galaxy S24 Ultra registrada | P0 | XS | pendiente |
 | TEC-01 | Crear proyecto Godot vertical | Codex | PRE-01 | Abre sin error y escena raíz corre | P0 | S | pendiente |
 | TEC-02 | Registrar y validar contenido | Codex | PRE-02,TEC-01 | Rechaza IDs/referencias/rangos/claves/efectos inválidos con errores claros | P0 | M | pendiente |
