@@ -19,4 +19,4 @@ Una tarea está terminada cuando:
 - **Lógica:** pruebas de casos normales, bordes y errores; semilla o pasos suficientes para reproducir fallos.
 - **Interfaz y accesibilidad:** prueba de ambas manos, expansión de texto/Unicode, silencio, reducción de movimiento y overlays sin temporizadores activos.
 - **Persistencia:** pruebas de versión, escritura interrumpida y archivos ausentes, parciales o corruptos.
-- **Build Android:** dispositivo, versión Android, build, commit, tiempo de frame, memoria, carga, temperatura y resultado de humo registrados.
+- **Build iOS:** dispositivo, versión iOS, build, commit, tiempo de frame, memoria, carga, temperatura y resultado de humo registrados; incluir al menos iPhone 17 principal y humo en iPhone 16 Pro Max.

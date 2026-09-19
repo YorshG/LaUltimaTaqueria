@@ -4,22 +4,22 @@
 
 No quedan bloqueantes documentales o de contrato para iniciar TEC-01.
 
-## Pendiente para entorno Android
+## Pendiente para entorno iOS
 
-- Registrar la versión de Android instalada en el Galaxy S24 Ultra de pruebas (PRE-03).
+- iPhone 17 principal: **iOS 27.0 confirmado**.
+- iPhone 16 Pro Max secundario: registrar la versión exacta de iOS (PRE-03).
 
 ## Entorno seleccionado
 
 - Godot 4.7.2 stable.
 - GDScript para la implementación del prototipo.
-- OpenJDK 17.
-- Android SDK Platform 35.
-- Android SDK Build-Tools 35.0.1.
-- Android SDK Platform-Tools 35.0.0 o posterior.
-- Android SDK Command-line Tools (latest).
-- NDK r28b (28.1.13356709).
-- CMake 3.10.2.4988404.
-- Android Studio estable para administrar el SDK; al iniciar M1, la estable vigente es Quail 4 (2026.1.4 Patch 1).
+- macOS 27.0 en la Mac de desarrollo.
+- Xcode 27 completo; los Command Line Tools solos no son suficientes para exportar a iOS.
+- Godot export templates para iOS.
+- Apple Account en Xcode. Para pruebas personales puede usarse un Personal Team sin Apple Developer Program de pago; el aprovisionamiento debe renovarse periódicamente.
+- Dispositivo principal: iPhone 17 / iOS 27.0.
+- Dispositivo secundario: iPhone 16 Pro Max / iOS por confirmar.
+- Android Studio, JDK y Android SDK/NDK quedan diferidos hasta una fase posterior.
 
 Los contratos de contenido, efectos, modificadores y velocidad quedaron resueltos en M0.
 
@@ -34,4 +34,4 @@ Los contratos de contenido, efectos, modificadores y velocidad quedaron resuelto
 
 ## Después del prototipo
 
-Nombre definitivo, dirección artística final, iOS, monetización, analítica, metaprogresión, eventos y localización adicional. Tienda y desbloqueos permanecen fuera del prototipo.
+Nombre definitivo, dirección artística final, Android, monetización, analítica, metaprogresión, eventos y localización adicional. Tienda y desbloqueos permanecen fuera del prototipo.
