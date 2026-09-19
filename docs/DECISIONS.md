@@ -14,9 +14,9 @@ Fecha inicial: 2026-09-18.
 | Cinco oleadas normales y jefe después de la quinta | Aprobada | Separa con claridad el examen final de las oleadas pedagógicas |
 | Una mejora después de cada oleada, incluida una quinta antes del jefe | Aprobada | Mantiene una elección por cierre de oleada |
 | Máximo una mejora defensiva fuerte por partida | Aprobada | Evita acumular redes de seguridad que eliminen la tensión |
-| Godot y Android primero | Aprobada | Alcance y costo |
+| Godot y Android primero | Sustituida | Reemplazada por iOS-first al dejar de estar disponible el Galaxy S24 Ultra |
 | Offline y sin monetización | Aprobada para prototipo | Validar diversión primero |
-| Galaxy S24 Ultra como dispositivo físico principal | Aprobada | Dispositivo disponible para las primeras pruebas; Android por confirmar |
+| Galaxy S24 Ultra como dispositivo físico principal | Sustituida | El equipo ya no está disponible |
 | Monedas solo como marcador local, sin tienda ni desbloqueos | Aprobada para prototipo | Evita diseñar economía antes de validar el núcleo |
 | Contenido basado en datos | Aprobada | Facilita balance y paralelo |
 | Codex integra; Claude diseña contenido/módulos aislados | Aprobada | Reduce conflictos |
@@ -32,5 +32,11 @@ Fecha inicial: 2026-09-18.
 | M0 / preproducción aprobada e integrada en main | Aprobada | PR #1 fusionado por el Product Owner |
 | Rama `uat` como integración a partir de M1 | Aprobada | Mantiene `main` estable mientras se implementa y prueba |
 | Godot 4.7.2 stable + GDScript para el prototipo | Aprobada para implementación | Versión estable vigente; alcance 2D y lógica de prototipo no requieren C# |
-| Toolchain Android de Godot 4.7: JDK 17, Platform 35, Build-Tools 35.0.1, NDK r28b, CMake 3.10.2.4988404 | Aprobada para implementación | Alineado con la documentación oficial de exportación Android de Godot 4.7 |
-| Android Studio estable para administrar SDK | Aprobada para implementación | Simplifica instalación y mantenimiento del toolchain Android en macOS |
+| Toolchain Android de Godot 4.7: JDK 17, Platform 35, Build-Tools 35.0.1, NDK r28b, CMake 3.10.2.4988404 | Sustituida | Android queda diferido después del prototipo iOS |
+| Android Studio estable para administrar SDK | Sustituida | Android queda diferido después del prototipo iOS |
+| iOS como primera plataforma del prototipo; Android diferido | Aprobada | El equipo dispone de dos iPhone físicos y ya no dispone del Galaxy S24 Ultra |
+| iPhone 17 con iOS 27.0 como dispositivo físico principal | Aprobada | Dispositivo del Product Owner disponible para iteración frecuente |
+| iPhone 16 Pro Max como segundo dispositivo físico | Aprobada | Permite validación independiente con el hermano del Product Owner; versión de iOS pendiente |
+| Xcode 27 para compilar y desplegar en iOS 27 | Aprobada para implementación | Xcode 27 incluye SDK iOS 27 y soporte de dispositivo iOS 17–27 |
+| Godot 4.7.2 stable + export templates iOS | Aprobada para implementación | Godot requiere macOS + Xcode y sus export templates para exportar a iOS |
+| Apple Account / Personal Team suficiente para pruebas en dispositivos propios | Aprobada para prototipo | Apple permite pruebas personales sin membresía paga; los perfiles deben renovarse periódicamente |
