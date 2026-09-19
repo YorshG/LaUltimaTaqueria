@@ -1,0 +1,35 @@
+[
+  {
+    "id": "tortilla",
+    "display_name_key": "ingredient.tortilla",
+    "tier": 1,
+    "color_hint": "gold",
+    "base_satisfaction": 10,
+    "special_effect": "brief_stun",
+    "special_effect_params": {
+      "duration_sec": 1
+    }
+  },
+  {
+    "id": "meat",
+    "display_name_key": "ingredient.meat",
+    "tier": 1,
+    "color_hint": "terracota",
+    "base_satisfaction": 12,
+    "special_effect": "bonus_satisfaction_burst",
+    "special_effect_params": {
+      "amount": 12
+    }
+  },
+  {
+    "id": "veggie",
+    "display_name_key": "ingredient.veggie",
+    "tier": 1,
+    "color_hint": "verde",
+    "base_satisfaction": 8,
+    "special_effect": "reputation_small_restore",
+    "special_effect_params": {
+      "amount": 5
+    }
+  }
+]
