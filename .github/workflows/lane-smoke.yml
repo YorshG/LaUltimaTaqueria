@@ -1,0 +1,34 @@
+name: LaneField Smoke
+
+on:
+  push:
+    branches:
+      - feature/lane-01-lane-field
+  pull_request:
+    paths:
+      - "scenes/lane/**"
+      - "scripts/lane/**"
+      - "tests/lane_field_test.gd"
+      - ".github/workflows/lane-smoke.yml"
+
+jobs:
+  lane:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Godot 4.7.2
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
+
+      - name: Import project
+        run: godot --headless --path . --editor --quit
+
+      - name: Run LaneField tests
+        run: godot --headless --path . --script res://tests/lane_field_test.gd
