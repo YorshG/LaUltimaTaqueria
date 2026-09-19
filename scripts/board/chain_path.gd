@@ -26,7 +26,7 @@ func try_add(point: Vector2i, ingredient_id: String) -> bool:
 		return false
 
 	var last := _points[-1]
-	var manhattan := abs(point.x - last.x) + abs(point.y - last.y)
+	var manhattan: int = abs(point.x - last.x) + abs(point.y - last.y)
 	if manhattan != 1:
 		return false
 
