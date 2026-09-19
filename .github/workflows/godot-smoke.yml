@@ -1,9 +1,9 @@
-name: Godot TEC-01 Smoke
+name: Godot CI
 
 on:
   push:
     branches:
-      - feature/tec-01-godot-ios-bootstrap
+      - "feature/**"
   pull_request:
     paths:
       - "project.godot"
