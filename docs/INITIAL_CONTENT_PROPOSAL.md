@@ -1,6 +1,6 @@
 # Propuesta inicial de contenido y balance
 
-Estado del documento: **propuesta para revisión — v4, actualizada tras la revisión de contrato del PR #2 (catálogo `effect.type`, nombres, descripciones, sinergias y localización)**. No integrada ni aprobada como código. Todos los valores numéricos son hipótesis ajustables (ver `docs/PROTOTYPE_SCOPE.md` y `prompts/CLAUDE_KICKOFF.md`). Este documento no modifica arquitectura, no agrega monetización, servidores, cuentas ni multijugador, y no contiene código de juego.
+Estado del documento: **propuesta para revisión — v5, corrección solicitada en la validación del PR #2 (`warm_welcome` ya no queda como elección sin efecto si se obtiene en la quinta selección de mejora)**. No integrada ni aprobada como código. Todos los valores numéricos son hipótesis ajustables (ver `docs/PROTOTYPE_SCOPE.md` y `prompts/CLAUDE_KICKOFF.md`). Este documento no modifica arquitectura, no agrega monetización, servidores, cuentas ni multijugador, y no contiene código de juego.
 
 Convenciones usadas en todo el documento:
 
@@ -53,6 +53,13 @@ Identificadores técnicos en **inglés** `snake_case` (corregido en esta revisi�
 6. **Etiquetas en las 15 mejoras.** Se agregó `tags` a todas (`offense`, `defense`, `utility`, `strong_defense`); solo `strong_defense` proviene del contrato vigente, el resto es **[Hipótesis]**.
 7. **Referencia corregida.** El supuesto sobre la unidad de `speed` citaba "pregunta abierta 7.4.3", que no existe; ahora cita 7.4.1.
 8. **Sin cambios de valores** en monstruos, jefe, oleadas, ingredientes ni recetas, y se mantienen las decisiones aprobadas: partida de 4–5 minutos, quinta selección de mejora antes del jefe y máximo una defensa `strong_defense` por partida.
+
+### Cambios respecto a la v4 (corrección solicitada en la validación del PR #2)
+
+1. **`warm_welcome` ya no puede quedar sin efecto.** Existe una quinta selección de mejora después de la oleada 5 y antes del combate contra el jefe (`docs/CORE_RULES.md`); como el jefe no forma parte de ninguna oleada, la condición anterior (`first_dish_of_wave`, "no aplica al jefe") convertía a `warm_welcome` en una elección muerta si se obtenía justo en esa quinta oferta, ya que no quedaría ninguna oleada restante donde aplicara.
+2. **Condición renombrada a `first_dish_of_encounter`.** Se agrega este valor al catálogo cerrado de `condition` de `conditional_satisfaction` (sección 4.1, sigue como **[Hipótesis]**) y se retira `first_dish_of_wave`. Un "encuentro" se define como cualquiera de las cinco oleadas normales o el combate contra `boss_big_glutton`; el primer platillo servido en cada uno de esos seis encuentros duplica su satisfacción. No se modifica `docs/CORE_RULES.md`: solo se define la semántica de una condición de contenido ya hipotética.
+3. **Actualizados en consecuencia:** el JSON de `warm_welcome` (4.2), su descripción visible y localización (4.3 y sección 8), y la nota de diseño que antes excluía al jefe.
+4. Se revalidaron sintácticamente los 13 bloques JSON del documento tras el cambio.
 
 ---
 
@@ -176,7 +183,7 @@ Rareza provisional: `common`, `rare`, `epic`. Las mejoras etiquetadas `"tags":["
 | `modify_chain_bonus` | `chain4_satisfaction_bonus` (`add`) | — | Ajusta el bono de cadena de 4 (base +0.5 según `docs/CORE_RULES.md`). |
 | `modify_special_effect` | `special_effect_power_multiplier` (`multiply`) | — | Escala la potencia del efecto especial determinista de cadenas de 5+. |
 | `add_splash_satisfaction` | `chain4_splash_satisfaction` (`add`) | — | Una cadena de 4+ quita hambre extra al segundo monstruo más cercano del mismo carril; el objetivo principal no cambia. |
-| `conditional_satisfaction` | `satisfaction_multiplier` (`multiply`) | `condition` ∈ {`first_dish_of_wave`, `reputation_below_ratio`}; `threshold` (0–1) solo con `reputation_below_ratio` | Multiplicador de satisfacción que solo aplica si se cumple la condición. |
+| `conditional_satisfaction` | `satisfaction_multiplier` (`multiply`) | `condition` ∈ {`first_dish_of_encounter`, `reputation_below_ratio`}; `threshold` (0–1) solo con `reputation_below_ratio` | Multiplicador de satisfacción que solo aplica si se cumple la condición. `first_dish_of_encounter`: un "encuentro" es cualquiera de las cinco oleadas normales o el combate contra el jefe; aplica al primer platillo servido en cada uno de los seis. |
 | `modify_reputation` | `reputation_max` (`add`), `reputation_damage_taken` (`multiply`) | — | Cambia el máximo de reputación o el daño que se recibe al llegar un monstruo al mostrador. |
 | `grant_charge` | `reputation_shield_charges` (`add`), `extra_life_charges` (`add`) | `restore_ratio` (0–1) solo con `extra_life_charges` | Otorga cargas de un solo uso. Escudo: anula por completo el daño de reputación del siguiente monstruo que llegue al mostrador. Vida extra: si la reputación llega a 0, consume una carga y restaura reputación a `restore_ratio` × máximo. |
 | `modify_monster_stat` | `monster_speed_global` (`multiply`) | — | Multiplica la velocidad de todos los monstruos. |
@@ -206,7 +213,7 @@ Campos que este documento añade al ejemplo de mejora de `docs/CONTENT_MODEL.md`
   {"id":"extra_bite","display_name_key":"upgrade.extra_bite","description_key":"upgrade.extra_bite.desc","rarity":"common","tags":["offense"],"effect":{"type":"modify_satisfaction","stat":"satisfaction_flat_bonus","operation":"add","value":5},"conflicts":[],"synergies":["taco_power_1","taco_power_2"],"notes":"Suma satisfacción fija a cada platillo, útil incluso en cadenas de 3."},
   {"id":"patient_service","display_name_key":"upgrade.patient_service","description_key":"upgrade.patient_service.desc","rarity":"rare","tags":["strong_defense"],"effect":{"type":"modify_reputation","stat":"reputation_damage_taken","operation":"multiply","value":0.85},"conflicts":["safety_shield","second_chance"],"synergies":["reputation_boost","last_stand"],"notes":"Reduce el daño de reputación recibido cuando un monstruo llega al mostrador."},
   {"id":"assist_serve","display_name_key":"upgrade.assist_serve","description_key":"upgrade.assist_serve.desc","rarity":"rare","tags":["offense"],"effect":{"type":"add_splash_satisfaction","stat":"chain4_splash_satisfaction","operation":"add","value":10},"conflicts":[],"synergies":["chain4_boost","slow_salsa","slow_salsa_plus"],"notes":"Una cadena de 4+ también quita hambre al segundo monstruo más cercano del mismo carril; el objetivo principal sigue siendo el fijo (más cercano). Si no hay segundo monstruo en el carril, no tiene efecto."},
-  {"id":"warm_welcome","display_name_key":"upgrade.warm_welcome","description_key":"upgrade.warm_welcome.desc","rarity":"common","tags":["offense"],"effect":{"type":"conditional_satisfaction","stat":"satisfaction_multiplier","operation":"multiply","value":2.0,"params":{"condition":"first_dish_of_wave"}},"conflicts":[],"synergies":["taco_power_1","chain4_boost"],"notes":"El primer platillo servido en cada oleada normal tiene el doble de satisfacción. [Hipótesis] no aplica al combate contra el jefe, que no forma parte de ninguna oleada (docs/CORE_RULES.md)."},
+  {"id":"warm_welcome","display_name_key":"upgrade.warm_welcome","description_key":"upgrade.warm_welcome.desc","rarity":"common","tags":["offense"],"effect":{"type":"conditional_satisfaction","stat":"satisfaction_multiplier","operation":"multiply","value":2.0,"params":{"condition":"first_dish_of_encounter"}},"conflicts":[],"synergies":["taco_power_1","chain4_boost"],"notes":"El primer platillo servido en cada encuentro tiene el doble de satisfacción. [Hipótesis] un encuentro es cualquiera de las cinco oleadas normales o el combate contra el jefe; así, obtenerla en la quinta selección (justo antes del jefe) sigue teniendo efecto en el encuentro restante."},
   {"id":"last_stand","display_name_key":"upgrade.last_stand","description_key":"upgrade.last_stand.desc","rarity":"epic","tags":["offense"],"effect":{"type":"conditional_satisfaction","stat":"satisfaction_multiplier","operation":"multiply","value":1.25,"params":{"condition":"reputation_below_ratio","threshold":0.2}},"conflicts":[],"synergies":["taco_power_2","patient_service","second_chance"],"notes":"Cuando la reputación cae por debajo de 20% del máximo, la satisfacción de los platillos aumenta 25%. Condición basada en estado, no en azar."},
   {"id":"second_chance","display_name_key":"upgrade.second_chance","description_key":"upgrade.second_chance.desc","rarity":"epic","tags":["strong_defense"],"effect":{"type":"grant_charge","stat":"extra_life_charges","operation":"add","value":1,"params":{"restore_ratio":0.25}},"conflicts":["safety_shield","patient_service"],"synergies":["last_stand"],"notes":"Una carga: si la reputación llega a 0, se consume y la reputación se restaura a 25% del máximo [Hipótesis: 0.25]. Solo una vez por partida."}
 ]
@@ -230,7 +237,7 @@ Los textos son la propuesta de localización es-MX de la sección 8. La rareza s
 | `extra_bite` | Bocado extra | Cada platillo satisface 5 puntos más, incluso con cadenas de 3. | `common` | — | `taco_power_1`, `taco_power_2` |
 | `patient_service` | Servicio paciente | Los monstruos que llegan al mostrador te quitan 15% menos de reputación. | `rare`, `strong_defense` | `safety_shield`, `second_chance` | `reputation_boost`, `last_stand` |
 | `assist_serve` | Ayudante de cocina | Las cadenas de 4 o más también quitan 10 de hambre al segundo monstruo más cercano de ese carril. | `rare` | — | `chain4_boost`, `slow_salsa`, `slow_salsa_plus` |
-| `warm_welcome` | Bienvenida cálida | El primer platillo de cada oleada satisface el doble. | `common` | — | `taco_power_1`, `chain4_boost` |
+| `warm_welcome` | Bienvenida cálida | El primer platillo de cada encuentro (oleada o jefe) satisface el doble. | `common` | — | `taco_power_1`, `chain4_boost` |
 | `last_stand` | Hasta el final | Con menos de 20% de reputación, tus platillos satisfacen 25% más. | `epic` | — | `taco_power_2`, `patient_service`, `second_chance` |
 | `second_chance` | Otra ronda | Una vez, si tu reputación llega a 0, se restaura al 25% de tu máximo. | `epic`, `strong_defense` | `safety_shield`, `patient_service` | `last_stand` |
 
@@ -242,13 +249,13 @@ Las sinergias son simétricas y solo orientan el diseño y la prueba de combinac
 |---|---|
 | `taco_power_1` + `extra_bite` | El bono fijo se combina con un multiplicador general. |
 | `taco_power_1` + `chain4_boost` | El multiplicador escala también el bono reforzado de cadena de 4. |
-| `taco_power_1` + `warm_welcome` | El primer platillo de la oleada se duplica y además se multiplica. |
+| `taco_power_1` + `warm_welcome` | El primer platillo del encuentro se duplica y además se multiplica. |
 | `taco_power_2` + `extra_bite` | El bono fijo se combina con un multiplicador grande. |
 | `taco_power_2` + `chain4_boost` | El multiplicador escala también el bono reforzado de cadena de 4. |
 | `taco_power_2` + `last_stand` | Multiplicadores acumulables en el tramo de reputación baja. |
 | `chain4_boost` + `assist_serve` | Más cadenas de 4 activan más veces el efecto de contagio. |
 | `chain4_boost` + `steady_hands` | Trazar cadenas largas resulta más fácil. |
-| `chain4_boost` + `warm_welcome` | Abrir la oleada con una cadena de 4 duplicada. |
+| `chain4_boost` + `warm_welcome` | Abrir el encuentro con una cadena de 4 duplicada. |
 | `chain5_effect_boost` + `steady_hands` | Trazar cadenas de 5 resulta más fácil y su efecto es más fuerte. |
 | `chain5_effect_boost` + `reputation_boost` | La restauración de taco_veggie_refreshing escala y hay más reputación que recuperar. |
 | `reputation_boost` + `patient_service` | Más reserva de reputación y menos daño por golpe. |
@@ -339,7 +346,8 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 
 ### 7.3 Validaciones realizadas
 
-- Se re-validaron sintácticamente los 13 bloques JSON del documento con un parser JSON estándar (3 monstruos, jefe, 5 oleadas, mejoras, ingredientes, recetas y localización).
+- Se re-validaron sintácticamente los 13 bloques JSON del documento con un parser JSON estándar (3 monstruos, jefe, 5 oleadas, mejoras, ingredientes, recetas y localización), incluyendo la revalidación tras el cambio de `warm_welcome` a `first_dish_of_encounter` (v5).
+- `warm_welcome` ya no puede quedar como elección sin efecto en la quinta selección de mejora: su condición (`first_dish_of_encounter`) cubre las cinco oleadas normales y el combate contra el jefe, no solo oleadas.
 - Cada una de las 15 mejoras tiene `effect.type`; `type`, `stat`, `operation`, `rarity`, `tags` y `params` pertenecen al catálogo cerrado de 4.1 (verificado con un script).
 - `conflicts` y `synergies` no tienen referencias rotas, autorreferencias ni solapamientos entre sí; ambos son simétricos. Exactamente tres mejoras llevan `strong_defense` y se excluyen entre sí.
 - Todas las claves `display_name_key` y `description_key` del documento existen en la sección 8, y no hay claves huérfanas; nombres ≤ 24 caracteres y descripciones ≤ 110 caracteres para dejar margen de expansión de texto.
@@ -414,7 +422,7 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
   "upgrade.assist_serve": "Ayudante de cocina",
   "upgrade.assist_serve.desc": "Las cadenas de 4 o más también quitan 10 de hambre al segundo monstruo más cercano de ese carril.",
   "upgrade.warm_welcome": "Bienvenida cálida",
-  "upgrade.warm_welcome.desc": "El primer platillo de cada oleada satisface el doble.",
+  "upgrade.warm_welcome.desc": "El primer platillo de cada encuentro (oleada o jefe) satisface el doble.",
   "upgrade.last_stand": "Hasta el final",
   "upgrade.last_stand.desc": "Con menos de 20% de reputación, tus platillos satisfacen 25% más.",
   "upgrade.second_chance": "Otra ronda",
@@ -432,4 +440,4 @@ Si el jugador ya resolvió al primer `nibbler` antes del tercer texto, ese texto
 
 ---
 
-*Fin de la propuesta v4. Ningún archivo fuera de `docs/INITIAL_CONTENT_PROPOSAL.md` fue modificado.*
+*Fin de la propuesta v5. Ningún archivo fuera de `docs/INITIAL_CONTENT_PROPOSAL.md` fue modificado.*
