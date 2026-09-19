@@ -14,7 +14,7 @@ Estados: pendiente, en curso, revisión, terminado.
 | BRD-03 | Resolver caída y relleno determinista | Codex | BRD-02 | Misma semilla y gestos producen el mismo tablero sin huecos | P0 | M | pendiente |
 | BRD-04 | Recuperar tablero sin cadenas | Codex | BRD-03 | Reorganiza sin penalización y garantiza una cadena válida | P0 | S | pendiente |
 | REC-01 | Resolver platillo por datos | Codex | TEC-02,BRD-02 | Resultado determinista probado | P0 | M | pendiente |
-| LANE-01 | Tres carriles y movimiento | Codex | TEC-01 | Movimiento independiente configurable | P0 | M | pendiente |
+| LANE-01 | Tres carriles y movimiento | Codex | TEC-01 | Movimiento independiente configurable | P0 | M | terminado |
 | LANE-02 | Hambre, objetivo y satisfacción | Codex | REC-01,LANE-01 | Autoobjetivo predecible | P0 | M | pendiente |
 | WAV-01 | Director de oleadas | Codex | TEC-02,LANE-01 | Ejecuta agenda y finaliza | P0 | M | pendiente |
 | UPG-01 | Elegir una de tres mejoras tras cada oleada | Codex | WAV-01 | Hay cinco elecciones y como máximo una defensa fuerte | P0 | M | pendiente |
