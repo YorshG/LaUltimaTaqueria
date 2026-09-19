@@ -44,6 +44,6 @@ La lógica central debe probarse sin escenas visuales cuando sea posible. Las pr
 - Un archivo ausente crea valores iniciales; uno parcial o corrupto se aparta o ignora de forma segura y no impide iniciar.
 - No se persiste una partida en curso durante el prototipo.
 
-## Rendimiento Android
+## Rendimiento iOS
 
-Objetivo provisional: 60 FPS, con modo aceptable a 30 FPS; sin asignaciones masivas por frame y con límites configurables de entidades y partículas. En M4 se medirán tiempo de frame, memoria, tiempo de carga y temperatura en el Galaxy S24 Ultra. Estos datos se registrarán junto con build, commit y versión de Android; no se fijarán presupuestos adicionales sin medición.
+Objetivo provisional: 60 FPS, con modo aceptable a 30 FPS; sin asignaciones masivas por frame y con límites configurables de entidades y partículas. En M4 se medirán tiempo de frame, memoria, tiempo de carga y temperatura en el iPhone 17 con iOS 27.0, y se hará una prueba de humo adicional en el iPhone 16 Pro Max. Estos datos se registrarán junto con build, commit y versión de iOS; no se fijarán presupuestos adicionales sin medición.
