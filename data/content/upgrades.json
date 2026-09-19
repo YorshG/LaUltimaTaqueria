@@ -1,0 +1,348 @@
+[
+  {
+    "id": "taco_power_1",
+    "display_name_key": "upgrade.taco_power_1",
+    "description_key": "upgrade.taco_power_1.desc",
+    "rarity": "common",
+    "tags": [
+      "offense"
+    ],
+    "effect": {
+      "type": "modify_satisfaction",
+      "stat": "satisfaction_multiplier",
+      "operation": "multiply",
+      "value": 1.15
+    },
+    "conflicts": [
+      "taco_power_2"
+    ],
+    "synergies": [
+      "chain4_boost",
+      "extra_bite",
+      "warm_welcome"
+    ]
+  },
+  {
+    "id": "taco_power_2",
+    "display_name_key": "upgrade.taco_power_2",
+    "description_key": "upgrade.taco_power_2.desc",
+    "rarity": "epic",
+    "tags": [
+      "offense"
+    ],
+    "effect": {
+      "type": "modify_satisfaction",
+      "stat": "satisfaction_multiplier",
+      "operation": "multiply",
+      "value": 1.5
+    },
+    "conflicts": [
+      "taco_power_1"
+    ],
+    "synergies": [
+      "chain4_boost",
+      "extra_bite",
+      "last_stand"
+    ]
+  },
+  {
+    "id": "chain4_boost",
+    "display_name_key": "upgrade.chain4_boost",
+    "description_key": "upgrade.chain4_boost.desc",
+    "rarity": "rare",
+    "tags": [
+      "offense"
+    ],
+    "effect": {
+      "type": "modify_chain_bonus",
+      "stat": "chain4_satisfaction_bonus",
+      "operation": "add",
+      "value": 0.1
+    },
+    "conflicts": [],
+    "synergies": [
+      "taco_power_1",
+      "taco_power_2",
+      "steady_hands",
+      "assist_serve",
+      "warm_welcome"
+    ],
+    "notes": "Sube el bono existente de cadena de 4 de +50% a +60%; no reduce el mínimo de cadena de 3, refuerza la regla vigente."
+  },
+  {
+    "id": "chain5_effect_boost",
+    "display_name_key": "upgrade.chain5_effect_boost",
+    "description_key": "upgrade.chain5_effect_boost.desc",
+    "rarity": "epic",
+    "tags": [
+      "offense"
+    ],
+    "effect": {
+      "type": "modify_special_effect",
+      "stat": "special_effect_power_multiplier",
+      "operation": "multiply",
+      "value": 1.3
+    },
+    "conflicts": [],
+    "synergies": [
+      "steady_hands",
+      "reputation_boost"
+    ],
+    "notes": "Refuerza el efecto especial determinista de las cadenas de 5+ definido por cada ingrediente (`brief_stun` de tortilla, `bonus_satisfaction_burst` de meat, `reputation_small_restore` de veggie); no agrega azar."
+  },
+  {
+    "id": "steady_hands",
+    "display_name_key": "upgrade.steady_hands",
+    "description_key": "upgrade.steady_hands.desc",
+    "rarity": "common",
+    "tags": [
+      "utility"
+    ],
+    "effect": {
+      "type": "modify_input",
+      "stat": "input_forgiveness",
+      "operation": "add",
+      "value": 0.1
+    },
+    "conflicts": [],
+    "synergies": [
+      "chain4_boost",
+      "chain5_effect_boost"
+    ],
+    "notes": "[Hipótesis] +0.1 = +10% de margen de detección al tocar cada celda durante el trazo; la unidad real depende de Codex y de la prueba en dispositivo."
+  },
+  {
+    "id": "reputation_boost",
+    "display_name_key": "upgrade.reputation_boost",
+    "description_key": "upgrade.reputation_boost.desc",
+    "rarity": "common",
+    "tags": [
+      "defense"
+    ],
+    "effect": {
+      "type": "modify_reputation",
+      "stat": "reputation_max",
+      "operation": "add",
+      "value": 15
+    },
+    "conflicts": [],
+    "synergies": [
+      "chain5_effect_boost",
+      "patient_service"
+    ],
+    "notes": "Aumenta el máximo de reputación al elegirla; no cura ni restaura reputación perdida."
+  },
+  {
+    "id": "safety_shield",
+    "display_name_key": "upgrade.safety_shield",
+    "description_key": "upgrade.safety_shield.desc",
+    "rarity": "rare",
+    "tags": [
+      "strong_defense"
+    ],
+    "effect": {
+      "type": "grant_charge",
+      "stat": "reputation_shield_charges",
+      "operation": "add",
+      "value": 1
+    },
+    "conflicts": [
+      "patient_service",
+      "second_chance"
+    ],
+    "synergies": [
+      "slow_salsa",
+      "slow_salsa_plus"
+    ],
+    "notes": "Una carga: anula por completo el daño de reputación del siguiente monstruo que llegue al mostrador y se consume."
+  },
+  {
+    "id": "slow_salsa",
+    "display_name_key": "upgrade.slow_salsa",
+    "description_key": "upgrade.slow_salsa.desc",
+    "rarity": "common",
+    "tags": [
+      "defense"
+    ],
+    "effect": {
+      "type": "modify_monster_stat",
+      "stat": "monster_speed_global",
+      "operation": "multiply",
+      "value": 0.9
+    },
+    "conflicts": [
+      "slow_salsa_plus"
+    ],
+    "synergies": [
+      "safety_shield",
+      "assist_serve"
+    ],
+    "notes": "[Hipótesis] aplica a todos los monstruos, incluido el jefe (ver pendiente 7.5)."
+  },
+  {
+    "id": "slow_salsa_plus",
+    "display_name_key": "upgrade.slow_salsa_plus",
+    "description_key": "upgrade.slow_salsa_plus.desc",
+    "rarity": "epic",
+    "tags": [
+      "defense"
+    ],
+    "effect": {
+      "type": "modify_monster_stat",
+      "stat": "monster_speed_global",
+      "operation": "multiply",
+      "value": 0.75
+    },
+    "conflicts": [
+      "slow_salsa"
+    ],
+    "synergies": [
+      "safety_shield",
+      "assist_serve"
+    ],
+    "notes": "[Hipótesis] aplica a todos los monstruos, incluido el jefe (ver pendiente 7.5)."
+  },
+  {
+    "id": "extra_bite",
+    "display_name_key": "upgrade.extra_bite",
+    "description_key": "upgrade.extra_bite.desc",
+    "rarity": "common",
+    "tags": [
+      "offense"
+    ],
+    "effect": {
+      "type": "modify_satisfaction",
+      "stat": "satisfaction_flat_bonus",
+      "operation": "add",
+      "value": 5
+    },
+    "conflicts": [],
+    "synergies": [
+      "taco_power_1",
+      "taco_power_2"
+    ],
+    "notes": "Suma satisfacción fija a cada platillo, útil incluso en cadenas de 3."
+  },
+  {
+    "id": "patient_service",
+    "display_name_key": "upgrade.patient_service",
+    "description_key": "upgrade.patient_service.desc",
+    "rarity": "rare",
+    "tags": [
+      "strong_defense"
+    ],
+    "effect": {
+      "type": "modify_reputation",
+      "stat": "reputation_damage_taken",
+      "operation": "multiply",
+      "value": 0.85
+    },
+    "conflicts": [
+      "safety_shield",
+      "second_chance"
+    ],
+    "synergies": [
+      "reputation_boost",
+      "last_stand"
+    ],
+    "notes": "Reduce el daño de reputación recibido cuando un monstruo llega al mostrador."
+  },
+  {
+    "id": "assist_serve",
+    "display_name_key": "upgrade.assist_serve",
+    "description_key": "upgrade.assist_serve.desc",
+    "rarity": "rare",
+    "tags": [
+      "offense"
+    ],
+    "effect": {
+      "type": "add_splash_satisfaction",
+      "stat": "chain4_splash_satisfaction",
+      "operation": "add",
+      "value": 10
+    },
+    "conflicts": [],
+    "synergies": [
+      "chain4_boost",
+      "slow_salsa",
+      "slow_salsa_plus"
+    ],
+    "notes": "Una cadena de 4+ también quita hambre al segundo monstruo más cercano del mismo carril; el objetivo principal sigue siendo el fijo (más cercano). Si no hay segundo monstruo en el carril, no tiene efecto."
+  },
+  {
+    "id": "warm_welcome",
+    "display_name_key": "upgrade.warm_welcome",
+    "description_key": "upgrade.warm_welcome.desc",
+    "rarity": "common",
+    "tags": [
+      "offense"
+    ],
+    "effect": {
+      "type": "conditional_satisfaction",
+      "stat": "satisfaction_multiplier",
+      "operation": "multiply",
+      "value": 2,
+      "params": {
+        "condition": "first_dish_of_encounter"
+      }
+    },
+    "conflicts": [],
+    "synergies": [
+      "taco_power_1",
+      "chain4_boost"
+    ],
+    "notes": "El primer platillo servido en cada encuentro tiene el doble de satisfacción. [Hipótesis] un encuentro es cualquiera de las cinco oleadas normales o el combate contra el jefe; así, obtenerla en la quinta selección (justo antes del jefe) sigue teniendo efecto en el encuentro restante."
+  },
+  {
+    "id": "last_stand",
+    "display_name_key": "upgrade.last_stand",
+    "description_key": "upgrade.last_stand.desc",
+    "rarity": "epic",
+    "tags": [
+      "offense"
+    ],
+    "effect": {
+      "type": "conditional_satisfaction",
+      "stat": "satisfaction_multiplier",
+      "operation": "multiply",
+      "value": 1.25,
+      "params": {
+        "condition": "reputation_below_ratio",
+        "threshold": 0.2
+      }
+    },
+    "conflicts": [],
+    "synergies": [
+      "taco_power_2",
+      "patient_service",
+      "second_chance"
+    ],
+    "notes": "Cuando la reputación cae por debajo de 20% del máximo, la satisfacción de los platillos aumenta 25%. Condición basada en estado, no en azar."
+  },
+  {
+    "id": "second_chance",
+    "display_name_key": "upgrade.second_chance",
+    "description_key": "upgrade.second_chance.desc",
+    "rarity": "epic",
+    "tags": [
+      "strong_defense"
+    ],
+    "effect": {
+      "type": "grant_charge",
+      "stat": "extra_life_charges",
+      "operation": "add",
+      "value": 1,
+      "params": {
+        "restore_ratio": 0.25
+      }
+    },
+    "conflicts": [
+      "safety_shield",
+      "patient_service"
+    ],
+    "synergies": [
+      "last_stand"
+    ],
+    "notes": "Una carga: si la reputación llega a 0, se consume y la reputación se restaura a 25% del máximo [Hipótesis: 0.25]. Solo una vez por partida."
+  }
+]
