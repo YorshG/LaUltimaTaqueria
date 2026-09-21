@@ -11,7 +11,7 @@ Estados: pendiente, en curso, revisión, terminado.
 | TEC-02 | Registrar y validar contenido | Codex | PRE-02,TEC-01 | Rechaza IDs/referencias/rangos/claves/efectos inválidos con errores claros | P0 | M | terminado |
 | BRD-01 | Renderizar tablero 5 × 5 | Codex | TEC-01 | 25 celdas adaptables | P0 | S | terminado |
 | BRD-02 | Capturar cadena ortogonal | Codex | BRD-01 | Acepta 3+, rechaza diagonal/repetida y no intercambia fichas | P0 | M | terminado |
-| BRD-03 | Resolver caída y relleno determinista | Codex | BRD-02 | Misma semilla y gestos producen el mismo tablero sin huecos | P0 | M | en curso |
+| BRD-03 | Resolver caída y relleno determinista | Codex | BRD-02 | Misma semilla y gestos producen el mismo tablero sin huecos | P0 | M | terminado |
 | BRD-04 | Recuperar tablero sin cadenas | Codex | BRD-03 | Reorganiza sin penalización y garantiza una cadena válida | P0 | S | pendiente |
 | REC-01 | Resolver platillo por datos | Codex | TEC-02,BRD-02 | Resultado determinista probado | P0 | M | pendiente |
 | LANE-01 | Tres carriles y movimiento | Codex | TEC-01 | Movimiento independiente configurable | P0 | M | terminado |
