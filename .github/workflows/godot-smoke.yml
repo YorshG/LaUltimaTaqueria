@@ -40,3 +40,6 @@ jobs:
 
       - name: Validate content registry
         run: godot --headless --path . --script res://tests/content_registry_test.gd
+
+      - name: Run recipe resolver tests
+        run: godot --headless --path . --script res://tests/recipe_resolver_test.gd
