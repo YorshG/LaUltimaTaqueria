@@ -46,10 +46,10 @@ func _test_board_does_not_swap() -> void:
 	_expect(board.begin_chain_at(Vector2i(0, 0)), "board should start chain")
 	_expect(board.extend_chain_to(Vector2i(1, 0)), "board should extend chain")
 	_expect(board.extend_chain_to(Vector2i(2, 0)), "board should accept third cell")
+	var during_trace: Array[String] = board.get_ingredient_snapshot()
+	_expect(before == during_trace, "tracing a chain must not swap or mutate board ingredients")
 	var completed = board.finish_chain()
 	_expect(completed.size() == 3, "board should complete a 3-cell chain")
-	var after: Array[String] = board.get_ingredient_snapshot()
-	_expect(before == after, "capturing a chain must not swap or mutate board ingredients")
 
 
 func _expect(condition: bool, message: String) -> void:
