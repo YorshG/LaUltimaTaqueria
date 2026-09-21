@@ -6,8 +6,11 @@ signal chain_changed(points: Array[Vector2i])
 signal chain_completed(points: Array[Vector2i], ingredient_id: String)
 signal chain_cancelled()
 
+const BoardStateModel = preload("res://scripts/board/board_state.gd")
+
 const BOARD_COLUMNS := 5
 const BOARD_ROWS := 5
+const DEFAULT_BOARD_SEED := 20260920
 const PLACEHOLDER_LAYOUT := [
 	"tortilla", "tortilla", "tortilla", "meat", "veggie",
 	"meat", "veggie", "tortilla", "meat", "veggie",
@@ -26,6 +29,8 @@ const LABELS := {
 var _chain := ChainPath.new()
 var _dragging := false
 var _ingredients: Array[String] = []
+var _board_state = BoardStateModel.new()
+var _board_seed := DEFAULT_BOARD_SEED
 
 
 func _ready() -> void:
@@ -86,6 +91,7 @@ func finish_chain() -> Array[Vector2i]:
 	var ingredient := _chain.ingredient_id()
 	var valid := _chain.is_valid(3)
 	if valid:
+		_resolve_chain(result)
 		chain_completed.emit(result, ingredient)
 	else:
 		chain_cancelled.emit()
@@ -115,11 +121,23 @@ func get_column_count() -> int:
 	return grid.columns
 
 
+func reset_with_seed(seed: int) -> void:
+	_board_seed = seed
+	_board_state.reset(_board_seed, PLACEHOLDER_LAYOUT)
+	_ingredients = _board_state.snapshot()
+	_sync_cells()
+
+
+func get_board_seed() -> int:
+	return _board_seed
+
+
 func _build_cells() -> void:
 	for child in grid.get_children():
 		child.queue_free()
-	_ingredients.clear()
-	_ingredients.assign(PLACEHOLDER_LAYOUT)
+
+	_board_state.reset(_board_seed, PLACEHOLDER_LAYOUT)
+	_ingredients = _board_state.snapshot()
 	grid.columns = BOARD_COLUMNS
 
 	for index in range(BOARD_COLUMNS * BOARD_ROWS):
@@ -138,6 +156,23 @@ func _build_cells() -> void:
 		cell.set_meta("coord", coord)
 		cell.set_meta("ingredient_id", ingredient)
 		grid.add_child(cell)
+
+
+func _resolve_chain(points: Array[Vector2i]) -> void:
+	_board_state.resolve_chain(points)
+	_ingredients = _board_state.snapshot()
+	_sync_cells()
+
+
+func _sync_cells() -> void:
+	if not is_instance_valid(grid):
+		return
+	for child in grid.get_children():
+		var coord: Vector2i = child.get_meta("coord", Vector2i(-1, -1))
+		var ingredient := ingredient_at(coord)
+		child.text = LABELS.get(ingredient, "?")
+		child.tooltip_text = ingredient
+		child.set_meta("ingredient_id", ingredient)
 
 
 func _begin_from_position(position: Vector2) -> void:

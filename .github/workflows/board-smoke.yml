@@ -11,6 +11,7 @@ on:
       - "scenes/Main.tscn"
       - "tests/board_view_test.gd"
       - "tests/chain_path_test.gd"
+      - "tests/board_refill_test.gd"
       - ".github/workflows/board-smoke.yml"
 
 jobs:
@@ -37,6 +38,9 @@ jobs:
 
       - name: Run chain path test
         run: godot --headless --path . --script res://tests/chain_path_test.gd
+
+      - name: Run deterministic refill test
+        run: godot --headless --path . --script res://tests/board_refill_test.gd
 
       - name: Run main scene
         run: godot --headless --path . --scene res://scenes/Main.tscn --quit-after 3
