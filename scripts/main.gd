@@ -5,6 +5,7 @@ const Resolver = preload("res://scripts/recipes/recipe_resolver.gd")
 
 @onready var board_view: BoardView = %BoardView
 @onready var lane_field: LaneField = %LaneField
+@onready var wave_director: WaveDirector = %WaveDirector
 
 var recipe_resolver: RecipeResolver
 
@@ -15,12 +16,16 @@ func _ready() -> void:
 		push_error("LANE-02 temporary wiring could not load validated content")
 		return
 	recipe_resolver = Resolver.new(content_result["content"])
+	var wave_result := wave_director.configure(content_result["content"], lane_field)
+	if not wave_result.get("ok", false):
+		push_error("WAV-01 temporary wiring could not configure WaveDirector")
+		return
 	board_view.chain_completed.connect(_on_chain_completed)
-	print("La Última Taquería — LANE-02 temporary wiring ready.")
+	print("La Última Taquería — WAV-01 temporary wiring ready.")
 
 
 # Temporary BoardView -> RecipeResolver -> LaneField bridge.
-# A future WAV-01/GameSession implementation can replace this without moving rules into Main.
+# A future GameSession implementation can replace this without moving rules into Main.
 func _on_chain_completed(points: Array[Vector2i], ingredient_id: String) -> Dictionary:
 	if recipe_resolver == null:
 		return {"ok": false, "target_found": false}

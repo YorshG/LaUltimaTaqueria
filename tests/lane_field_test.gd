@@ -8,6 +8,7 @@ func _init() -> void:
 	_test_motion_model()
 	await _test_lane_field()
 	await _test_satisfied_runner_stops()
+	await _test_counter_arrival_is_one_shot()
 
 	if failures == 0:
 		print("LANE-01 tests passed: 3 lanes / independent configurable movement.")
@@ -116,6 +117,30 @@ func _test_satisfied_runner_stops() -> void:
 		"inactive satisfied runner must not continue automatic movement"
 	)
 	_expect(is_instance_valid(runner) and runner.is_inside_tree(), "retired runner node may remain in scene")
+
+
+func _test_counter_arrival_is_one_shot() -> void:
+	var packed: PackedScene = load("res://scenes/lane/LaneField.tscn")
+	var field: LaneField = packed.instantiate()
+	get_root().add_child(field)
+	await process_frame
+
+	var arrivals: Array[Dictionary] = []
+	field.monster_reached_counter.connect(func(payload: Dictionary): arrivals.append(payload))
+	var runner := field.spawn_runner(2, 100.0, "C", "nibbler", 30.0)
+	runner.auto_advance = false
+	runner.advance(10.0)
+	runner.advance(10.0)
+
+	_expect(arrivals.size() == 1, "counter arrival must emit exactly once")
+	_expect(not runner.monster_state.active, "counter arrival must retire monster logically")
+	_expect(not runner.monster_state.satisfied, "counter arrival must not mark monster satisfied")
+	_expect(is_equal_approx(runner.motion.progress, 1.0), "counter arrival must retain LaneMotion progress")
+	if not arrivals.is_empty():
+		_expect(arrivals[0].keys().size() == 3, "counter payload must remain minimal")
+		_expect(arrivals[0]["spawn_sequence"] == runner.monster_state.spawn_sequence, "counter payload must include stable sequence")
+		_expect(arrivals[0]["monster_id"] == "nibbler", "counter payload must include monster id")
+		_expect(arrivals[0]["lane"] == 2, "counter payload must include lane")
 
 
 func _expect(condition: bool, message: String) -> void:

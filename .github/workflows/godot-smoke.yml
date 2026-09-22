@@ -50,3 +50,6 @@ jobs:
           godot --headless --path . --script res://tests/monster_state_test.gd
           godot --headless --path . --script res://tests/lane_targeting_test.gd
           godot --headless --path . --script res://tests/lane_integration_test.gd
+
+      - name: Run wave director tests
+        run: godot --headless --path . --script res://tests/wave_director_test.gd
