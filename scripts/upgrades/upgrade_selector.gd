@@ -69,6 +69,8 @@ func configure(validated_content: Dictionary) -> Dictionary:
 func start_run(seed: int) -> Dictionary:
 	if not _configured:
 		return _failure(NOT_CONFIGURED, "configure must be called before start_run")
+	if _run_started and state != State.SELECTION_COMPLETE:
+		return _failure(RUN_ALREADY_STARTED, "cannot replace an active run")
 	_rng.seed = seed
 	_selected_upgrades.clear()
 	_selected_ids.clear()

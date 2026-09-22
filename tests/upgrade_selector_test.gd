@@ -20,6 +20,8 @@ func _init() -> void:
 	catalog_ids.sort()
 
 	_test_configuration_and_explicit_errors()
+	_test_active_run_restart_guards()
+	_test_restart_after_completed_run()
 	_test_offer_shape_determinism_and_copies()
 	_test_selection_validation_and_non_repetition()
 	_test_conflicts()
@@ -62,6 +64,85 @@ func _test_configuration_and_explicit_errors() -> void:
 		selector.receive_wave_completed({}),
 		Selector.INVALID_WAVE_COMPLETION,
 		"wave payload without id"
+	)
+
+
+func _test_active_run_restart_guards() -> void:
+	var immediate := _new_selector()
+	_expect(immediate.configure(content)["ok"], "immediate restart fixture must configure")
+	_expect(immediate.start_run(1234)["ok"], "immediate restart fixture must start")
+	_expect_error(immediate.start_run(9876), Selector.RUN_ALREADY_STARTED, "immediate double start")
+	_expect(immediate.state == Selector.State.IDLE, "failed immediate restart must preserve IDLE")
+	_expect(immediate.get_selection_count() == 0, "failed immediate restart must preserve empty selections")
+	var immediate_control := _new_started_selector(1234)
+	immediate.receive_wave_completed({"wave_id": "wave_01"})
+	immediate_control.receive_wave_completed({"wave_id": "wave_01"})
+	_expect(
+		_offer_ids(immediate.get_current_offer()) == _offer_ids(immediate_control.get_current_offer()),
+		"failed immediate restart must preserve original RNG seed and state"
+	)
+
+	var pending := _new_started_selector(2222)
+	pending.receive_wave_completed({"wave_id": "wave_01"})
+	var pending_offer := pending.get_current_offer()
+	_expect_error(pending.start_run(3333), Selector.RUN_ALREADY_STARTED, "restart with pending offer")
+	_expect(pending.state == Selector.State.OFFER_READY, "failed pending restart must preserve OFFER_READY")
+	_expect(pending.get_current_offer() == pending_offer, "failed pending restart must preserve identical offer")
+	_expect(pending.get_selection_count() == 0, "failed pending restart must preserve selection count")
+
+	var between: UpgradeSelector = _selector_with_target_offer("safety_shield")
+	_expect(between != null, "must find safety_shield for between-selection restart test")
+	if between != null:
+		between.select_upgrade("safety_shield")
+		var selected_before := between.get_selected_upgrades()
+		var eligible_before := between.get_eligible_upgrade_ids()
+		_expect("patient_service" not in eligible_before, "strong defense exclusion must exist before restart attempt")
+		_expect("second_chance" not in eligible_before, "all other strong defenses must already be excluded")
+		_expect_error(between.start_run(4444), Selector.RUN_ALREADY_STARTED, "restart between selections")
+		_expect(between.state == Selector.State.IDLE, "failed between-selection restart must preserve IDLE")
+		_expect(between.get_selected_upgrades() == selected_before, "failed restart must preserve selected upgrades")
+		_expect(between.get_eligible_upgrade_ids() == eligible_before, "failed restart must preserve all exclusions")
+		_expect_error(
+			between.receive_wave_completed({"wave_id": "wave_01"}),
+			Selector.DUPLICATE_WAVE_COMPLETION,
+			"failed restart must preserve completed wave ids"
+		)
+
+
+func _test_restart_after_completed_run() -> void:
+	var selector: UpgradeSelector = _selector_with_target_offer("safety_shield")
+	_expect(selector != null, "must find safety_shield for completed-run restart test")
+	if selector == null:
+		return
+	selector.select_upgrade("safety_shield")
+	for wave_number in range(2, Selector.MAX_SELECTIONS + 1):
+		var wave_id := "wave_%02d" % wave_number
+		var offer_result: Dictionary = selector.receive_wave_completed({"wave_id": wave_id})
+		_expect(offer_result["ok"], "completed-run fixture wave %d must create offer" % wave_number)
+		if not offer_result["ok"]:
+			return
+		selector.select_upgrade(str(selector.get_current_offer()[0]["id"]))
+
+	_expect(selector.is_selection_complete(), "restart fixture must first complete five selections")
+	_expect(selector.get_selection_count() == Selector.MAX_SELECTIONS, "completed fixture must retain five selections")
+	var restart_seed := 5555
+	_expect(selector.start_run(restart_seed)["ok"], "completed run must allow a new start")
+	_expect(selector.state == Selector.State.IDLE, "new run must reset state to IDLE")
+	_expect(selector.get_selection_count() == 0, "new run must reset selection count")
+	_expect(selector.get_selected_upgrade_ids().is_empty(), "new run must clear selected ids")
+	_expect(selector.get_selected_upgrades().is_empty(), "new run must clear selected upgrades")
+	_expect(selector.get_active_effects().is_empty(), "new run must clear acquired effects")
+	_expect(selector.get_current_offer().is_empty(), "new run must clear current offer")
+	_expect(selector.get_eligible_upgrade_ids() == catalog_ids, "new run must clear conflicts and strong defense")
+
+	var control := _new_started_selector(restart_seed)
+	var restarted_offer: Dictionary = selector.receive_wave_completed({"wave_id": "wave_01"})
+	var control_offer: Dictionary = control.receive_wave_completed({"wave_id": "wave_01"})
+	_expect(restarted_offer["ok"], "new run must accept wave ids used by previous run")
+	_expect(control_offer["ok"], "new-seed control offer must succeed")
+	_expect(
+		_offer_ids(selector.get_current_offer()) == _offer_ids(control.get_current_offer()),
+		"new run must be deterministic with its replacement seed"
 	)
 
 
