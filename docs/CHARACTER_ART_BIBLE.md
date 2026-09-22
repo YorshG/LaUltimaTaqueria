@@ -41,7 +41,7 @@ Las referencias mexicanas se expresan a través de comida, taquería y props de 
 
 - **Forma dominante**: trapecio ancho y bajo, base pesada.
 - **Rostro**: ojos entrecerrados/serios; boca ancha tipo mueca de esfuerzo.
-- **Personalidad**: terco, imperturbable — "el que absorbe golpes".
+- **Personalidad**: terco, imperturbable — "el que tarda más en quedar satisfecho".
 - **Postura**: centro de gravedad bajo, pasos pesados y cortos, cuerpo ligeramente inclinado hacia adelante.
 - **Detalles/accesorios**: caparazón o placas tipo concha en el lomo — prop de comida, no armadura militar, para no perder el tono no amenazante.
 - **Rol visual**: ancho + bajo + caparazón comunican "esto aguanta mucho y no corre" desde la forma, antes de que se mueva.
@@ -63,7 +63,7 @@ Las referencias mexicanas se expresan a través de comida, taquería y props de 
 - **Rostro**: boca desproporcionadamente grande como rasgo central del personaje; ojos pequeños en comparación.
 - **Personalidad**: glotón bonachón; la intensidad crece con las fases pero nunca cruza a terror — más "niño con mucha hambre" que villano.
 - **Postura**: fase 1 (calma) relajada, panza al frente; fase 2 (60%, `phase2_transition_cue_cosmetic_only`) inclinado hacia adelante y más tenso; fase 3 (30%, `final_bite`) postura de embate, boca más abierta.
-- **Detalles/accesorios**: un babero/servilleta visible desde el inicio de la partida.
+- **Detalles/accesorios**: un babero/servilleta visible desde que el jefe aparece (después de la quinta elección de mejora, al cierre de las oleadas normales).
 - **Rol visual**: la escala (2-3x un monstruo básico) más la boca protagonista hacen del jefe un objetivo central obvio; los cambios de postura entre fases comunican la escalada de `data/content/boss.json` sin necesitar HUD.
 - **Rasgos invariantes**: el babero es el mismo objeto en las tres fases — solo cambia su inclinación y tensión visual, nunca se reemplaza ni debe leerse como un accesorio o personaje distinto. La forma base de la boca se mantiene reconocible aun exagerada en la fase final.
 
@@ -86,7 +86,7 @@ Estructura pensada para reutilizar loops y mantenerse dentro del presupuesto de 
 
 1. **Locomoción base** (idle/avance) — timing relativo al `speed` de cada personaje en `data/content/monsters.json`.
 2. **Hambre/expresión** — loop de espera mientras el monstruo no ha sido atendido.
-3. **Recibir + bocado** — anticipación corta más mordida; es el equivalente visual a las señales sonoras "cadena válida", "receta creada" y "platillo servido" de `docs/AUDIO_STYLE.md`.
+3. **Recibir + bocado** — anticipación corta más mordida; es la reacción del monstruo exclusivamente al recibir el platillo servido, equivalente visual a la señal sonora "platillo servido" de `docs/AUDIO_STYLE.md`. Las señales de "cadena válida" y "receta creada" pertenecen al feedback del tablero/receta, no al personaje, y no forman parte de esta animación.
 4. **Satisfacción + salida** — reacción de gusto y retirada combinadas en una sola pieza de animación.
 5. **Breach (llegada al mostrador)** — pose de impacto propia, visualmente distinta a satisfacción, con su propia salida de "no atendido".
 
