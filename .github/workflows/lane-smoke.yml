@@ -4,11 +4,15 @@ on:
   push:
     branches:
       - feature/lane-01-lane-field
+      - feature/lane-02-hunger-target-satisfaction
   pull_request:
     paths:
       - "scenes/lane/**"
       - "scripts/lane/**"
       - "tests/lane_field_test.gd"
+      - "tests/lane_targeting_test.gd"
+      - "tests/lane_integration_test.gd"
+      - "tests/monster_state_test.gd"
       - ".github/workflows/lane-smoke.yml"
 
 jobs:
@@ -32,3 +36,12 @@ jobs:
 
       - name: Run LaneField tests
         run: godot --headless --path . --script res://tests/lane_field_test.gd
+
+      - name: Run MonsterState tests
+        run: godot --headless --path . --script res://tests/monster_state_test.gd
+
+      - name: Run targeting tests
+        run: godot --headless --path . --script res://tests/lane_targeting_test.gd
+
+      - name: Run LANE-02 integration tests
+        run: godot --headless --path . --script res://tests/lane_integration_test.gd

@@ -40,3 +40,7 @@ Fecha inicial: 2026-09-18.
 | Xcode 27 para compilar y desplegar en iOS 27 | Aprobada para implementación | Xcode 27 incluye SDK iOS 27 y soporte de dispositivo iOS 17–27 |
 | Godot 4.7.2 stable + export templates iOS | Aprobada para implementación | Godot requiere macOS + Xcode y sus export templates para exportar a iOS |
 | Apple Account / Personal Team suficiente para pruebas en dispositivos propios | Aprobada para prototipo | Apple permite pruebas personales sin membresía paga; los perfiles deben renovarse periódicamente |
+| En LANE-02, `LaneMotion.progress >= 1.0` vuelve al monstruo inelegible sin procesar reputación | Aprobada para implementación | La llegada al mostrador será responsabilidad de un sistema posterior; LANE-02 no implementa breach ni `reputation_changed` |
+| Un platillo sin objetivo se representa con `target_found: false` y sin evento adicional | Aprobada para implementación | Evita inventar `dish_wasted`/`dish_missed`; tampoco emite `dish_served` ni aplica satisfacción |
+| `Main` aloja temporalmente el puente `BoardView` → `RecipeResolver` → `LaneField` | Aprobada como wiring temporal | Integra LANE-02 sin adelantar `GameSession`; WAV-01 o la futura sesión podrán reemplazarlo |
+| `LaneMotion.progress` es la única fuente de verdad de avance del monstruo | Aprobada para implementación | `MonsterState` no duplica ni cachea posición, preservando el targeting determinista |
