@@ -53,3 +53,8 @@ jobs:
 
       - name: Run wave director tests
         run: godot --headless --path . --script res://tests/wave_director_test.gd
+
+      - name: Run upgrade selector tests
+        run: |
+          godot --headless --path . --script res://tests/upgrade_selector_test.gd
+          godot --headless --path . --script res://tests/upgrade_selector_integration_test.gd

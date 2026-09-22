@@ -47,3 +47,5 @@ Fecha inicial: 2026-09-18.
 | En WAV-01, `duration_target_sec` es metadata de ritmo y no un timeout | Aprobada para implementación | Una oleada termina sólo tras despachar y resolver todos sus monstruos, aunque exceda la duración objetivo |
 | WAV-01 considera resuelto a un monstruo satisfecho o que llega al mostrador | Aprobada para implementación | La llegada emite un evento one-shot y retira lógicamente la entidad sin aplicar todavía reputación |
 | El countdown de WAV-01 es un parámetro explícito de `start_wave` | Aprobada para implementación | Evita congelar un valor de balance prematuro y mantiene `wave_elapsed_sec` separado del countdown |
+| UPG-01 genera ofertas con semilla explícita sobre IDs ordenados; las elegidas no se repiten | Aprobada para implementación | Hace reproducibles las cinco elecciones sin depender del orden de diccionarios ni del RNG global |
+| En UPG-01, rareza y sinergias son metadata; `strong_defense` es la exclusión primaria de defensas fuertes | Aprobada para implementación | Evita inventar pesos o mecánicas y garantiza como máximo una defensa fuerte incluso si los conflictos fueran redundantes |
