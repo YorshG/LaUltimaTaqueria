@@ -17,7 +17,7 @@ Estados: pendiente, en curso, revisión, terminado.
 | LANE-01 | Tres carriles y movimiento | Codex | TEC-01 | Movimiento independiente configurable | P0 | M | terminado |
 | LANE-02 | Hambre, objetivo y satisfacción | Codex | REC-01,LANE-01 | Autoobjetivo predecible | P0 | M | terminado |
 | WAV-01 | Director de oleadas | Codex | TEC-02,LANE-01 | Ejecuta agenda y finaliza | P0 | M | terminado |
-| UPG-01 | Elegir una de tres mejoras tras cada oleada | Codex | WAV-01 | Hay cinco elecciones y como máximo una defensa fuerte | P0 | M | revisión |
+| UPG-01 | Elegir una de tres mejoras tras cada oleada | Codex | WAV-01 | Hay cinco elecciones y como máximo una defensa fuerte | P0 | M | terminado |
 | BOSS-01 | Integrar jefe posterior a la quinta | Codex | WAV-01,UPG-01,PRE-02 | Comienza tras la quinta elección; fases comunicadas y resolubles | P0 | M | pendiente |
 | UI-01 | HUD y reputación | Codex | LANE-02 | Estado legible en móvil | P0 | S | pendiente |
 | UI-02 | Feedback audiovisual provisional | Codex | REC-01 | Acciones clave distinguibles | P1 | M | pendiente |
