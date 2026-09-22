@@ -79,9 +79,16 @@ func resolve_dish(resolution: Dictionary) -> Dictionary:
 	var base_result := target.monster_state.apply_satisfaction(
 		float(resolution.get("satisfaction_final", 0.0))
 	)
-	if base_result.get("ok", false):
-		satisfaction_applied += float(base_result["satisfaction_applied"])
-		transitioned_to_satisfied = base_result["transitioned_to_satisfied"]
+	if not base_result.get("ok", false):
+		return {
+			"ok": false,
+			"error": base_result.get("error", "SATISFACTION_REJECTED"),
+			"target_found": true,
+			"dish": created_payload,
+			"satisfaction_result": base_result,
+		}
+	satisfaction_applied += float(base_result["satisfaction_applied"])
+	transitioned_to_satisfied = base_result["transitioned_to_satisfied"]
 
 	var effect := str(resolution.get("special_effect", ""))
 	var effect_params: Dictionary = resolution.get("special_effect_params", {})

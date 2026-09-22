@@ -36,6 +36,8 @@ func _process(delta: float) -> void:
 
 
 func advance(delta: float) -> float:
+	if monster_state != null and not monster_state.active:
+		return motion.progress
 	var value := motion.advance(delta)
 	_apply_position()
 	return value

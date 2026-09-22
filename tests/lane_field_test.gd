@@ -7,6 +7,7 @@ var Motion = preload("res://scripts/lane/lane_motion.gd")
 func _init() -> void:
 	_test_motion_model()
 	await _test_lane_field()
+	await _test_satisfied_runner_stops()
 
 	if failures == 0:
 		print("LANE-01 tests passed: 3 lanes / independent configurable movement.")
@@ -93,6 +94,28 @@ func _test_lane_field() -> void:
 	_expect(left.get_parent() != center.get_parent(), "left and center must have independent lane hosts")
 	_expect(center.get_parent() != right.get_parent(), "center and right must have independent lane hosts")
 	_expect(left.motion.progress < center.motion.progress and center.motion.progress < right.motion.progress, "runner progress must respect configured speed")
+
+
+func _test_satisfied_runner_stops() -> void:
+	var packed: PackedScene = load("res://scenes/lane/LaneField.tscn")
+	var field: LaneField = packed.instantiate()
+	get_root().add_child(field)
+	await process_frame
+
+	var runner := field.spawn_runner(1, 100.0, "S", "nibbler", 10.0)
+	runner.auto_advance = true
+	runner.motion.progress = 0.25
+	var satisfaction: Dictionary = runner.monster_state.apply_satisfaction(10.0)
+	var progress_when_satisfied: float = runner.motion.progress
+	runner._process(5.0)
+
+	_expect(satisfaction["transitioned_to_satisfied"], "runner state must become satisfied")
+	_expect(not runner.monster_state.active, "satisfied runner state must be inactive")
+	_expect(
+		is_equal_approx(runner.motion.progress, progress_when_satisfied),
+		"inactive satisfied runner must not continue automatic movement"
+	)
+	_expect(is_instance_valid(runner) and runner.is_inside_tree(), "retired runner node may remain in scene")
 
 
 func _expect(condition: bool, message: String) -> void:

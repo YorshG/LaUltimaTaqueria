@@ -47,6 +47,7 @@ func apply_satisfaction(amount: float) -> Dictionary:
 	if transitioned_to_satisfied:
 		hunger_remaining = 0.0
 		satisfied = true
+		active = false
 
 	return {
 		"ok": true,

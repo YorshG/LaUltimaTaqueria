@@ -32,6 +32,8 @@ func _test_initial_and_partial_satisfaction() -> void:
 	_expect(is_equal_approx(result["satisfaction_applied"], 12.0), "partial amount must be applied")
 	_expect(is_equal_approx(state.hunger_remaining, 18.0), "partial satisfaction must reduce hunger")
 	_expect(not result["transitioned_to_satisfied"], "partial satisfaction must not transition")
+	_expect(state.active, "partially satisfied monster must remain active")
+	_expect(not state.satisfied, "partially satisfied monster must remain unsatisfied")
 
 
 func _test_exact_satisfaction_and_single_transition() -> void:
@@ -40,6 +42,7 @@ func _test_exact_satisfaction_and_single_transition() -> void:
 	_expect(first["ok"], "exact satisfaction must be accepted")
 	_expect(first["transitioned_to_satisfied"], "exact satisfaction must transition")
 	_expect(state.satisfied, "exact satisfaction must mark state satisfied")
+	_expect(not state.active, "exact satisfaction must retire state immediately")
 	_expect(is_zero_approx(state.hunger_remaining), "exact satisfaction must leave zero hunger")
 	_expect(not state.is_targetable(0.5), "satisfied monster must be excluded from targeting")
 
@@ -48,6 +51,7 @@ func _test_exact_satisfaction_and_single_transition() -> void:
 	_expect(not second["transitioned_to_satisfied"], "second application must not transition again")
 	_expect(is_zero_approx(second["satisfaction_applied"]), "second application must be a no-op")
 	_expect(is_zero_approx(state.hunger_remaining), "second application must not change hunger")
+	_expect(state.satisfied and not state.active, "second application must preserve retired satisfied state")
 
 
 func _test_oversatisfaction_clamps_without_spillover() -> void:
@@ -58,6 +62,8 @@ func _test_oversatisfaction_clamps_without_spillover() -> void:
 	_expect(is_zero_approx(state.hunger_remaining), "oversatisfaction must clamp at zero")
 	_expect(state.hunger_remaining >= 0.0, "hunger must never become negative")
 	_expect(result["transitioned_to_satisfied"], "oversatisfaction must transition once")
+	_expect(state.satisfied, "oversatisfaction must mark state satisfied")
+	_expect(not state.active, "oversatisfaction must retire state immediately")
 
 
 func _test_invalid_satisfaction_is_rejected() -> void:

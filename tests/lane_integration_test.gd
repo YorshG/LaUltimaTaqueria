@@ -15,6 +15,7 @@ func _init() -> void:
 
 	await _test_board_recipe_lane_bridge()
 	await _test_effects(resolver)
+	await _test_rejected_base_stops_delivery()
 
 	if failures == 0:
 		print("LANE-02 integration tests passed: board bridge, events and scoped 5+ effects.")
@@ -137,6 +138,46 @@ func _test_effects(resolver) -> void:
 		_expect(reputation_created[0]["special_effect"] == "reputation_small_restore", "future reputation effect must remain in payload")
 		_expect(reputation_created[0]["special_effect_params"] == {"amount": 5.0}, "future reputation params must remain in payload")
 	reputation_field.queue_free()
+	await process_frame
+
+
+func _test_rejected_base_stops_delivery() -> void:
+	var packed: PackedScene = load("res://scenes/lane/LaneField.tscn")
+	var field: LaneField = packed.instantiate()
+	get_root().add_child(field)
+	await process_frame
+
+	var target := field.spawn_runner(1, 55.0, "D", "nibbler", 30.0)
+	target.auto_advance = false
+	target.motion.progress = 0.5
+	var event_counts := {"created": 0, "served": 0, "satisfied": 0}
+	field.dish_created.connect(func(_payload: Dictionary): event_counts["created"] += 1)
+	field.dish_served.connect(func(_payload: Dictionary): event_counts["served"] += 1)
+	field.monster_satisfied.connect(func(_payload: Dictionary): event_counts["satisfied"] += 1)
+	var invalid_resolution := {
+		"ok": true,
+		"recipe_id": "synthetic_invalid_recipe",
+		"ingredient_id": "tortilla",
+		"chain_length": 5,
+		"chain_tier": "chain5_plus",
+		"satisfaction_final": 0.0,
+		"special_effect_triggered": true,
+		"special_effect": "brief_stun",
+		"special_effect_params": {"duration_sec": 1.0},
+	}
+	var result: Dictionary = field.resolve_dish(invalid_resolution)
+
+	_expect(not result["ok"], "rejected base satisfaction must return explicit failure")
+	_expect(not result["satisfaction_result"]["ok"], "apply_satisfaction failure must remain explicit")
+	_expect(result["error"] == MonsterState.INVALID_SATISFACTION, "failure must preserve MonsterState error")
+	_expect(result["target_found"], "defensive failure must preserve that a target was found")
+	_expect(event_counts["created"] == 1, "dish_created may precede defensive satisfaction rejection")
+	_expect(event_counts["served"] == 0, "rejected base satisfaction must not emit dish_served")
+	_expect(event_counts["satisfied"] == 0, "rejected base satisfaction must not emit monster_satisfied")
+	_expect(is_equal_approx(target.monster_state.hunger_remaining, 30.0), "rejected base must preserve hunger")
+	_expect(target.monster_state.active and not target.monster_state.satisfied, "rejected base must preserve state")
+	_expect(not target.motion.is_stunned(), "rejected base must not execute brief_stun")
+	field.queue_free()
 	await process_frame
 
 
