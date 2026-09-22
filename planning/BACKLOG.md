@@ -15,7 +15,7 @@ Estados: pendiente, en curso, revisión, terminado.
 | BRD-04 | Recuperar tablero sin cadenas | Codex | BRD-03 | Reorganiza sin penalización y garantiza una cadena válida | P0 | S | terminado |
 | REC-01 | Resolver platillo por datos | Codex | TEC-02,BRD-02 | Resultado determinista probado | P0 | M | terminado |
 | LANE-01 | Tres carriles y movimiento | Codex | TEC-01 | Movimiento independiente configurable | P0 | M | terminado |
-| LANE-02 | Hambre, objetivo y satisfacción | Codex | REC-01,LANE-01 | Autoobjetivo predecible | P0 | M | pendiente |
+| LANE-02 | Hambre, objetivo y satisfacción | Codex | REC-01,LANE-01 | Autoobjetivo predecible | P0 | M | revisión |
 | WAV-01 | Director de oleadas | Codex | TEC-02,LANE-01 | Ejecuta agenda y finaliza | P0 | M | pendiente |
 | UPG-01 | Elegir una de tres mejoras tras cada oleada | Codex | WAV-01 | Hay cinco elecciones y como máximo una defensa fuerte | P0 | M | pendiente |
 | BOSS-01 | Integrar jefe posterior a la quinta | Codex | WAV-01,UPG-01,PRE-02 | Comienza tras la quinta elección; fases comunicadas y resolubles | P0 | M | pendiente |

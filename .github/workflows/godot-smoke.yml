@@ -43,3 +43,10 @@ jobs:
 
       - name: Run recipe resolver tests
         run: godot --headless --path . --script res://tests/recipe_resolver_test.gd
+
+      - name: Run lane tests
+        run: |
+          godot --headless --path . --script res://tests/lane_field_test.gd
+          godot --headless --path . --script res://tests/monster_state_test.gd
+          godot --headless --path . --script res://tests/lane_targeting_test.gd
+          godot --headless --path . --script res://tests/lane_integration_test.gd

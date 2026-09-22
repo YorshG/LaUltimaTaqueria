@@ -2,6 +2,7 @@ class_name LaneRunner
 extends Control
 
 var motion := LaneMotion.new()
+var monster_state: MonsterState
 var auto_advance := true
 
 @onready var label: Label = %Label
@@ -12,8 +13,16 @@ func _ready() -> void:
 	_apply_position()
 
 
-func configure(lane_index: int, speed_relative: float, display_text: String = "M") -> void:
+func configure(
+	lane_index: int,
+	speed_relative: float,
+	display_text: String = "M",
+	monster_id: String = "monster",
+	hunger_max: float = 30.0,
+	spawn_sequence: int = 0
+) -> void:
 	motion.configure(lane_index, speed_relative)
+	monster_state = MonsterState.new(monster_id, lane_index, hunger_max, spawn_sequence)
 	if is_node_ready():
 		label.text = display_text
 		_apply_position()
@@ -27,6 +36,8 @@ func _process(delta: float) -> void:
 
 
 func advance(delta: float) -> float:
+	if monster_state != null and not monster_state.active:
+		return motion.progress
 	var value := motion.advance(delta)
 	_apply_position()
 	return value
@@ -34,6 +45,14 @@ func advance(delta: float) -> float:
 
 func effective_speed() -> float:
 	return motion.effective_speed()
+
+
+func apply_brief_stun(duration_sec: float) -> bool:
+	return motion.apply_brief_stun(duration_sec)
+
+
+func is_targetable() -> bool:
+	return monster_state != null and monster_state.is_targetable(motion.progress)
 
 
 func set_global_speed_multiplier(value: float) -> void:

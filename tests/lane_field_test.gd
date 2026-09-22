@@ -7,6 +7,7 @@ var Motion = preload("res://scripts/lane/lane_motion.gd")
 func _init() -> void:
 	_test_motion_model()
 	await _test_lane_field()
+	await _test_satisfied_runner_stops()
 
 	if failures == 0:
 		print("LANE-01 tests passed: 3 lanes / independent configurable movement.")
@@ -45,6 +46,25 @@ func _test_motion_model() -> void:
 	_expect(is_equal_approx(medium.progress, before_medium), "changing slow runner must not move medium runner")
 	_expect(is_equal_approx(slow.effective_speed(), 0.015), "global multiplier must affect only configured motion")
 
+	var stunned = Motion.new(1, 100.0)
+	stunned.phase_multiplier = 0.5
+	stunned.global_speed_multiplier = 2.0
+	_expect(stunned.apply_brief_stun(1.0), "positive finite stun must be accepted")
+	_expect(is_zero_approx(stunned.effective_speed()), "effective speed must be zero during stun")
+	stunned.advance(0.4)
+	stunned.advance(0.6)
+	_expect(is_zero_approx(stunned.progress), "several deltas totaling stun duration must not move")
+	_expect(not stunned.is_stunned(), "stun must expire after its deterministic duration")
+	stunned.advance(0.5)
+	_expect(is_equal_approx(stunned.progress, 0.05), "movement must resume with existing multipliers")
+
+	var partial_frame = Motion.new(0, 100.0)
+	partial_frame.apply_brief_stun(0.25)
+	partial_frame.advance(0.5)
+	_expect(is_equal_approx(partial_frame.progress, 0.025), "delta remainder after stun must move deterministically")
+	_expect(not partial_frame.apply_brief_stun(0.0), "zero stun duration must be rejected")
+	_expect(not partial_frame.apply_brief_stun(-1.0), "negative stun duration must be rejected")
+
 
 func _test_lane_field() -> void:
 	var packed: PackedScene = load("res://scenes/lane/LaneField.tscn")
@@ -74,6 +94,28 @@ func _test_lane_field() -> void:
 	_expect(left.get_parent() != center.get_parent(), "left and center must have independent lane hosts")
 	_expect(center.get_parent() != right.get_parent(), "center and right must have independent lane hosts")
 	_expect(left.motion.progress < center.motion.progress and center.motion.progress < right.motion.progress, "runner progress must respect configured speed")
+
+
+func _test_satisfied_runner_stops() -> void:
+	var packed: PackedScene = load("res://scenes/lane/LaneField.tscn")
+	var field: LaneField = packed.instantiate()
+	get_root().add_child(field)
+	await process_frame
+
+	var runner := field.spawn_runner(1, 100.0, "S", "nibbler", 10.0)
+	runner.auto_advance = true
+	runner.motion.progress = 0.25
+	var satisfaction: Dictionary = runner.monster_state.apply_satisfaction(10.0)
+	var progress_when_satisfied: float = runner.motion.progress
+	runner._process(5.0)
+
+	_expect(satisfaction["transitioned_to_satisfied"], "runner state must become satisfied")
+	_expect(not runner.monster_state.active, "satisfied runner state must be inactive")
+	_expect(
+		is_equal_approx(runner.motion.progress, progress_when_satisfied),
+		"inactive satisfied runner must not continue automatic movement"
+	)
+	_expect(is_instance_valid(runner) and runner.is_inside_tree(), "retired runner node may remain in scene")
 
 
 func _expect(condition: bool, message: String) -> void:
