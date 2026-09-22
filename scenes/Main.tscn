@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/board/BoardView.tscn" id="2_board"]
 [ext_resource type="PackedScene" path="res://scenes/lane/LaneField.tscn" id="3_lane"]
 [ext_resource type="Script" path="res://scripts/waves/wave_director.gd" id="4_wave"]
+[ext_resource type="Script" path="res://scripts/upgrades/upgrade_selector.gd" id="5_upgrade"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -53,3 +54,7 @@ size_flags_vertical = 3
 [node name="WaveDirector" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_wave")
+
+[node name="UpgradeSelector" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_upgrade")
