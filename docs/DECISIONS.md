@@ -44,3 +44,6 @@ Fecha inicial: 2026-09-18.
 | Un platillo sin objetivo se representa con `target_found: false` y sin evento adicional | Aprobada para implementación | Evita inventar `dish_wasted`/`dish_missed`; tampoco emite `dish_served` ni aplica satisfacción |
 | `Main` aloja temporalmente el puente `BoardView` → `RecipeResolver` → `LaneField` | Aprobada como wiring temporal | Integra LANE-02 sin adelantar `GameSession`; WAV-01 o la futura sesión podrán reemplazarlo |
 | `LaneMotion.progress` es la única fuente de verdad de avance del monstruo | Aprobada para implementación | `MonsterState` no duplica ni cachea posición, preservando el targeting determinista |
+| En WAV-01, `duration_target_sec` es metadata de ritmo y no un timeout | Aprobada para implementación | Una oleada termina sólo tras despachar y resolver todos sus monstruos, aunque exceda la duración objetivo |
+| WAV-01 considera resuelto a un monstruo satisfecho o que llega al mostrador | Aprobada para implementación | La llegada emite un evento one-shot y retira lógicamente la entidad sin aplicar todavía reputación |
+| El countdown de WAV-01 es un parámetro explícito de `start_wave` | Aprobada para implementación | Evita congelar un valor de balance prematuro y mantiene `wave_elapsed_sec` separado del countdown |

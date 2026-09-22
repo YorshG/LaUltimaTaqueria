@@ -4,6 +4,7 @@ extends Control
 signal dish_created(payload: Dictionary)
 signal dish_served(payload: Dictionary)
 signal monster_satisfied(payload: Dictionary)
+signal monster_reached_counter(payload: Dictionary)
 
 const LANE_COUNT := 3
 const RUNNER_SCENE := preload("res://scenes/lane/LaneRunner.tscn")
@@ -49,6 +50,7 @@ func spawn_runner(
 		hunger_max,
 		_next_spawn_sequence
 	)
+	runner.reached_counter.connect(_on_runner_reached_counter)
 	_next_spawn_sequence += 1
 	_runners.append(runner)
 	return runner
@@ -134,6 +136,10 @@ func get_lane_host(lane_index: int) -> Control:
 	if lane_index < 0 or lane_index >= LANE_COUNT:
 		return null
 	return lane_hosts[lane_index]
+
+
+func _on_runner_reached_counter(payload: Dictionary) -> void:
+	monster_reached_counter.emit(payload)
 
 
 func _is_higher_priority(candidate: LaneRunner, current: LaneRunner) -> bool:

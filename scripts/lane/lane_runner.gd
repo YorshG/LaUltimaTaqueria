@@ -1,9 +1,12 @@
 class_name LaneRunner
 extends Control
 
+signal reached_counter(payload: Dictionary)
+
 var motion := LaneMotion.new()
 var monster_state: MonsterState
 var auto_advance := true
+var _counter_reached_emitted := false
 
 @onready var label: Label = %Label
 
@@ -23,6 +26,7 @@ func configure(
 ) -> void:
 	motion.configure(lane_index, speed_relative)
 	monster_state = MonsterState.new(monster_id, lane_index, hunger_max, spawn_sequence)
+	_counter_reached_emitted = false
 	if is_node_ready():
 		label.text = display_text
 		_apply_position()
@@ -40,6 +44,14 @@ func advance(delta: float) -> float:
 		return motion.progress
 	var value := motion.advance(delta)
 	_apply_position()
+	if motion.reached_counter() and not _counter_reached_emitted:
+		_counter_reached_emitted = true
+		monster_state.active = false
+		reached_counter.emit({
+			"spawn_sequence": monster_state.spawn_sequence,
+			"monster_id": monster_state.monster_id,
+			"lane": monster_state.lane,
+		})
 	return value
 
 
