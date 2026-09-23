@@ -20,7 +20,7 @@ Estados: pendiente, en curso, revisión, terminado.
 | UPG-01 | Elegir una de tres mejoras tras cada oleada | Codex | WAV-01 | Hay cinco elecciones y como máximo una defensa fuerte | P0 | M | terminado |
 | BOSS-01 | Integrar jefe posterior a la quinta | Codex | WAV-01,UPG-01,PRE-02 | Comienza tras la quinta elección; fases comunicadas y resolubles | P0 | M | terminado |
 | UI-01 | HUD y reputación | Codex | LANE-02 | Estado legible en móvil | P0 | S | terminado |
-| UI-02 | Feedback audiovisual provisional | Codex | REC-01 | Acciones clave distinguibles | P1 | M | pendiente |
+| UI-02 | Feedback audiovisual provisional | Codex | REC-01 | Acciones clave distinguibles | P1 | M | terminado |
 | SAV-01 | Guardar récord, monedas y preferencias | Codex | TEC-01 | Esquema versionado y escritura atómica persisten tras reinicio | P1 | M | pendiente |
 | SAV-02 | Recuperar guardado inválido | Codex | SAV-01 | Ausente, parcial o corrupto no impide iniciar ni destruye un estado válido | P0 | S | pendiente |
 | TST-01 | Pruebas de reglas centrales | Codex | BRD-04,LANE-02 | Suite con semillas fijas y validación de contenido pasa | P0 | M | terminado |
