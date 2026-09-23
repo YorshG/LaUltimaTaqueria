@@ -13,7 +13,7 @@ Validar si trazar cadenas de ingredientes mientras se gestionan tres carriles pr
 ## Equipo
 
 - Jorge: Product Owner y aprobación.
-- Hermano de Jorge: coevaluación y pruebas.
+- Xavier: coevaluación y pruebas.
 - Codex: arquitectura, implementación, integración y builds.
 - Claude: sistemas, contenido, balance y módulos expresamente asignados.
 
