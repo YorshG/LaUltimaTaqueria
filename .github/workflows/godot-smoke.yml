@@ -38,26 +38,8 @@ jobs:
       - name: Run bootstrap scene headlessly
         run: godot --headless --path . --scene res://scenes/Main.tscn --quit-after 3
 
-      - name: Validate content registry
-        run: godot --headless --path . --script res://tests/content_registry_test.gd
-
-      - name: Run recipe resolver tests
-        run: godot --headless --path . --script res://tests/recipe_resolver_test.gd
-
-      - name: Run lane tests
-        run: |
-          godot --headless --path . --script res://tests/lane_field_test.gd
-          godot --headless --path . --script res://tests/monster_state_test.gd
-          godot --headless --path . --script res://tests/lane_targeting_test.gd
-          godot --headless --path . --script res://tests/lane_integration_test.gd
-
-      - name: Run wave director tests
-        run: godot --headless --path . --script res://tests/wave_director_test.gd
-
-      - name: Run upgrade selector tests
-        run: |
-          godot --headless --path . --script res://tests/upgrade_selector_test.gd
-          godot --headless --path . --script res://tests/upgrade_selector_integration_test.gd
+      - name: Run TST-01 core rules suite
+        run: bash tests/run_core_suite.sh
 
       - name: Run BOSS-01 encounter tests
         run: godot --headless --path . --script res://tests/boss_encounter_test.gd
