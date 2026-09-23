@@ -3,17 +3,21 @@ extends Control
 signal boss_started(payload: Dictionary)
 signal boss_phase_changed(payload: Dictionary)
 signal boss_encounter_completed(payload: Dictionary)
+signal run_ended(payload: Dictionary)
 
 const Registry = preload("res://scripts/content/content_registry.gd")
 const Resolver = preload("res://scripts/recipes/recipe_resolver.gd")
+const Reputation = preload("res://scripts/session/reputation_state.gd")
 const DEFAULT_RUN_SEED := 20260921
 
 @onready var board_view: BoardView = %BoardView
 @onready var lane_field: LaneField = %LaneField
 @onready var wave_director: WaveDirector = %WaveDirector
 @onready var upgrade_selector: UpgradeSelector = %UpgradeSelector
+@onready var hud: VBoxContainer = %Hud
 
 var recipe_resolver: RecipeResolver
+var reputation: ReputationState
 var boss_runner: LaneRunner
 var boss_has_started := false
 var boss_encounter_active := false
@@ -28,6 +32,12 @@ func _ready() -> void:
 		push_error("LANE-02 temporary wiring could not load validated content")
 		return
 	recipe_resolver = Resolver.new(content_result["content"])
+	reputation = Reputation.new(content_result["content"])
+	reputation.reputation_changed.connect(hud.show_reputation)
+	reputation.run_ended.connect(_on_reputation_run_ended)
+	hud.show_reputation(reputation.snapshot())
+	# Apply breach before WaveDirector can synchronously offer the next upgrade.
+	lane_field.monster_reached_counter.connect(_on_monster_reached_counter)
 	var wave_result := wave_director.configure(content_result["content"], lane_field)
 	if not wave_result.get("ok", false):
 		push_error("WAV-01 temporary wiring could not configure WaveDirector")
@@ -54,17 +64,31 @@ func _ready() -> void:
 # Temporary BoardView -> RecipeResolver -> LaneField bridge.
 # A future GameSession implementation can replace this without moving rules into Main.
 func _on_chain_completed(points: Array[Vector2i], ingredient_id: String) -> Dictionary:
-	if recipe_resolver == null:
+	if recipe_resolver == null or reputation.defeated:
 		return {"ok": false, "target_found": false}
 	var resolution := recipe_resolver.resolve(ingredient_id, points.size())
 	if not resolution.get("ok", false):
 		return resolution
-	return lane_field.resolve_dish(resolution)
+	var service := lane_field.resolve_dish(resolution)
+	reputation.apply_served_dish(resolution, service)
+	return service
+
+
+func _on_monster_reached_counter(payload: Dictionary) -> void:
+	reputation.apply_breach(payload)
+
+
+func _on_reputation_run_ended(payload: Dictionary) -> void:
+	# Terminal stop only; no pause/resume or navigation system.
+	process_mode = Node.PROCESS_MODE_DISABLED
+	run_ended.emit(payload.duplicate(true))
 
 
 # Temporary WaveDirector -> UpgradeSelector bridge.
 # A future GameSession implementation can replace this without moving rules into Main.
 func _on_wave_completed(payload: Dictionary) -> Dictionary:
+	if reputation.defeated:
+		return {"ok": false, "error": "RUN_ENDED"}
 	var wave_id := str(payload.get("wave_id", ""))
 	if (
 		_normal_wave_ids.has(wave_id)
@@ -77,6 +101,8 @@ func _on_wave_completed(payload: Dictionary) -> Dictionary:
 
 # Minimal fifth-selection bridge; the boss is not a WaveDirector wave.
 func _on_upgrade_selected(payload: Dictionary) -> void:
+	if reputation.defeated:
+		return
 	if boss_has_started or not payload.get("is_final_selection", false):
 		return
 	if not upgrade_selector.is_selection_complete():
@@ -123,6 +149,8 @@ func _complete_boss_encounter(payload: Dictionary, was_satisfied: bool) -> void:
 	if int(payload.get("spawn_sequence", -1)) != boss_runner.monster_state.spawn_sequence:
 		return
 	boss_encounter_active = false
+	if was_satisfied and not reputation.defeated:
+		hud.show_outcome("victory")
 	boss_encounter_completed.emit({
 		"monster_id": boss_runner.monster_state.monster_id,
 		"spawn_sequence": boss_runner.monster_state.spawn_sequence,
