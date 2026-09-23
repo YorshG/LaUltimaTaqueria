@@ -46,5 +46,18 @@
   "tutorial.trace_chain": "Desliza para conectar 3 tortillas iguales.",
   "tutorial.auto_target": "¡Tiene hambre! El platillo se sirve solo al más cercano.",
   "tutorial.reputation_warning": "Si llega al mostrador, pierdes reputación.",
-  "tutorial.pick_upgrade": "Elige una mejora para la siguiente oleada."
+  "tutorial.pick_upgrade": "Elige una mejora para la siguiente oleada.",
+  "feedback.selection": "→ Selección iniciada",
+  "feedback.chain_valid": "✓ Cadena lista",
+  "feedback.dish_created": "+ Platillo listo",
+  "feedback.dish_served": "→ Servido",
+  "feedback.monster_satisfied": "✓ Satisfecho",
+  "feedback.breach": "! Llegó al mostrador",
+  "feedback.reputation_delta": "Reputación {delta}",
+  "feedback.low_reputation": "! Reputación baja",
+  "feedback.upgrade_selected": "↑ Mejora elegida",
+  "feedback.boss_phase_2": "! El Gran Glotón acelera",
+  "feedback.boss_phase_3": "!! El Gran Glotón: máxima velocidad",
+  "feedback.victory": "✓ Victoria",
+  "feedback.defeat": "! Derrota"
 }

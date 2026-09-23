@@ -46,3 +46,6 @@ jobs:
 
       - name: Run UI-01 reputation and HUD tests
         run: godot --headless --path . --script res://tests/reputation_test.gd
+
+      - name: Run UI-02 feedback tests
+        run: godot --headless --path . --script res://tests/feedback_test.gd

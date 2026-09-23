@@ -8,6 +8,7 @@ signal run_ended(payload: Dictionary)
 const Registry = preload("res://scripts/content/content_registry.gd")
 const Resolver = preload("res://scripts/recipes/recipe_resolver.gd")
 const Reputation = preload("res://scripts/session/reputation_state.gd")
+const Feedback = preload("res://scripts/ui/feedback_coordinator.gd")
 const DEFAULT_RUN_SEED := 20260921
 
 @onready var board_view: BoardView = %BoardView
@@ -15,9 +16,12 @@ const DEFAULT_RUN_SEED := 20260921
 @onready var wave_director: WaveDirector = %WaveDirector
 @onready var upgrade_selector: UpgradeSelector = %UpgradeSelector
 @onready var hud: VBoxContainer = %Hud
+@onready var feedback_layer: VBoxContainer = %FeedbackLayer
+@onready var feedback_audio: AudioStreamPlayer = %FeedbackAudio
 
 var recipe_resolver: RecipeResolver
 var reputation: ReputationState
+var feedback: FeedbackCoordinator
 var boss_runner: LaneRunner
 var boss_has_started := false
 var boss_encounter_active := false
@@ -36,6 +40,7 @@ func _ready() -> void:
 	reputation.reputation_changed.connect(hud.show_reputation)
 	reputation.run_ended.connect(_on_reputation_run_ended)
 	hud.show_reputation(reputation.snapshot())
+	_wire_feedback(content_result["content"]["localization"])
 	# Apply breach before WaveDirector can synchronously offer the next upgrade.
 	lane_field.monster_reached_counter.connect(_on_monster_reached_counter)
 	var wave_result := wave_director.configure(content_result["content"], lane_field)
@@ -59,6 +64,27 @@ func _ready() -> void:
 	for wave in content_result["content"]["waves"]:
 		_normal_wave_ids[str(wave["id"])] = true
 	print("La Última Taquería — BOSS-01 temporary wiring ready.")
+
+
+func _wire_feedback(localization: Dictionary) -> void:
+	feedback = Feedback.new(reputation.snapshot())
+	feedback_layer.configure(localization)
+	feedback.feedback_requested.connect(feedback_layer.present)
+	feedback.feedback_requested.connect(feedback_audio.request)
+	# Observe before synchronous gameplay callbacks so final cues arrive last.
+	board_view.chain_started.connect(feedback.on_chain_started)
+	board_view.chain_changed.connect(feedback.on_chain_changed)
+	board_view.chain_completed.connect(feedback.on_chain_completed)
+	board_view.chain_cancelled.connect(feedback.on_chain_cancelled)
+	lane_field.dish_created.connect(feedback.on_dish_created)
+	lane_field.dish_served.connect(feedback.on_dish_served)
+	lane_field.monster_satisfied.connect(feedback.on_monster_satisfied)
+	lane_field.monster_reached_counter.connect(feedback.on_breach)
+	reputation.reputation_changed.connect(feedback.on_reputation_changed)
+	upgrade_selector.upgrade_selected.connect(feedback.on_upgrade_selected)
+	boss_phase_changed.connect(feedback.on_boss_phase_changed)
+	boss_encounter_completed.connect(feedback.on_boss_completed)
+	run_ended.connect(feedback.on_run_ended)
 
 
 # Temporary BoardView -> RecipeResolver -> LaneField bridge.
