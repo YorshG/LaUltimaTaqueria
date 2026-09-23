@@ -1,6 +1,8 @@
 class_name MonsterState
 extends RefCounted
 
+signal phase_changed(payload: Dictionary)
+
 const INVALID_SATISFACTION := "INVALID_SATISFACTION"
 const MONSTER_NOT_ELIGIBLE := "MONSTER_NOT_ELIGIBLE"
 
@@ -11,6 +13,8 @@ var hunger_remaining: float
 var satisfied := false
 var active := true
 var spawn_sequence: int
+var phase_index := -1
+var _phases: Array = []
 
 
 func _init(
@@ -34,6 +38,28 @@ func is_targetable(progress: float) -> bool:
 	return active and not satisfied and hunger_remaining > 0.0 and progress < 1.0
 
 
+# Optional phases come from ContentRegistry's validated boss content.
+func configure_phases(validated_phases: Array) -> void:
+	if not _phases.is_empty():
+		return
+	_phases = validated_phases.duplicate(true)
+	_advance_phase()
+
+
+func get_current_phase() -> Dictionary:
+	return {} if phase_index < 0 else _phases[phase_index].duplicate(true)
+
+
+func _advance_phase() -> void:
+	var hunger_ratio := hunger_remaining / hunger_max
+	while phase_index + 1 < _phases.size():
+		var next_index := phase_index + 1
+		if next_index > 0 and hunger_ratio > float(_phases[next_index]["threshold"]):
+			break
+		phase_index = next_index
+		phase_changed.emit(get_current_phase())
+
+
 func apply_satisfaction(amount: float) -> Dictionary:
 	if not is_finite(amount) or amount <= 0.0:
 		return _rejection(INVALID_SATISFACTION)
@@ -48,6 +74,7 @@ func apply_satisfaction(amount: float) -> Dictionary:
 		hunger_remaining = 0.0
 		satisfied = true
 		active = false
+	_advance_phase()
 
 	return {
 		"ok": true,

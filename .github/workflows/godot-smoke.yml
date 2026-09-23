@@ -58,3 +58,6 @@ jobs:
         run: |
           godot --headless --path . --script res://tests/upgrade_selector_test.gd
           godot --headless --path . --script res://tests/upgrade_selector_integration_test.gd
+
+      - name: Run BOSS-01 encounter tests
+        run: godot --headless --path . --script res://tests/boss_encounter_test.gd
