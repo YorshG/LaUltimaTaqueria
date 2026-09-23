@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/board/BoardView.tscn" id="2_board"]
 [ext_resource type="PackedScene" path="res://scenes/lane/LaneField.tscn" id="3_lane"]
 [ext_resource type="Script" path="res://scripts/waves/wave_director.gd" id="4_wave"]
 [ext_resource type="Script" path="res://scripts/upgrades/upgrade_selector.gd" id="5_upgrade"]
+[ext_resource type="PackedScene" path="res://scenes/ui/Hud.tscn" id="6_hud"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -31,16 +32,15 @@ theme_override_constants/margin_bottom = 48
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="Status" type="Label" parent="Margin/Content"]
+[node name="Hud" parent="Margin/Content" instance=ExtResource("6_hud")]
+unique_name_in_owner = true
 layout_mode = 2
-text = "La Última Taquería — M1"
-horizontal_alignment = 1
 
 [node name="BoardHost" type="AspectRatioContainer" parent="Margin/Content"]
 layout_mode = 2
 size_flags_vertical = 3
 ratio = 1.0
-stretch_mode = 3
+stretch_mode = 2
 
 [node name="BoardView" parent="Margin/Content/BoardHost" instance=ExtResource("2_board")]
 unique_name_in_owner = true

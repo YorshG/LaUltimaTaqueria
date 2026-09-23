@@ -43,3 +43,6 @@ jobs:
 
       - name: Run BOSS-01 encounter tests
         run: godot --headless --path . --script res://tests/boss_encounter_test.gd
+
+      - name: Run UI-01 reputation and HUD tests
+        run: godot --headless --path . --script res://tests/reputation_test.gd
