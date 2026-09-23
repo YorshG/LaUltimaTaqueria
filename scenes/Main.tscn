@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/board/BoardView.tscn" id="2_board"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://scripts/waves/wave_director.gd" id="4_wave"]
 [ext_resource type="Script" path="res://scripts/upgrades/upgrade_selector.gd" id="5_upgrade"]
 [ext_resource type="PackedScene" path="res://scenes/ui/Hud.tscn" id="6_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/FeedbackLayer.tscn" id="7_feedback"]
+[ext_resource type="Script" path="res://scripts/ui/feedback_audio.gd" id="8_audio"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -36,6 +38,10 @@ theme_override_constants/separation = 24
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="FeedbackLayer" parent="Margin/Content" instance=ExtResource("7_feedback")]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="BoardHost" type="AspectRatioContainer" parent="Margin/Content"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -58,3 +64,8 @@ script = ExtResource("4_wave")
 [node name="UpgradeSelector" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("5_upgrade")
+
+[node name="FeedbackAudio" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+script = ExtResource("8_audio")
