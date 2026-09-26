@@ -52,3 +52,6 @@ jobs:
 
       - name: Run SAV-01 local persistence tests
         run: godot --headless --path . --script res://tests/save_service_test.gd
+
+      - name: Run SAV-02 safe recovery tests
+        run: godot --headless --path . --script res://tests/save_recovery_test.gd

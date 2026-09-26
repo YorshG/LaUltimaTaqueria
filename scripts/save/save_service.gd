@@ -10,10 +10,14 @@ const DEFAULT_SAVE_PATH := "user://save.json"
 const MAX_SAFE_INTEGER := 9007199254740991
 const MAX_PREFERENCE_DEPTH := 32
 
+# load_save() keeps its Error return; this reports the last attempted load.
+enum LoadStatus { NOT_LOADED, LOADED, MISSING, RECOVERED, FAILED }
+
 var _save_path: String
 var _record := 0
 var _coins := 0
 var _preferences: Dictionary = {}
+var _last_load_status := LoadStatus.NOT_LOADED
 
 
 # Construction has no filesystem side effects; tests inject an absolute path.
@@ -21,16 +25,39 @@ func _init(save_path: String = DEFAULT_SAVE_PATH) -> void:
 	_save_path = save_path
 
 
-# Missing files yield defaults. Invalid files leave memory and disk untouched.
-# Recovery, backups and migrations are deferred to SAV-02.
+# OK means a valid file loaded, a confirmed missing file yielded defaults, or
+# invalid data was safely quarantined before adopting complete defaults.
+# No defaults are written here. Any filesystem failure preserves memory.
+# A leftover .tmp is ignored and left untouched, never promoted or parsed.
+# Unsupported schemas follow the same quarantine policy; no migration occurs.
 func load_save() -> Error:
+	_last_load_status = LoadStatus.FAILED
 	if not _valid_path():
 		return ERR_INVALID_PARAMETER
-	if not FileAccess.file_exists(_save_path):
-		if DirAccess.dir_exists_absolute(_save_path):
-			return ERR_FILE_CANT_OPEN
+	var directory := DirAccess.open(_save_path.get_base_dir())
+	if directory == null:
+		return DirAccess.get_open_error()
+	# An existence check alone can confuse inaccessible files with absence.
+	# A successful listing also reserves all occupied quarantine names, including
+	# directories, hidden entries and dangling links, under the single-writer rule.
+	directory.include_hidden = true
+	var listing_error := directory.list_dir_begin()
+	if listing_error != OK:
+		return listing_error
+	var entries: Dictionary = {}
+	var entry := directory.get_next()
+	while not entry.is_empty():
+		entries[entry] = true
+		entry = directory.get_next()
+	directory.list_dir_end()
+	var filename := _save_path.get_file()
+	if not _has_entry(directory, entries, filename):
 		_adopt(_defaults())
+		_last_load_status = LoadStatus.MISSING
 		return OK
+	# Recovery only moves regular local files, never directories or links.
+	if directory.dir_exists(filename) or directory.is_link(filename):
+		return ERR_FILE_CANT_OPEN
 	var file := FileAccess.open(_save_path, FileAccess.READ)
 	if file == null:
 		return FileAccess.get_open_error()
@@ -39,13 +66,48 @@ func load_save() -> Error:
 	file.close()
 	if read_error != OK:
 		return read_error
+	var decoded := bytes.get_string_from_utf8()
 	var parser := JSON.new()
-	if parser.parse(bytes.get_string_from_utf8()) != OK:
-		return ERR_PARSE_ERROR
-	if not _valid_state(parser.data):
-		return ERR_INVALID_DATA
-	_adopt(parser.data)
+	# Decoding must not silently replace corrupt UTF-8 inside otherwise valid JSON.
+	if decoded.to_utf8_buffer() == bytes and parser.parse(decoded) == OK and _valid_state(parser.data):
+		_adopt(parser.data)
+		_last_load_status = LoadStatus.LOADED
+		return OK
+	# First free deterministic sibling: .corrupt, .corrupt.1, .corrupt.2, ...
+	# Keep every prior incident byte-for-byte; no rotation or automatic cleanup.
+	var quarantine_name := filename + ".corrupt"
+	var suffix := 0
+	while _has_entry(directory, entries, quarantine_name):
+		suffix += 1
+		quarantine_name = filename + ".corrupt.%d" % suffix
+	var result := _move_to_quarantine(_save_path.get_base_dir().path_join(quarantine_name))
+	if result != OK:
+		return result
+	_adopt(_defaults())
+	_last_load_status = LoadStatus.RECOVERED
 	return OK
+
+
+# Describes only load_save(); setters, save() and reset() do not change it.
+func get_last_load_status() -> LoadStatus:
+	return _last_load_status
+
+
+func _has_entry(directory: DirAccess, entries: Dictionary, filename: String) -> bool:
+	# Listing finds inaccessible entries; filesystem checks also catch aliases
+	# on case-insensitive filesystems (e.g. .CORRUPT must reserve .corrupt).
+	return (
+		entries.has(filename)
+		or directory.file_exists(filename)
+		or directory.dir_exists(filename)
+		or directory.is_link(filename)
+	)
+
+
+func _move_to_quarantine(quarantine_path: String) -> Error:
+	# Same filesystem rename preserves the rejected bytes. As with save(),
+	# concurrent writers to this path are unsupported.
+	return DirAccess.rename_absolute(_save_path, quarantine_path)
 
 
 func save() -> Error:
