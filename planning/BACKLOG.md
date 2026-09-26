@@ -22,7 +22,7 @@ Estados: pendiente, en curso, revisión, terminado.
 | UI-01 | HUD y reputación | Codex | LANE-02 | Estado legible en móvil | P0 | S | terminado |
 | UI-02 | Feedback audiovisual provisional | Codex | REC-01 | Acciones clave distinguibles | P1 | M | terminado |
 | SAV-01 | Guardar récord, monedas y preferencias | Codex | TEC-01 | Esquema versionado y escritura atómica persisten tras reinicio | P1 | M | terminado |
-| SAV-02 | Recuperar guardado inválido | Codex | SAV-01 | Ausente, parcial o corrupto no impide iniciar ni destruye un estado válido | P0 | S | pendiente |
+| SAV-02 | Recuperar guardado inválido | Codex | SAV-01 | Ausente, parcial o corrupto no impide iniciar ni destruye un estado válido | P0 | S | terminado |
 | TST-01 | Pruebas de reglas centrales | Codex | BRD-04,LANE-02 | Suite con semillas fijas y validación de contenido pasa | P0 | M | terminado |
 | TST-02 | Pruebas de reinicio y observación | Codex/Jorge | TST-01,SAV-02 | Reinicios repetidos estables y registro separa hechos de interpretaciones | P1 | S | pendiente |
 | IOS-01 | Exportar build iOS | Codex | M3,PRE-03 | Compila en Xcode, instala y abre en iPhone 17 | P0 | M | pendiente |
