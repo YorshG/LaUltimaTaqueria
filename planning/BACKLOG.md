@@ -24,7 +24,7 @@ Estados: pendiente, en curso, revisión, terminado.
 | SAV-01 | Guardar récord, monedas y preferencias | Codex | TEC-01 | Esquema versionado y escritura atómica persisten tras reinicio | P1 | M | terminado |
 | SAV-02 | Recuperar guardado inválido | Codex | SAV-01 | Ausente, parcial o corrupto no impide iniciar ni destruye un estado válido | P0 | S | terminado |
 | TST-01 | Pruebas de reglas centrales | Codex | BRD-04,LANE-02 | Suite con semillas fijas y validación de contenido pasa | P0 | M | terminado |
-| TST-02 | Pruebas de reinicio y observación | Codex/Jorge | TST-01,SAV-02 | Reinicios repetidos estables y registro separa hechos de interpretaciones | P1 | S | pendiente |
+| TST-02 | Pruebas de reinicio y observación | Codex/Jorge | TST-01,SAV-02 | Reinicios repetidos estables y registro separa hechos de interpretaciones | P1 | S | terminado |
 | IOS-01 | Exportar build iOS | Codex | M3,PRE-03 | Compila en Xcode, instala y abre en iPhone 17 | P0 | M | pendiente |
 | IOS-02 | Medir build iOS | Codex | IOS-01 | Registra frame, memoria, carga y temperatura en iPhone 17 y humo en iPhone 16 Pro Max con build/commit | P0 | S | pendiente |
 | VAL-01 | Dos pruebas independientes | Jorge/hermano | IOS-02 | Formatos completos, sin coaching y con build/commit | P0 | S | pendiente |
