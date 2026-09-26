@@ -55,3 +55,6 @@ jobs:
 
       - name: Run SAV-02 safe recovery tests
         run: godot --headless --path . --script res://tests/save_recovery_test.gd
+
+      - name: Run TST-02 restart stability tests
+        run: bash tests/run_restart_suite.sh
