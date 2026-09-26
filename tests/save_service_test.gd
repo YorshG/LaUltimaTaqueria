@@ -50,6 +50,17 @@ class AtomicProbe:
 		return super._replace_temporary(temp_path)
 
 
+class FailedRecoveryProbe:
+	extends "res://scripts/save/save_service.gd"
+
+	func _init(save_path: String) -> void:
+		super(save_path)
+
+
+	func _move_to_quarantine(_quarantine_path: String) -> Error:
+		return ERR_CANT_CREATE
+
+
 var failures := 0
 var assertions := 0
 var cases := 0
@@ -280,9 +291,10 @@ func _test_failed_reset_preserves_state() -> void:
 
 
 func _test_invalid_load_preserves_state() -> void:
-	# Minimal validation smoke only; corruption recovery and migrations belong to SAV-02.
+	# SAV-02 now recovers logical corruption. Keep SAV-01's transactional
+	# regression by failing the quarantine move; successful recovery has its own suite.
 	var path := _path("invalid_load")
-	var service := Save.new(path)
+	var service := FailedRecoveryProbe.new(path)
 	_set_fixture(service)
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	_expect(file != null, "invalid input fixture opens in the isolated directory")
@@ -291,7 +303,7 @@ func _test_invalid_load_preserves_state() -> void:
 	file.store_string(JSON.stringify({"schema_version": Save.SCHEMA_VERSION, "record": -1, "coins": 0, "preferences": {}}))
 	file.close()
 	var previous_bytes := FileAccess.get_file_as_bytes(path)
-	_expect(service.load_save() != OK, "invalid persisted value is reported without crashing")
+	_expect(service.load_save() == ERR_CANT_CREATE, "failed quarantine is reported without crashing")
 	_expect_fixture(service, "rejected load")
 	_expect(FileAccess.get_file_as_bytes(path) == previous_bytes, "rejected load does not silently rewrite the source file")
 
