@@ -49,3 +49,6 @@ jobs:
 
       - name: Run UI-02 feedback tests
         run: godot --headless --path . --script res://tests/feedback_test.gd
+
+      - name: Run SAV-01 local persistence tests
+        run: godot --headless --path . --script res://tests/save_service_test.gd
