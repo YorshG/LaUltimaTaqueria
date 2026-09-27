@@ -19,12 +19,14 @@ Estados: pendiente, en curso, revisión, terminado.
 | WAV-01 | Director de oleadas | Codex | TEC-02,LANE-01 | Ejecuta agenda y finaliza | P0 | M | terminado |
 | UPG-01 | Elegir una de tres mejoras tras cada oleada | Codex | WAV-01 | Hay cinco elecciones y como máximo una defensa fuerte | P0 | M | terminado |
 | BOSS-01 | Integrar jefe posterior a la quinta | Codex | WAV-01,UPG-01,PRE-02 | Comienza tras la quinta elección; fases comunicadas y resolubles | P0 | M | terminado |
+| UPG-02 | Aplicar efectos de mejoras | Codex | UPG-01,UI-01,BRD-02,REC-01,LANE-02,WAV-01,BOSS-01 | Las 15 mejoras vigentes modifican la partida según `docs/CONTENT_MODEL.md` y D1–D5 de `docs/DECISIONS.md`, con pruebas deterministas y sin romper selección/ofertas | P0 | L | pendiente |
 | UI-01 | HUD y reputación | Codex | LANE-02 | Estado legible en móvil | P0 | S | terminado |
 | UI-02 | Feedback audiovisual provisional | Codex | REC-01 | Acciones clave distinguibles | P1 | M | terminado |
 | SAV-01 | Guardar récord, monedas y preferencias | Codex | TEC-01 | Esquema versionado y escritura atómica persisten tras reinicio | P1 | M | terminado |
 | SAV-02 | Recuperar guardado inválido | Codex | SAV-01 | Ausente, parcial o corrupto no impide iniciar ni destruye un estado válido | P0 | S | terminado |
 | TST-01 | Pruebas de reglas centrales | Codex | BRD-04,LANE-02 | Suite con semillas fijas y validación de contenido pasa | P0 | M | terminado |
 | TST-02 | Pruebas de reinicio y observación | Codex/Jorge | TST-01,SAV-02 | Reinicios repetidos estables y registro separa hechos de interpretaciones | P1 | S | terminado |
+| RST-01 | Reiniciar partida activa con confirmación | Codex | BOSS-01,UI-01,SAV-02,UPG-02 | Con una partida activa, reiniciar exige confirmación; cancelar deja la partida intacta. Confirmar descarta todo el estado runtime anterior e inicia una partida limpia, sin nodos, señales, timers ni estado residual duplicado; no arrastra reputación, oleada, tablero, monstruos, jefe, efectos runtime de mejoras aplicadas ni estado temporal; conserva la metapersistencia local aprobada (récord, monedas y preferencias). Verificado con pruebas deterministas; cierra el requisito de reinicio de M3 | P0 | M | pendiente |
 | IOS-01 | Exportar build iOS | Codex | M3,PRE-03 | Compila en Xcode, instala y abre en iPhone 17 | P0 | M | pendiente |
 | IOS-02 | Medir build iOS | Codex | IOS-01 | Registra frame, memoria, carga y temperatura en iPhone 17 y humo en iPhone 16 Pro Max con build/commit | P0 | S | pendiente |
 | VAL-01 | Dos pruebas independientes | Jorge/hermano | IOS-02 | Formatos completos, sin coaching y con build/commit | P0 | S | pendiente |

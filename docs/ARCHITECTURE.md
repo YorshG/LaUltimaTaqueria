@@ -35,6 +35,8 @@ App
 
 `match_resolved`, `board_recovered`, `dish_created`, `dish_served`, `monster_satisfied`, `reputation_changed`, `wave_completed`, `upgrade_selected`, `run_ended`.
 
+UPG-02 añade `extra_life_consumed` para `second_chance` (D5 en `docs/DECISIONS.md`).
+
 La lógica central debe probarse sin escenas visuales cuando sea posible. Las pruebas de tablero, ofertas y oleadas usarán semillas fijas; los reportes de errores incluirán semilla, build y commit cuando estén disponibles.
 
 ## Persistencia y recuperación
