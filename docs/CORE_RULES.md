@@ -31,4 +31,4 @@ Solo puede seleccionarse una mejora etiquetada como defensa fuerte por partida. 
 
 ## Pausa y reinicio
 
-Pausa manual y automática al perder foco. Los temporizadores de juego se detienen también durante selección de mejoras, pausa, tutorial bloqueante y otros overlays modales. Reinicio requiere confirmación mientras una partida esté activa. Los valores exactos se ajustarán mediante datos.
+Pausa manual y automática al perder foco. Los temporizadores de juego se detienen también durante selección de mejoras, pausa, tutorial bloqueante y otros overlays modales. Reinicio requiere confirmación mientras una partida esté activa (contrato de aceptación en RST-01, `planning/BACKLOG.md`). Los valores exactos se ajustarán mediante datos.
