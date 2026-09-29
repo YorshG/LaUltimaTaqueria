@@ -7,6 +7,7 @@ signal run_ended(payload: Dictionary)
 
 const Registry = preload("res://scripts/content/content_registry.gd")
 const Resolver = preload("res://scripts/recipes/recipe_resolver.gd")
+const Modifiers = preload("res://scripts/upgrades/upgrade_modifiers.gd")
 const Reputation = preload("res://scripts/session/reputation_state.gd")
 const Feedback = preload("res://scripts/ui/feedback_coordinator.gd")
 const DEFAULT_RUN_SEED := 20260921
@@ -92,7 +93,10 @@ func _wire_feedback(localization: Dictionary) -> void:
 func _on_chain_completed(points: Array[Vector2i], ingredient_id: String) -> Dictionary:
 	if recipe_resolver == null or reputation.defeated:
 		return {"ok": false, "target_found": false}
-	var resolution := recipe_resolver.resolve(ingredient_id, points.size())
+	var derived := Modifiers.derive(upgrade_selector.get_active_effects())
+	if not derived.get("ok", false):
+		return derived
+	var resolution := recipe_resolver.resolve(ingredient_id, points.size(), derived["modifiers"])
 	if not resolution.get("ok", false):
 		return resolution
 	var service := lane_field.resolve_dish(resolution)
