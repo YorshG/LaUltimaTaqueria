@@ -19,6 +19,7 @@ func _init() -> void:
 	_test_gesture_and_threshold()
 	_test_cue_contract_and_pcm()
 	await _test_real_signals()
+	await _test_shield_signals()
 	await _test_boss_and_terminal_audio()
 	await _test_audio_policy()
 	await _test_gameplay_independence()
@@ -71,6 +72,9 @@ func _test_cue_contract_and_pcm() -> void:
 	coordinator.on_monster_satisfied({"spawn_sequence": 1})
 	coordinator.on_breach({"spawn_sequence": 2})
 	coordinator.on_breach({"spawn_sequence": 2})
+	coordinator.on_shield_consumed({"spawn_sequence": 2})
+	coordinator.on_shield_consumed({"spawn_sequence": 2})
+	_expect(_ids(events).slice(-2) == ["breach", "shield_consumed"], "breach and shield use independent dedupe in that order")
 	coordinator.on_reputation_changed({"current": 20.0, "maximum": 100.0, "delta": -10.0})
 	coordinator.on_upgrade_selected({"effect": {"type": "modify_reputation", "value": 15}})
 	for phase in content["boss"]["phases"]:
@@ -107,7 +111,8 @@ func _test_cue_contract_and_pcm() -> void:
 		for other in streams:
 			_expect(streams[other] != stream.data, "%s is distinct from %s" % [cue, other])
 		streams[cue] = stream.data
-	_expect(seen.size() == Coordinator.CUE_KEYS.size() and seen.size() == Audio.TONES.size(), "all 12 essential sound cues exercised with visual counterparts")
+	_expect(seen.size() == Coordinator.CUE_KEYS.size() and seen.size() == Audio.TONES.size(), "all 13 essential sound cues exercised with visual counterparts")
+	_expect(_count(events, "shield_consumed") == 1, "duplicate shield has no second cue")
 	_expect(_count(events, "breach") == 1, "duplicate breach has no second cue")
 	_expect(_count(events, "boss_phase_2") == 1 and _count(events, "boss_phase_3") == 1, "phase cues distinct and deduplicated; calm has no cue")
 
@@ -151,6 +156,28 @@ func _test_real_signals() -> void:
 	main.upgrade_selector.select_upgrade(str(offer[0]["id"]))
 	_expect(events.back()["cue_id"] == "upgrade", "real selection announces upgrade")
 	_expect(main.reputation.snapshot() == reputation_before, "feedback does not apply selected upgrade")
+	main.queue_free()
+	await process_frame
+
+
+func _test_shield_signals() -> void:
+	var main = await _create_main()
+	var effect: Dictionary
+	for upgrade in content["upgrades"]:
+		if upgrade["id"] == "safety_shield":
+			effect = upgrade["effect"]
+	main.reputation.apply_selection_effect(1, "safety_shield", effect)
+	var events := _record(main.feedback)
+	var runner: LaneRunner = main.lane_field.spawn_runner(1, 55.0, "M", "nibbler", 30.0)
+	runner.auto_advance = false
+	runner.advance(1000.0)
+	_expect(_ids(events) == ["breach", "shield_consumed"], "real shield signal follows breach without reputation_delta")
+	_expect(events.back()["text_key"] == "feedback.shield_consumed", "shield uses approved localization key")
+	_expect(main.feedback_layer.get_messages().back()["cue_id"] == "shield_consumed", "shield is presented visually")
+	_expect(content["localization"]["feedback.shield_consumed"] == "🛡 Escudo de la casa: daño bloqueado", "approved shield copy is exact")
+	main.lane_field.monster_reached_counter.emit({"monster_id": "nibbler", "spawn_sequence": runner.monster_state.spawn_sequence})
+	main.feedback.on_shield_consumed({"spawn_sequence": runner.monster_state.spawn_sequence})
+	_expect(_ids(events) == ["breach", "shield_consumed"], "duplicate lane and shield reports stay quiet")
 	main.queue_free()
 	await process_frame
 
@@ -201,7 +228,7 @@ func _test_audio_policy() -> void:
 	for _repeat in range(20):
 		audio.request(_audio_payload("selection"))
 	_expect(audio.stream == first_stream and audio._pending.is_empty(), "repetitions do not restart or accumulate sound")
-	for cue in ["chain_valid", "dish_created", "dish_served", "satisfied", "breach", "low_reputation"]:
+	for cue in ["chain_valid", "dish_created", "dish_served", "satisfied", "breach", "shield_consumed", "low_reputation"]:
 		audio.request(_audio_payload(cue))
 	_expect(audio._pending.size() == Audio.MAX_PENDING and audio.max_polyphony == 1, "burst has bounded queue and a single voice")
 	audio.request(_audio_payload("low_reputation"))

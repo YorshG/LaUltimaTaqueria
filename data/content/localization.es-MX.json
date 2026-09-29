@@ -53,6 +53,7 @@
   "feedback.dish_served": "→ Servido",
   "feedback.monster_satisfied": "✓ Satisfecho",
   "feedback.breach": "! Llegó al mostrador",
+  "feedback.shield_consumed": "🛡 Escudo de la casa: daño bloqueado",
   "feedback.reputation_delta": "Reputación {delta}",
   "feedback.low_reputation": "! Reputación baja",
   "feedback.upgrade_selected": "↑ Mejora elegida",

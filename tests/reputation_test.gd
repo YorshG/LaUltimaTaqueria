@@ -32,7 +32,7 @@ func _init() -> void:
 
 func _test_state() -> void:
 	var state := Reputation.new(content)
-	_expect(state.snapshot() == {"current": 100.0, "maximum": 100.0, "defeated": false}, "starts at 100 / 100")
+	_expect(state.snapshot() == {"current": 100.0, "maximum": 100.0, "defeated": false, "shield_charges": 0}, "starts at 100 / 100 without shield charges")
 	for invalid in [-1.0, 0.0, INF, NAN]:
 		_expect(not state.apply_damage(invalid)["ok"], "invalid damage rejected")
 		_expect(not state.restore(invalid)["ok"], "invalid restore rejected")

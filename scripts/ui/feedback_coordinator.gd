@@ -12,6 +12,7 @@ const CUE_KEYS := {
 	"dish_served": "feedback.dish_served",
 	"satisfied": "feedback.monster_satisfied",
 	"breach": "feedback.breach",
+	"shield_consumed": "feedback.shield_consumed",
 	"low_reputation": "feedback.low_reputation",
 	"upgrade": "feedback.upgrade_selected",
 	"boss_phase_2": "feedback.boss_phase_2",
@@ -25,6 +26,7 @@ var _valid_reported := false
 var _was_low := false
 var _ended := false
 var _reported_resolutions: Dictionary = {}
+var _reported_shields: Dictionary = {}
 var _reported_phases: Dictionary = {}
 
 
@@ -88,6 +90,23 @@ func on_reputation_changed(payload: Dictionary) -> void:
 	if low and not _was_low:
 		_emit_cue("low_reputation")
 	_was_low = low
+
+
+func on_reputation_maximum_changed(payload: Dictionary) -> void:
+	if _ended:
+		return
+	var low := _is_low(payload)
+	if low and not _was_low:
+		_emit_cue("low_reputation")
+	_was_low = low
+
+
+func on_shield_consumed(payload: Dictionary) -> void:
+	var sequence := int(payload.get("spawn_sequence", -1))
+	if sequence < 0 or _reported_shields.has(sequence):
+		return
+	_reported_shields[sequence] = true
+	_emit_cue("shield_consumed")
 
 
 func on_upgrade_selected(_payload: Dictionary) -> void:

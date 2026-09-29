@@ -29,6 +29,7 @@ var boss_encounter_active := false
 var _boss_content: Dictionary = {}
 var _normal_wave_ids: Dictionary = {}
 var _completed_normal_waves: Dictionary = {}
+var _breach_results_by_sequence: Dictionary = {}
 
 
 func _ready() -> void:
@@ -39,6 +40,7 @@ func _ready() -> void:
 	recipe_resolver = Resolver.new(content_result["content"])
 	reputation = Reputation.new(content_result["content"])
 	reputation.reputation_changed.connect(hud.show_reputation)
+	reputation.maximum_changed.connect(hud.show_reputation)
 	reputation.run_ended.connect(_on_reputation_run_ended)
 	hud.show_reputation(reputation.snapshot())
 	_wire_feedback(content_result["content"]["localization"])
@@ -82,6 +84,8 @@ func _wire_feedback(localization: Dictionary) -> void:
 	lane_field.monster_satisfied.connect(feedback.on_monster_satisfied)
 	lane_field.monster_reached_counter.connect(feedback.on_breach)
 	reputation.reputation_changed.connect(feedback.on_reputation_changed)
+	reputation.maximum_changed.connect(feedback.on_reputation_maximum_changed)
+	reputation.shield_consumed.connect(feedback.on_shield_consumed)
 	upgrade_selector.upgrade_selected.connect(feedback.on_upgrade_selected)
 	boss_phase_changed.connect(feedback.on_boss_phase_changed)
 	boss_encounter_completed.connect(feedback.on_boss_completed)
@@ -105,7 +109,10 @@ func _on_chain_completed(points: Array[Vector2i], ingredient_id: String) -> Dict
 
 
 func _on_monster_reached_counter(payload: Dictionary) -> void:
-	reputation.apply_breach(payload)
+	var result := reputation.apply_breach(payload)
+	var sequence := int(payload.get("spawn_sequence", -1))
+	if result.get("ok", false) and not _breach_results_by_sequence.has(sequence):
+		_breach_results_by_sequence[sequence] = result.duplicate(true)
 
 
 func _on_reputation_run_ended(payload: Dictionary) -> void:
@@ -130,22 +137,34 @@ func _on_wave_completed(payload: Dictionary) -> Dictionary:
 
 
 # Refresh every selection before the fifth-selection bridge can spawn the boss.
-func _on_upgrade_selected(payload: Dictionary) -> void:
+func _on_upgrade_selected(payload: Dictionary) -> Dictionary:
 	var derived := Modifiers.derive(upgrade_selector.get_active_effects())
 	if not derived.get("ok", false):
-		return
+		return derived
 	if not lane_field.set_global_speed_multiplier(derived["modifiers"]["monster_speed_global"]):
-		return
+		return {"ok": false, "error": "INVALID_GLOBAL_SPEED"}
+	var selected := upgrade_selector.get_selected_upgrades()
+	var selection_number = payload.get("selection_number", null)
+	if typeof(selection_number) != TYPE_INT or selection_number < 1 or selection_number > selected.size():
+		return {"ok": false, "error": "INVALID_SELECTION"}
+	var actual_upgrade: Dictionary = selected[selection_number - 1]
+	if actual_upgrade["id"] != payload.get("upgrade_id", ""):
+		return {"ok": false, "error": "SELECTION_ID_MISMATCH"}
+	var effect: Dictionary = actual_upgrade["effect"]
+	if effect["stat"] in ["reputation_max", "reputation_shield_charges"]:
+		var applied := reputation.apply_selection_effect(selection_number, actual_upgrade["id"], effect)
+		if not applied["ok"]:
+			return applied
 	if reputation.defeated:
-		return
+		return {"ok": false, "error": "RUN_ENDED"}
 	if boss_has_started or not payload.get("is_final_selection", false):
-		return
+		return {"ok": true}
 	if not upgrade_selector.is_selection_complete():
-		return
+		return {"ok": true}
 	if upgrade_selector.get_selection_count() != UpgradeSelector.MAX_SELECTIONS:
-		return
+		return {"ok": true}
 	if _completed_normal_waves.size() != _normal_wave_ids.size():
-		return
+		return {"ok": true}
 	boss_has_started = true
 	boss_encounter_active = true
 	boss_runner = lane_field.spawn_runner(
@@ -162,6 +181,7 @@ func _on_upgrade_selected(payload: Dictionary) -> void:
 		"spawn_sequence": boss_runner.monster_state.spawn_sequence,
 		"lane": boss_runner.monster_state.lane,
 	})
+	return {"ok": true}
 
 
 func _on_boss_phase_changed(phase: Dictionary) -> void:
@@ -183,6 +203,9 @@ func _complete_boss_encounter(payload: Dictionary, was_satisfied: bool) -> void:
 		return
 	if int(payload.get("spawn_sequence", -1)) != boss_runner.monster_state.spawn_sequence:
 		return
+	var breach_result: Dictionary = _breach_results_by_sequence.get(boss_runner.monster_state.spawn_sequence, {})
+	if not was_satisfied and breach_result.is_empty():
+		return
 	boss_encounter_active = false
 	if was_satisfied and not reputation.defeated:
 		hud.show_outcome("victory")
@@ -192,5 +215,5 @@ func _complete_boss_encounter(payload: Dictionary, was_satisfied: bool) -> void:
 		"lane": boss_runner.monster_state.lane,
 		"satisfied": was_satisfied,
 		"reputation_damage_on_breach": _boss_content["reputation_damage_on_breach"],
-		"reputation_damage": 0 if was_satisfied else _boss_content["reputation_damage_on_breach"],
+		"reputation_damage": 0.0 if was_satisfied else breach_result["damage_applied"],
 	})
