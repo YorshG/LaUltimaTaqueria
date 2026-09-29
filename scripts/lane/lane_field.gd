@@ -13,12 +13,26 @@ const EFFECT_BONUS_SATISFACTION_BURST := "bonus_satisfaction_burst"
 
 @onready var lane_hosts: Array[Control] = [%Lane0, %Lane1, %Lane2]
 
+var global_speed_multiplier := 1.0
 var _runners: Array[LaneRunner] = []
 var _next_spawn_sequence := 1
 
 
 func lane_count() -> int:
 	return lane_hosts.size()
+
+
+# Absolute runtime value; refreshing the same derived snapshot is idempotent.
+func set_global_speed_multiplier(value) -> bool:
+	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+		return false
+	if not is_finite(float(value)) or value <= 0.0:
+		return false
+	global_speed_multiplier = float(value)
+	for runner in _runners:
+		if is_instance_valid(runner):
+			runner.set_global_speed_multiplier(global_speed_multiplier)
+	return true
 
 
 func spawn_runner(
@@ -50,6 +64,7 @@ func spawn_runner(
 		hunger_max,
 		_next_spawn_sequence
 	)
+	runner.set_global_speed_multiplier(global_speed_multiplier)
 	runner.reached_counter.connect(_on_runner_reached_counter)
 	_next_spawn_sequence += 1
 	_runners.append(runner)
