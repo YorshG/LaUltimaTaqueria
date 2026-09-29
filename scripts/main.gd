@@ -129,8 +129,13 @@ func _on_wave_completed(payload: Dictionary) -> Dictionary:
 	return upgrade_selector.receive_wave_completed(payload)
 
 
-# Minimal fifth-selection bridge; the boss is not a WaveDirector wave.
+# Refresh every selection before the fifth-selection bridge can spawn the boss.
 func _on_upgrade_selected(payload: Dictionary) -> void:
+	var derived := Modifiers.derive(upgrade_selector.get_active_effects())
+	if not derived.get("ok", false):
+		return
+	if not lane_field.set_global_speed_multiplier(derived["modifiers"]["monster_speed_global"]):
+		return
 	if reputation.defeated:
 		return
 	if boss_has_started or not payload.get("is_final_selection", false):

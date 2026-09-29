@@ -150,7 +150,7 @@ func _test_main_public_selection() -> void:
 	_expect_float(combined["dish"]["special_effect_params"]["amount"], 15.6, "Main burst remains independent of normal satisfaction")
 	_expect_float(combined["served"]["satisfaction_applied"], 107.85, "LaneField adds the separately boosted burst")
 	_expect_float(other.monster_state.hunger_remaining, 2000.0, "no splash or secondary target effect is introduced")
-	_expect_float(target.motion.global_speed_multiplier, 1.0, "slow_salsa runtime remains outside UPG-02b")
+	_expect_float(target.motion.global_speed_multiplier, 0.9, "UPG-02c slow_salsa coexists with satisfaction and boosted effects")
 	main.queue_free()
 	await process_frame
 

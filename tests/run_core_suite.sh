@@ -23,6 +23,7 @@ CORE_SUITE_TESTS=(
   "res://tests/upgrade_selector_test.gd"
   "res://tests/upgrade_modifiers_test.gd"
   "res://tests/upg_02b_satisfaction_test.gd"
+  "res://tests/upg_02c_global_speed_test.gd"
   "res://tests/upgrade_selector_integration_test.gd"
 )
 

@@ -1,6 +1,7 @@
 extends SceneTree
 
 const Registry = preload("res://scripts/content/content_registry.gd")
+const Modifiers = preload("res://scripts/upgrades/upgrade_modifiers.gd")
 const MAIN_SCENE = preload("res://scenes/Main.tscn")
 
 var failures := 0
@@ -92,9 +93,12 @@ func _test_full_encounter() -> void:
 	_expect(boss.motion.speed_relative == float(content["boss"]["speed"]), "boss speed must come from content")
 	_expect(boss.motion.phase_multiplier == 1.0, "boss must start with phase multiplier 1.0")
 	_expect(state.get_current_phase()["behavior_tag"] == "calm", "initial cue must be calm")
-	_expect(is_equal_approx(boss.effective_speed(), 0.025), "boss must use existing movement formula")
+	var derived := Modifiers.derive(main.upgrade_selector.get_active_effects())
+	var global_speed := float(derived["modifiers"]["monster_speed_global"])
+	_expect(is_equal_approx(boss.motion.global_speed_multiplier, global_speed), "boss must inherit selected upgrades")
+	_expect(is_equal_approx(boss.effective_speed(), 0.025 * global_speed), "boss must use existing movement formula")
 	boss.advance(2.0)
-	_expect(is_equal_approx(boss.motion.progress, 0.05), "boss must advance using existing lane motion")
+	_expect(is_equal_approx(boss.motion.progress, 0.05 * global_speed), "boss must advance using existing lane motion")
 	main.upgrade_selector.upgrade_selected.emit(final_selection)
 	_expect(starts.size() == 1 and main.boss_runner == boss, "duplicate fifth selection must not respawn boss")
 
@@ -104,7 +108,7 @@ func _test_full_encounter() -> void:
 	_expect(state.hunger_remaining == 180.0 and state.phase_index == 1, "exact 60 percent boundary must enter phase 2")
 	_expect(boss.motion.phase_multiplier == 1.25, "phase 2 must apply multiplier 1.25 immediately")
 	_expect(state.get_current_phase()["behavior_tag"] == "phase2_transition_cue_cosmetic_only", "phase 2 tag must remain metadata")
-	_expect(is_equal_approx(boss.effective_speed(), 0.03125), "phase 2 must use existing movement formula")
+	_expect(is_equal_approx(boss.effective_speed(), 0.03125 * global_speed), "phase 2 must use existing movement formula")
 	main.lane_field.resolve_dish(_dish(89.0))
 	_expect(state.phase_index == 1, "91 hunger must remain phase 2")
 	main.lane_field.resolve_dish(_dish(1.0))
