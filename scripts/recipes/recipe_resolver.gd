@@ -7,6 +7,7 @@ const UNKNOWN_INGREDIENT := "UNKNOWN_INGREDIENT"
 const NO_RECIPE_FOR_INGREDIENT := "NO_RECIPE_FOR_INGREDIENT"
 const AMBIGUOUS_RECIPE := "AMBIGUOUS_RECIPE"
 const INVALID_CONTENT_STATE := "INVALID_CONTENT_STATE"
+const INVALID_MODIFIERS := "INVALID_MODIFIERS"
 
 const BASIC_MULTIPLIER := 1.0
 const CHAIN_BONUS_MULTIPLIER := 1.5
@@ -80,7 +81,7 @@ func set_content(validated_content: Dictionary) -> void:
 		_recipes_by_ingredient[ingredient_id].append(item.duplicate(true))
 
 
-func resolve(ingredient_id: String, chain_length: int) -> Dictionary:
+func resolve(ingredient_id: String, chain_length: int, modifiers = {}) -> Dictionary:
 	if chain_length < 3:
 		return _failure(
 			INVALID_CHAIN_LENGTH,
@@ -116,6 +117,17 @@ func resolve(ingredient_id: String, chain_length: int) -> Dictionary:
 			"multiple recipes found for ingredient: %s" % ingredient_id
 		)
 
+	# Accept the full derived snapshot, but consume only UPG-02b's four stats.
+	if typeof(modifiers) != TYPE_DICTIONARY:
+		return _failure(INVALID_MODIFIERS, "modifiers must be an object")
+	for stat in modifiers:
+		if typeof(stat) != TYPE_STRING or not _is_finite_number(modifiers[stat]):
+			return _failure(INVALID_MODIFIERS, "modifier keys must be strings and values finite numbers")
+	var flat_bonus := float(modifiers.get("satisfaction_flat_bonus", 0.0))
+	var chain_bonus := float(modifiers.get("chain4_satisfaction_bonus", 0.0))
+	var satisfaction_multiplier := float(modifiers.get("satisfaction_multiplier", 1.0))
+	var special_multiplier := float(modifiers.get("special_effect_power_multiplier", 1.0))
+
 	var recipe: Dictionary = candidates[0]
 	var ingredient: Dictionary = _ingredients_by_id[ingredient_id]
 	var chain_tier := "basic"
@@ -123,18 +135,37 @@ func resolve(ingredient_id: String, chain_length: int) -> Dictionary:
 	var special_effect_triggered := false
 	if chain_length == 4:
 		chain_tier = "chain4"
-		chain_multiplier = CHAIN_BONUS_MULTIPLIER
+		chain_multiplier = CHAIN_BONUS_MULTIPLIER + chain_bonus
 	elif chain_length >= 5:
 		chain_tier = "chain5_plus"
-		chain_multiplier = CHAIN_BONUS_MULTIPLIER
+		chain_multiplier = CHAIN_BONUS_MULTIPLIER + chain_bonus
 		special_effect_triggered = true
 
 	var base_satisfaction := float(recipe["satisfaction"])
+	# D4: flat -> chain -> satisfaction multipliers; never round.
+	var satisfaction_final := (base_satisfaction + flat_bonus) * chain_multiplier * satisfaction_multiplier
+	if not is_finite(satisfaction_final):
+		return _failure(INVALID_MODIFIERS, "satisfaction_final must remain finite")
 	var special_effect := ""
 	var special_effect_params := {}
 	if special_effect_triggered:
 		special_effect = str(ingredient["special_effect"])
 		special_effect_params = ingredient["special_effect_params"].duplicate(true)
+		var power_param := ""
+		match special_effect:
+			"brief_stun":
+				power_param = "duration_sec"
+			"bonus_satisfaction_burst":
+				power_param = "amount"
+		# reputation_small_restore scaling is deliberately deferred to UPG-02e.
+		if not power_param.is_empty():
+			if not _is_finite_number(special_effect_params.get(power_param)):
+				return _failure(INVALID_CONTENT_STATE, "special effect power must be finite")
+			# D4: this additional effect never receives satisfaction modifiers.
+			var power := float(special_effect_params[power_param]) * special_multiplier
+			if not is_finite(power):
+				return _failure(INVALID_MODIFIERS, "special effect power must remain finite")
+			special_effect_params[power_param] = power
 
 	return {
 		"ok": true,
@@ -144,7 +175,7 @@ func resolve(ingredient_id: String, chain_length: int) -> Dictionary:
 		"chain_tier": chain_tier,
 		"base_satisfaction": base_satisfaction,
 		"chain_multiplier": chain_multiplier,
-		"satisfaction_final": base_satisfaction * chain_multiplier,
+		"satisfaction_final": satisfaction_final,
 		"targeting": str(recipe["targeting"]),
 		"special_effect_triggered": special_effect_triggered,
 		"special_effect": special_effect,

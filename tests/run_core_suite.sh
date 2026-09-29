@@ -22,6 +22,7 @@ CORE_SUITE_TESTS=(
   "res://tests/wave_director_test.gd"
   "res://tests/upgrade_selector_test.gd"
   "res://tests/upgrade_modifiers_test.gd"
+  "res://tests/upg_02b_satisfaction_test.gd"
   "res://tests/upgrade_selector_integration_test.gd"
 )
 
