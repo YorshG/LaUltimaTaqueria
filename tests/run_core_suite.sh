@@ -21,6 +21,7 @@ CORE_SUITE_TESTS=(
   "res://tests/lane_integration_test.gd"
   "res://tests/wave_director_test.gd"
   "res://tests/upgrade_selector_test.gd"
+  "res://tests/upgrade_modifiers_test.gd"
   "res://tests/upgrade_selector_integration_test.gd"
 )
 
