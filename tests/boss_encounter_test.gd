@@ -154,6 +154,7 @@ func _test_breach() -> void:
 	main.lane_field.monster_reached_counter.emit({"spawn_sequence": -1})
 	_expect(main.boss_encounter_active, "unrelated resolution must not end boss encounter")
 	var boss: LaneRunner = main.boss_runner
+	var reputation_before: float = main.reputation.current
 	boss.advance(1000.0)
 	_expect(not boss.monster_state.active and not boss.monster_state.satisfied, "breach must retire boss unsatisfied")
 	_expect(not boss.is_targetable() and not main.boss_encounter_active, "breach must end encounter and targeting")
@@ -161,7 +162,8 @@ func _test_breach() -> void:
 	if completions.size() == 1:
 		_expect(not completions[0]["satisfied"], "breach outcome must be unsatisfied")
 		_expect(completions[0]["reputation_damage_on_breach"] == 40, "breach contract must preserve damage 40")
-		_expect(completions[0]["reputation_damage"] == content["boss"]["reputation_damage_on_breach"], "damage must come from content")
+		_expect(completions[0]["reputation_damage"] == 40.0, "unshielded boss at full reputation applies content damage")
+		_expect(completions[0]["reputation_damage"] == reputation_before - main.reputation.current, "completion reports actual reputation lost")
 	boss.advance(1000.0)
 	main.upgrade_selector.upgrade_selected.emit(final_selection)
 	_expect(completions.size() == 1 and not main.boss_encounter_active, "breached encounter must not restart or resolve twice")
