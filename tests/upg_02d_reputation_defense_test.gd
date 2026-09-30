@@ -6,7 +6,8 @@ const Feedback = preload("res://scripts/ui/feedback_coordinator.gd")
 const MAIN = preload("res://scenes/Main.tscn")
 const SHIELD_PATH := ["slow_salsa_plus", "taco_power_1", "warm_welcome", "last_stand", "safety_shield"]
 const BOOST_PATH := ["last_stand", "slow_salsa", "taco_power_1", "patient_service", "reputation_boost"]
-const CONTINUOUS_PATH := ["second_chance", "chain5_effect_boost", "extra_bite", "slow_salsa", "taco_power_2"]
+# Keep the unshielded/overkill regression free of active survival effects.
+const CONTINUOUS_PATH := ["last_stand", "slow_salsa", "chain4_boost", "warm_welcome", "taco_power_2"]
 
 # Only seed injection; all offers, storage and signals use the real selector.
 class SeededSelector extends UpgradeSelector:
@@ -69,7 +70,7 @@ func _init() -> void:
 func _test_boost() -> void:
 	for starting in [100.0, 60.0, 22.0]:
 		var state := Reputation.new(content)
-		_expect(state.snapshot() == {"current": 100.0, "maximum": 100.0, "defeated": false, "shield_charges": 0}, "snapshot exposes exactly run state")
+		_expect(state.snapshot() == {"current": 100.0, "maximum": 100.0, "defeated": false, "shield_charges": 0, "extra_life_charges": 0}, "snapshot exposes exactly run state")
 		if starting < 100.0:
 			state.apply_damage(100.0 - starting)
 		var maxima: Array[Dictionary] = []
@@ -108,7 +109,7 @@ func _test_invalid_selections() -> void:
 		_error(state.apply_selection_effect(1, id, effects["reputation_boost"]), "INVALID_UPGRADE_ID")
 	for invalid in [null, [], "effect", 1, true]:
 		_error(state.apply_selection_effect(1, "bad", invalid), "INVALID_EFFECT")
-	for id in ["taco_power_2", "slow_salsa", "last_stand", "warm_welcome", "second_chance"]:
+	for id in ["taco_power_2", "slow_salsa", "last_stand", "warm_welcome", "patient_service"]:
 		_error(state.apply_selection_effect(1, id, effects[id]), "NOT_ONE_SHOT")
 	for stat in ["reputation_max", "reputation_shield_charges"]:
 		for invalid in [0, -1, NAN, INF, -INF, null, true, "1", [], {}]:

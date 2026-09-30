@@ -155,9 +155,8 @@ func resolve(ingredient_id: String, chain_length: int, modifiers = {}) -> Dictio
 		match special_effect:
 			"brief_stun":
 				power_param = "duration_sec"
-			"bonus_satisfaction_burst":
+			"bonus_satisfaction_burst", "reputation_small_restore":
 				power_param = "amount"
-		# reputation_small_restore scaling is deliberately deferred to UPG-02e.
 		if not power_param.is_empty():
 			if not _is_finite_number(special_effect_params.get(power_param)):
 				return _failure(INVALID_CONTENT_STATE, "special effect power must be finite")

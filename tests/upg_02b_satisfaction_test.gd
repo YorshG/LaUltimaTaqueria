@@ -82,8 +82,8 @@ func _test_arithmetic_and_isolation() -> void:
 	var power_burst := resolver.resolve("meat", 5, _modifiers(["taco_power_2", "chain5_effect_boost"]))
 	_expect_float(power_burst["satisfaction_final"], 81.0, "taco_power_2 applies to normal meat satisfaction")
 	_expect_float(power_burst["special_effect_params"]["amount"], 15.6, "burst must not receive taco_power_2 again")
-	# Temporary UPG-02b limit, not the final contract: scale veggie in UPG-02e.
-	_expect(resolver.resolve("veggie", 5, snapshot)["special_effect_params"] == {"amount": 5.0}, "veggie boost stays deferred to UPG-02e")
+	# UPG-02e completes the same independent special-effect scaling for veggie.
+	_expect(resolver.resolve("veggie", 5, snapshot)["special_effect_params"] == {"amount": 6.5}, "veggie receives only the special-effect multiplier")
 	combined["special_effect_params"]["duration_sec"] = 99.0
 	_expect_float(resolver.resolve("tortilla", 5, snapshot)["special_effect_params"]["duration_sec"], 1.3, "output params must be isolated")
 	_expect(snapshot == before and content == source_before, "resolver must preserve modifiers and source content")
@@ -136,8 +136,8 @@ func _test_main_public_selection() -> void:
 	_expect_float(burst["served"]["satisfaction_applied"], 69.6, "LaneField applies 54 + 15.6")
 	main.reputation.apply_damage(20.0)
 	var veggie: Dictionary = main._on_chain_completed(_points(5), "veggie")
-	_expect(veggie["dish"]["special_effect_params"] == {"amount": 5.0}, "UPG-02e pending: boosted snapshot must keep veggie +5")
-	_expect_float(main.reputation.current, 85.0, "actual veggie restoration remains +5 until UPG-02e")
+	_expect(veggie["dish"]["special_effect_params"] == {"amount": 6.5}, "boosted snapshot scales veggie to +6.5")
+	_expect_float(main.reputation.current, 86.5, "actual boosted veggie restoration is +6.5")
 	_select(main, 3, "extra_bite")
 	_complete_board_chain(main)
 	_expect_float(created[-1]["satisfaction_final"], 35.0, "next board dish must reflect the new selection on demand")

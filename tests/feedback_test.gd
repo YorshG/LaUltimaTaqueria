@@ -188,8 +188,10 @@ func _start_boss(main) -> void:
 		main.wave_director.advance(1000.0)
 		for _entry in wave["spawns"]:
 			main.lane_field.resolve_dish(_dish(1000.0))
-		var offer: Array = main.upgrade_selector.get_current_offer()
-		main.upgrade_selector.select_upgrade(str(offer[0]["id"]))
+		# Keep the defeat/audio test lethal after second_chance becomes active.
+		var path := ["last_stand", "slow_salsa", "chain4_boost", "warm_welcome", "taco_power_2"]
+		var choice: Dictionary = main.upgrade_selector.select_upgrade(path[main.upgrade_selector.get_selection_count()])
+		_expect(choice["ok"], "public terminal boss fixture remains selectable")
 
 
 func _test_boss_and_terminal_audio() -> void:

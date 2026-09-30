@@ -143,6 +143,8 @@ func _on_upgrade_selected(payload: Dictionary) -> Dictionary:
 		return derived
 	if not lane_field.set_global_speed_multiplier(derived["modifiers"]["monster_speed_global"]):
 		return {"ok": false, "error": "INVALID_GLOBAL_SPEED"}
+	if not reputation.set_reputation_damage_multiplier(derived["modifiers"]["reputation_damage_taken"]):
+		return {"ok": false, "error": "INVALID_REPUTATION_DAMAGE_MULTIPLIER"}
 	var selected := upgrade_selector.get_selected_upgrades()
 	var selection_number = payload.get("selection_number", null)
 	if typeof(selection_number) != TYPE_INT or selection_number < 1 or selection_number > selected.size():
@@ -151,7 +153,7 @@ func _on_upgrade_selected(payload: Dictionary) -> Dictionary:
 	if actual_upgrade["id"] != payload.get("upgrade_id", ""):
 		return {"ok": false, "error": "SELECTION_ID_MISMATCH"}
 	var effect: Dictionary = actual_upgrade["effect"]
-	if effect["stat"] in ["reputation_max", "reputation_shield_charges"]:
+	if effect["stat"] in ["reputation_max", "reputation_shield_charges", "extra_life_charges"]:
 		var applied := reputation.apply_selection_effect(selection_number, actual_upgrade["id"], effect)
 		if not applied["ok"]:
 			return applied

@@ -32,7 +32,7 @@ func _init() -> void:
 
 func _test_state() -> void:
 	var state := Reputation.new(content)
-	_expect(state.snapshot() == {"current": 100.0, "maximum": 100.0, "defeated": false, "shield_charges": 0}, "starts at 100 / 100 without shield charges")
+	_expect(state.snapshot() == {"current": 100.0, "maximum": 100.0, "defeated": false, "shield_charges": 0, "extra_life_charges": 0}, "starts at 100 / 100 without shield charges")
 	for invalid in [-1.0, 0.0, INF, NAN]:
 		_expect(not state.apply_damage(invalid)["ok"], "invalid damage rejected")
 		_expect(not state.restore(invalid)["ok"], "invalid restore rejected")
@@ -185,8 +185,10 @@ func _test_boss_endings() -> void:
 			main.wave_director.advance(1000.0)
 			for _spawn_entry in wave["spawns"]:
 				main.lane_field.resolve_dish(_dish())
-			var offer: Array = main.upgrade_selector.get_current_offer()
-			main.upgrade_selector.select_upgrade(str(offer[0]["id"]))
+			# Preserve the terminal/no-boost fixture now that second_chance is active.
+			var path := ["last_stand", "slow_salsa", "chain4_boost", "warm_welcome", "taco_power_2"]
+			var choice: Dictionary = main.upgrade_selector.select_upgrade(path[main.upgrade_selector.get_selection_count()])
+			_expect(choice["ok"], "public neutral boss fixture remains selectable")
 		var completions: Array[Dictionary] = []
 		main.boss_encounter_completed.connect(func(payload: Dictionary): completions.append(payload))
 		if ending == "satisfied":
