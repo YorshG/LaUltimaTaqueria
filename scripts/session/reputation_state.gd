@@ -4,6 +4,7 @@ extends RefCounted
 signal reputation_changed(payload: Dictionary)
 signal maximum_changed(payload: Dictionary)
 signal shield_consumed(payload: Dictionary)
+signal extra_life_consumed(payload: Dictionary)
 signal run_ended(payload: Dictionary)
 
 const INITIAL_REPUTATION := 100.0
@@ -12,6 +13,9 @@ var current := INITIAL_REPUTATION
 var maximum := INITIAL_REPUTATION
 var defeated := false
 var shield_charges := 0
+var extra_life_charges := 0
+var reputation_damage_multiplier := 1.0
+var _extra_life_restore_ratio := 0.0
 var _breach_damage_by_id: Dictionary = {}
 var _processed_breaches: Dictionary = {}
 var _applied_selections: Dictionary = {}
@@ -27,7 +31,15 @@ func _init(validated_content: Dictionary = {}) -> void:
 
 
 func snapshot() -> Dictionary:
-	return {"current": current, "maximum": maximum, "defeated": defeated, "shield_charges": shield_charges}
+	return {"current": current, "maximum": maximum, "defeated": defeated,
+		"shield_charges": shield_charges, "extra_life_charges": extra_life_charges}
+
+
+func set_reputation_damage_multiplier(value) -> bool:
+	if typeof(value) not in [TYPE_INT, TYPE_FLOAT] or not is_finite(float(value)) or float(value) <= 0.0:
+		return false
+	reputation_damage_multiplier = float(value)
+	return true
 
 
 # Variant effect lets the defensive API reject malformed input explicitly.
@@ -41,11 +53,22 @@ func apply_selection_effect(selection_number: int, upgrade_id: String, effect) -
 	if defeated:
 		return _result(current, false, "RUN_ENDED")
 	var stat = effect.get("stat", "")
-	if stat not in ["reputation_max", "reputation_shield_charges"]:
+	if stat not in ["reputation_max", "reputation_shield_charges", "extra_life_charges"]:
 		return _result(current, false, "NOT_ONE_SHOT")
 	var expected_type := "modify_reputation" if stat == "reputation_max" else "grant_charge"
 	if effect.get("operation", "") != "add" or effect.get("type", expected_type) != expected_type:
 		return _result(current, false, "INVALID_EFFECT")
+	var restore_ratio := 0.0
+	if stat == "extra_life_charges":
+		if effect.get("type", "") != "grant_charge":
+			return _result(current, false, "INVALID_EFFECT")
+		var params = effect.get("params", null)
+		if typeof(params) != TYPE_DICTIONARY:
+			return _result(current, false, "INVALID_RESTORE_RATIO")
+		var ratio = params.get("restore_ratio", null)
+		if typeof(ratio) not in [TYPE_INT, TYPE_FLOAT] or not is_finite(float(ratio)) or float(ratio) <= 0.0 or float(ratio) > 1.0:
+			return _result(current, false, "INVALID_RESTORE_RATIO")
+		restore_ratio = float(ratio)
 	var value = effect.get("value", null)
 	if typeof(value) not in [TYPE_INT, TYPE_FLOAT] or not is_finite(float(value)) or float(value) <= 0.0:
 		return _result(current, false, "INVALID_AMOUNT")
@@ -56,7 +79,8 @@ func apply_selection_effect(selection_number: int, upgrade_id: String, effect) -
 		# Check representability before converting or adding to the int64 counter.
 		if typeof(value) == TYPE_FLOAT and (value != floorf(value) or value >= 9223372036854775808.0):
 			return _result(current, false, "INVALID_AMOUNT")
-		if shield_charges > 9223372036854775807 - int(value):
+		var charges := extra_life_charges if stat == "extra_life_charges" else shield_charges
+		if charges > 9223372036854775807 - int(value):
 			return _result(current, false, "INVALID_AMOUNT")
 	if _applied_selections.has(selection_number):
 		return _result(current, false, "DUPLICATE_SELECTION")
@@ -65,6 +89,9 @@ func apply_selection_effect(selection_number: int, upgrade_id: String, effect) -
 	var before_maximum := maximum
 	if stat == "reputation_max":
 		maximum += float(value)
+	elif stat == "extra_life_charges":
+		extra_life_charges += int(value)
+		_extra_life_restore_ratio = restore_ratio
 	else:
 		shield_charges += int(value)
 	var result := _result(current, false)
@@ -97,14 +124,22 @@ func apply_breach(payload: Dictionary) -> Dictionary:
 			"shield_charges_remaining": shield_charges})
 		shield_consumed.emit(blocked.duplicate(true))
 		return blocked
-	# UPG-02e will apply damage multipliers here, before the reputation change.
-	# Its atomic second_chance belongs inside that change, before terminal signals.
-	return _breach_result(apply_damage(raw_damage), raw_damage)
+	var mitigated_damage := raw_damage * reputation_damage_multiplier
+	if not is_finite(mitigated_damage) or mitigated_damage < 0.0:
+		return _breach_result(_result(current, false, "INVALID_DAMAGE"), raw_damage)
+	if mitigated_damage == 0.0:
+		return _breach_result(_result(current, false), raw_damage)
+	return _change(mitigated_damage, false, {
+		"damage_requested": raw_damage, "damage_after_multiplier": mitigated_damage,
+		"spawn_sequence": sequence, "monster_id": monster_id,
+	})
 
 
-func _breach_result(result: Dictionary, raw_damage: float, blocked: bool = false) -> Dictionary:
-	result.merge({"damage_requested": raw_damage, "damage_applied": -float(result["delta"]),
-		"shield_consumed": blocked, "prevented_damage": raw_damage if blocked else 0.0})
+func _breach_result(result: Dictionary, raw_damage: float, blocked: bool = false, mitigated_damage: float = 0.0) -> Dictionary:
+	result.merge({"damage_requested": raw_damage, "damage_after_multiplier": mitigated_damage,
+		"damage_applied": maxf(float(result["before"]) - float(result["current"]), 0.0),
+		"shield_consumed": blocked, "prevented_damage": raw_damage if blocked else 0.0,
+		"extra_life_consumed": false})
 	return result
 
 
@@ -130,20 +165,36 @@ func apply_served_dish(resolution: Dictionary, service: Dictionary) -> Dictionar
 	return restore(float(resolution.get("special_effect_params", {}).get("amount", 0.0)))
 
 
-func _change(amount: float, restoring: bool) -> Dictionary:
+func _change(amount: float, restoring: bool, breach: Dictionary = {}) -> Dictionary:
 	if not is_finite(amount) or amount <= 0.0:
 		return _result(current, false, "INVALID_AMOUNT")
 	if defeated:
 		return _result(current, false, "RUN_ENDED")
 	var before := current
-	current = clampf(current + amount if restoring else current - amount, 0.0, maximum)
+	var projected := current + amount if restoring else current - amount
+	var rescued := not restoring and projected <= 0.0 and extra_life_charges > 0
+	if rescued:
+		extra_life_charges -= 1
+		current = maximum * _extra_life_restore_ratio
+	else:
+		current = clampf(projected, 0.0, maximum)
 	var transitioned_to_defeat := current == 0.0
 	defeated = transitioned_to_defeat
 	var result := _result(before, transitioned_to_defeat)
-	if current != before:
+	if not restoring:
+		result = _breach_result(result, float(breach.get("damage_requested", amount)), false, amount)
+		result.merge({"spawn_sequence": int(breach.get("spawn_sequence", -1)),
+			"monster_id": str(breach.get("monster_id", ""))})
+	if rescued:
+		result.merge({"extra_life_consumed": true, "restore_ratio": _extra_life_restore_ratio,
+			"restored_to": current}, true)
+	# Freeze the complete transaction before any reentrant observer can run.
+	var ending := snapshot()
+	if rescued:
+		extra_life_consumed.emit(result.duplicate(true))
+	if rescued or result["delta"] != 0.0:
 		reputation_changed.emit(result.duplicate(true))
 	if transitioned_to_defeat:
-		var ending := snapshot()
 		ending["outcome"] = "defeat"
 		ending["reason"] = "reputation_depleted"
 		run_ended.emit(ending)
