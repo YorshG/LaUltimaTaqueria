@@ -83,14 +83,15 @@ func select_nearest_target() -> LaneRunner:
 
 func resolve_dish(resolution: Dictionary) -> Dictionary:
 	if not resolution.get("ok", false):
-		return {"ok": false, "target_found": false}
+		return {"ok": false, "target_found": false, "splash": {}}
 
 	var target := select_nearest_target()
 	var created_payload := _dish_created_payload(resolution, target != null)
 	dish_created.emit(created_payload)
 	if target == null:
-		return {"ok": true, "target_found": false, "dish": created_payload}
+		return {"ok": true, "target_found": false, "dish": created_payload, "splash": {}}
 
+	var primary_lane := target.monster_state.lane
 	var transitioned_to_satisfied := false
 	var satisfaction_applied := 0.0
 	var base_result := target.monster_state.apply_satisfaction(
@@ -103,6 +104,7 @@ func resolve_dish(resolution: Dictionary) -> Dictionary:
 			"target_found": true,
 			"dish": created_payload,
 			"satisfaction_result": base_result,
+			"splash": {},
 		}
 	satisfaction_applied += float(base_result["satisfaction_applied"])
 	transitioned_to_satisfied = base_result["transitioned_to_satisfied"]
@@ -124,6 +126,13 @@ func resolve_dish(resolution: Dictionary) -> Dictionary:
 						or burst_result["transitioned_to_satisfied"]
 					)
 
+	# D7: finish primary, special and splash mutations before service signals.
+	var splash := _apply_splash(resolution, target, primary_lane)
+	var primary_satisfied_payload := {
+		"spawn_sequence": target.monster_state.spawn_sequence,
+		"monster_id": target.monster_state.monster_id,
+		"lane": primary_lane,
+	}
 	var served_payload := {
 		"spawn_sequence": target.monster_state.spawn_sequence,
 		"lane": target.monster_state.lane,
@@ -132,10 +141,12 @@ func resolve_dish(resolution: Dictionary) -> Dictionary:
 	}
 	dish_served.emit(served_payload)
 	if transitioned_to_satisfied:
+		monster_satisfied.emit(primary_satisfied_payload)
+	if splash.get("monster_became_satisfied", false):
 		monster_satisfied.emit({
-			"spawn_sequence": target.monster_state.spawn_sequence,
-			"monster_id": target.monster_state.monster_id,
-			"lane": target.monster_state.lane,
+			"spawn_sequence": splash["spawn_sequence"],
+			"monster_id": splash["monster_id"],
+			"lane": splash["lane"],
 		})
 
 	return {
@@ -144,6 +155,37 @@ func resolve_dish(resolution: Dictionary) -> Dictionary:
 		"dish": created_payload,
 		"served": served_payload,
 		"monster_became_satisfied": transitioned_to_satisfied,
+		"splash": splash,
+	}
+
+
+func _apply_splash(resolution: Dictionary, primary: LaneRunner, lane: int) -> Dictionary:
+	var amount := float(resolution.get("splash_satisfaction", 0.0))
+	if int(resolution.get("chain_length", 0)) < 4 or not is_finite(amount) or amount <= 0.0:
+		return {}
+
+	# Selection deliberately happens after primary mutations, with existing priority.
+	var secondary: LaneRunner = null
+	for runner in _runners:
+		if not is_instance_valid(runner) or runner == primary or not runner.is_targetable():
+			continue
+		if runner.monster_state.lane != lane:
+			continue
+		if secondary == null or _is_higher_priority(runner, secondary):
+			secondary = runner
+	if not is_instance_valid(secondary) or not secondary.is_targetable():
+		return {}
+	var result := secondary.monster_state.apply_satisfaction(amount)
+	if not result.get("ok", false):
+		return {}
+	return {
+		"spawn_sequence": secondary.monster_state.spawn_sequence,
+		"lane": secondary.monster_state.lane,
+		"monster_id": secondary.monster_state.monster_id,
+		"satisfaction_requested": amount,
+		"satisfaction_applied": result["satisfaction_applied"],
+		"hunger_remaining_after": result["hunger_remaining_after"],
+		"monster_became_satisfied": result["transitioned_to_satisfied"],
 	}
 
 

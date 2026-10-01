@@ -117,7 +117,7 @@ func resolve(ingredient_id: String, chain_length: int, modifiers = {}) -> Dictio
 			"multiple recipes found for ingredient: %s" % ingredient_id
 		)
 
-	# Accept the full derived snapshot, but consume only UPG-02b's four stats.
+	# Accept the full derived snapshot; splash remains separate from primary power.
 	if typeof(modifiers) != TYPE_DICTIONARY:
 		return _failure(INVALID_MODIFIERS, "modifiers must be an object")
 	for stat in modifiers:
@@ -127,6 +127,8 @@ func resolve(ingredient_id: String, chain_length: int, modifiers = {}) -> Dictio
 	var chain_bonus := float(modifiers.get("chain4_satisfaction_bonus", 0.0))
 	var satisfaction_multiplier := float(modifiers.get("satisfaction_multiplier", 1.0))
 	var special_multiplier := float(modifiers.get("special_effect_power_multiplier", 1.0))
+
+	var splash_satisfaction := float(modifiers.get("chain4_splash_satisfaction", 0.0)) if chain_length >= 4 else 0.0
 
 	var recipe: Dictionary = candidates[0]
 	var ingredient: Dictionary = _ingredients_by_id[ingredient_id]
@@ -175,6 +177,7 @@ func resolve(ingredient_id: String, chain_length: int, modifiers = {}) -> Dictio
 		"base_satisfaction": base_satisfaction,
 		"chain_multiplier": chain_multiplier,
 		"satisfaction_final": satisfaction_final,
+		"splash_satisfaction": splash_satisfaction,
 		"targeting": str(recipe["targeting"]),
 		"special_effect_triggered": special_effect_triggered,
 		"special_effect": special_effect,
