@@ -109,7 +109,7 @@
       "chain4_boost",
       "chain5_effect_boost"
     ],
-    "notes": "[Hipótesis] +0.1 = +10% de margen de detección al tocar cada celda durante el trazo; la unidad real depende de Codex y de la prueba en dispositivo."
+    "notes": "+0.10 agrega a cada lado un margen de detección del 10% del menor lado de cada celda en espacio canvas, según D8. Perceptibilidad y comodidad final pendientes de validación física en dispositivo."
   },
   {
     "id": "reputation_boost",

@@ -29,6 +29,7 @@ CORE_SUITE_TESTS=(
   "res://tests/upg_02e_survival_test.gd"
   "res://tests/upg_02f_conditionals_test.gd"
   "res://tests/upg_02g_assist_serve_test.gd"
+  "res://tests/upg_02h_steady_hands_test.gd"
   "res://tests/upgrade_selector_integration_test.gd"
 )
 
