@@ -30,6 +30,8 @@ var _boss_content: Dictionary = {}
 var _normal_wave_ids: Dictionary = {}
 var _completed_normal_waves: Dictionary = {}
 var _breach_results_by_sequence: Dictionary = {}
+var _encounter_token := 0
+var _first_dish_pending := false
 
 
 func _ready() -> void:
@@ -59,6 +61,7 @@ func _ready() -> void:
 		push_error("UPG-01 temporary wiring could not start UpgradeSelector run")
 		return
 	board_view.chain_completed.connect(_on_chain_completed)
+	wave_director.monster_spawned.connect(_on_wave_monster_spawned)
 	wave_director.wave_completed.connect(_on_wave_completed)
 	upgrade_selector.upgrade_selected.connect(_on_upgrade_selected)
 	lane_field.monster_satisfied.connect(_on_boss_satisfied)
@@ -100,12 +103,44 @@ func _on_chain_completed(points: Array[Vector2i], ingredient_id: String) -> Dict
 	var derived := Modifiers.derive(upgrade_selector.get_active_effects())
 	if not derived.get("ok", false):
 		return derived
-	var resolution := recipe_resolver.resolve(ingredient_id, points.size(), derived["modifiers"])
+	var effective: Dictionary = derived["modifiers"].duplicate(true)
+	for conditional in derived["conditional_multipliers"]:
+		var params: Dictionary = conditional["params"]
+		var applies := false
+		match params["condition"]:
+			"first_dish_of_encounter":
+				applies = _first_dish_pending
+			"reputation_below_ratio":
+				applies = reputation.maximum > 0.0 and reputation.current / reputation.maximum < float(params["threshold"])
+		if applies:
+			effective["satisfaction_multiplier"] *= float(conditional["value"])
+	var resolution := recipe_resolver.resolve(ingredient_id, points.size(), effective)
 	if not resolution.get("ok", false):
 		return resolution
+	# Resolution can synchronously finish a wave and start the next encounter.
+	var serving_encounter := _encounter_token
 	var service := lane_field.resolve_dish(resolution)
+	if (
+		serving_encounter == _encounter_token
+		and service.get("ok", false)
+		and service.get("target_found", false)
+		and not service.get("served", {}).is_empty()
+	):
+		_first_dish_pending = false
 	reputation.apply_served_dish(resolution, service)
 	return service
+
+
+func _begin_encounter() -> void:
+	_encounter_token += 1
+	# Track successful service even before warm_welcome is selected.
+	_first_dish_pending = true
+
+
+func _on_wave_monster_spawned(_payload: Dictionary) -> void:
+	# Count resets on every run, including a repeated wave_id.
+	if wave_director.get_spawned_count() == 1:
+		_begin_encounter()
 
 
 func _on_monster_reached_counter(payload: Dictionary) -> void:
@@ -169,6 +204,7 @@ func _on_upgrade_selected(payload: Dictionary) -> Dictionary:
 		return {"ok": true}
 	boss_has_started = true
 	boss_encounter_active = true
+	_begin_encounter()
 	boss_runner = lane_field.spawn_runner(
 		int(_boss_content["lane"]),
 		float(_boss_content["speed"]),

@@ -26,6 +26,7 @@ CORE_SUITE_TESTS=(
   "res://tests/upg_02c_global_speed_test.gd"
   "res://tests/upg_02d_reputation_defense_test.gd"
   "res://tests/upg_02e_survival_test.gd"
+  "res://tests/upg_02f_conditionals_test.gd"
   "res://tests/upgrade_selector_integration_test.gd"
 )
 

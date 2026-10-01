@@ -34,7 +34,7 @@ func _init() -> void:
 	_test_arithmetic_and_isolation()
 	_test_invalid_modifiers()
 	await _test_main_public_selection()
-	await _test_deferred_conditionals()
+	await _test_live_conditionals_without_encounter()
 	await _test_main_failures_are_atomic()
 	if failures == 0:
 		print("UPG-02b tests passed: %d checks; D4 arithmetic, boosted effects, public selection, neutral path and atomic failures." % checks)
@@ -155,7 +155,7 @@ func _test_main_public_selection() -> void:
 	await process_frame
 
 
-func _test_deferred_conditionals() -> void:
+func _test_live_conditionals_without_encounter() -> void:
 	var main = MAIN.instantiate()
 	get_root().add_child(main)
 	await process_frame
@@ -169,9 +169,9 @@ func _test_deferred_conditionals() -> void:
 	main.reputation.apply_damage(81.0)
 	for _repeat in range(2):
 		var result: Dictionary = main._on_chain_completed(_points(3), "tortilla")
-		_expect_float(result["served"]["satisfaction_applied"], 30.0, "neither first dish nor low reputation may activate deferred conditionals")
+		_expect_float(result["served"]["satisfaction_applied"], 37.5, "last_stand applies at 19%; direct spawn does not arm warm_welcome")
 	var chain4: Dictionary = main._on_chain_completed(_points(4), "tortilla")
-	_expect_float(chain4["served"]["satisfaction_applied"], 48.0, "real chain4_boost selection reaches LaneField")
+	_expect_float(chain4["served"]["satisfaction_applied"], 60.0, "chain4_boost composes with live last_stand")
 	main.queue_free()
 	await process_frame
 
