@@ -291,7 +291,7 @@
       "taco_power_1",
       "chain4_boost"
     ],
-    "notes": "El primer platillo servido en cada encuentro tiene el doble de satisfacción. [Hipótesis] un encuentro es cualquiera de las cinco oleadas normales o el combate contra el jefe; así, obtenerla en la quinta selección (justo antes del jefe) sigue teniendo efecto en el encuentro restante."
+    "notes": "El primer platillo servido en cada encuentro tiene el doble de satisfacción. Según UPG-02 D3, un encuentro es cada corrida de una de las cinco oleadas normales o el combate contra el jefe; obtenerla en la quinta selección, justo antes del jefe, sigue teniendo efecto en el encuentro restante."
   },
   {
     "id": "last_stand",

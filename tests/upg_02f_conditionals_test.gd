@@ -76,7 +76,7 @@ func _test_each_wave_and_repeat() -> void:
 	var main = await _create_main()
 	_select_fixture(main, ["warm_welcome"])
 	# warm_welcome is owned before the first run; cover all five IDs and a repeated ID.
-	for wave_id in ["wave_01", "wave_02", "wave_03", "wave_04", "wave_05", "wave_01"]:
+	for wave_id in ["wave_01", "wave_01", "wave_02", "wave_03", "wave_04", "wave_05"]:
 		_start(main, wave_id)
 		_sat(_dish(main), 60.0, "first service doubles in %s" % wave_id)
 		_sat(_dish(main), 30.0, "second service is neutral in %s" % wave_id)
@@ -130,7 +130,16 @@ func _test_failures_and_late_ownership() -> void:
 func _test_public_run(seed_value: int, path: Array) -> void:
 	var main = await _create_main(seed_value)
 	var starts: Array[Dictionary] = []
-	main.boss_started.connect(func(p: Dictionary): starts.append(p))
+	var boss_order := {"watch": false, "spawn_tokens": [], "signal_tokens": []}
+	var boss_lane: Control = main.lane_field.get_lane_host(int(main._boss_content["lane"]))
+	boss_lane.child_entered_tree.connect(func(_node: Node):
+		if boss_order["watch"]:
+			boss_order["spawn_tokens"].append(main._encounter_token)
+	)
+	main.boss_started.connect(func(p: Dictionary):
+		starts.append(p)
+		boss_order["signal_tokens"].append(main._encounter_token)
+	)
 	# Main's existing wave_completed callback offers first. This listener selects
 	# synchronously while the final dish is still inside LaneField.resolve_dish.
 	main.wave_director.wave_completed.connect(func(_p: Dictionary):
@@ -142,11 +151,15 @@ func _test_public_run(seed_value: int, path: Array) -> void:
 		var first := true
 		while main.wave_director.get_pending_count() > 0:
 			var owned: bool = "warm_welcome" in main.upgrade_selector.get_selected_upgrade_ids()
+			if i == 4 and main.wave_director.get_pending_count() == 1:
+				boss_order["watch"] = true
 			var result := _dish(main)
 			_sat(result, 60.0 if owned and first else 30.0, "real run wave first/nonfirst amount")
 			first = false
 		_expect(main.upgrade_selector.get_selection_count() == i + 1, "one selection per completed wave")
 	_expect(starts.size() == 1 and main.boss_has_started, "fifth synchronous selection starts exactly one boss")
+	_expect(boss_order["spawn_tokens"].size() == 1 and boss_order["spawn_tokens"][0] == 6, "boss encounter is armed before boss spawn")
+	_expect(boss_order["signal_tokens"].size() == 1 and boss_order["signal_tokens"][0] == 6, "boss encounter is armed before boss_started")
 	var base := 34.5 if seed_value == 2 else 30.0
 	_sat(_dish(main), base * 2.0, "finishing wave five must not consume newly armed boss bonus")
 	_sat(_dish(main), base, "boss bonus consumed once")

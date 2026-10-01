@@ -10,9 +10,9 @@ Fuentes revisadas completas:
 - [Auditoría previa de Xavier](https://guintosbrothers.slack.com/archives/C0C3LLDUZ6C/p1790781131206969), sin blockers.
 - `docs/CONTENT_MODEL.md`, D1–D6 de `docs/DECISIONS.md` y contenido validado en `data/content/`.
 
-Archivos de implementación: `scripts/main.gd`; pruebas: `tests/upg_02f_conditionals_test.gd` y su UID, `tests/upg_02b_satisfaction_test.gd`, `tests/run_core_suite.sh`; documentación: este documento y aclaración D3 en `docs/DECISIONS.md`.
+Archivos de implementación: `scripts/main.gd`; pruebas: `tests/upg_02f_conditionals_test.gd` y su UID, `tests/upg_02b_satisfaction_test.gd`, `tests/run_core_suite.sh`; documentación: este documento, aclaración D3/RST-01 en `docs/DECISIONS.md` y corrección de la nota descriptiva de `warm_welcome` en `data/content/upgrades.json`.
 
-No se modifican WaveDirector, UpgradeModifiers, RecipeResolver, LaneField, ReputationState, feedback ni JSON. UPG-02g/h, RST-01 e IOS-01 quedan fuera del alcance. `main` remoto se verificó en `a6d88f4c4715a64614ddf3e0a220e76d65304339`; no se promueve ni se hace merge. La entrega es un PR draft exclusivamente hacia `uat`.
+No se modifican WaveDirector, UpgradeModifiers, RecipeResolver, LaneField, ReputationState ni feedback. El JSON sólo cambia texto documental de `warm_welcome`; valores, tipos, parámetros, conflictos y sinergias permanecen intactos. UPG-02g/h, RST-01 e IOS-01 quedan fuera del alcance. `main` remoto se verificó en `a6d88f4c4715a64614ddf3e0a220e76d65304339`; no se promueve ni se hace merge. La entrega es un PR draft exclusivamente hacia `uat`.
 
 ## Comportamiento y auditoría incorporada
 
@@ -34,12 +34,12 @@ La nueva suite usa selección pública, contenido real y semillas fijas. La subc
 
 | Caso | Evidencia |
 |---|---|
-| Cinco oleadas y repetición de `wave_01` | Primer servicio 60, segundo 30; countdown sin target no consume. Oferta pública previa concede `warm_welcome` para ejercitar también la primera oleada |
+| Cinco oleadas y repetición consecutiva de `wave_01` | `wave_01` se ejecuta dos veces seguidas y ambas rearman el primer servicio (60, luego 30); cubre explícitamente que no exista dedupe por `wave_id`, ni siquiera consecutivo |
 | Fallos antes del primer servicio | Sin target, cadena de 2, ingrediente desconocido y target rechazado conservan 60 para el siguiente servicio real |
 | Spawns posteriores | Tras consumir el primero, el siguiente spawn de esa misma corrida sirve 30 |
 | Posesión tardía | Servicio sin mejora 30; obtenerla durante el encuentro sigue en 30; siguiente encuentro sirve 60 |
 | Run real, selección temprana | Semilla 2: `warm_welcome`, `slow_salsa_plus`, `last_stand`, `chain4_boost`, `taco_power_1`; cinco oleadas completas por Main y selección síncrona, primer jefe 69 y segundo 34.5 |
-| Run real, quinta selección | Semilla 5: `slow_salsa`, `safety_shield`, `steady_hands`, `reputation_boost`, `warm_welcome`; primer jefe 60 y segundo 30, sin oleada 6 |
+| Run real, quinta selección | Semilla 5: `slow_salsa`, `safety_shield`, `steady_hands`, `reputation_boost`, `warm_welcome`; primer jefe 60 y segundo 30, sin oleada 6. La prueba observa `_encounter_token == 6` tanto al insertar el runner del jefe como al emitir `boss_started`, fijando el orden de D3 |
 | Umbral y patient_service | Semilla 20260921: `last_stand`, `slow_salsa`, `taco_power_1`, `patient_service`, `reputation_boost`; 23/115 → 34.5, 19.99% → 43.125; recuperación y breaches mitigados 8.5 reevaluados en vivo |
 | Umbral y second_chance | Semilla 2: `slow_salsa_plus`, `taco_power_1`, `warm_welcome`, `last_stand`, `second_chance`; 20/100 → 34.5, 19.99/100 → 43.125; rescate al 25% → 34.5 |
 | D4, tres ingredientes | Semilla 25: `patient_service`, `last_stand`, `warm_welcome`, `chain5_effect_boost`, `taco_power_2`; compara servicios reales con/sin condicionales y con/sin boost especial. Stun 1/1.3 s, burst 12/15.6 y veggie 5/6.5 no reciben ×2 ni ×1.25 ni taco_power |
@@ -49,7 +49,7 @@ La nueva suite usa selección pública, contenido real y semillas fijas. La subc
 ## Resultado local
 
 - Importación headless y escena Main: PASS.
-- `godot --headless --path . --script res://tests/upg_02f_conditionals_test.gd`: **396 checks PASS**.
+- Baseline local del head auditado `f06c2f8`: `godot --headless --path . --script res://tests/upg_02f_conditionals_test.gd`: **396 checks PASS**. El seguimiento NB1/NB2 añade 4 assertions (400 checks totales); su resultado pertenece al CI del nuevo head del PR.
 - `bash tests/run_core_suite.sh`: **19/19 archivos PASS**, incluida UPG-02f y regresión UPG-02a–e.
 - `boss_encounter_test.gd`, `reputation_test.gd`, `feedback_test.gd`, `save_service_test.gd`, `save_recovery_test.gd`: **PASS**.
 - `bash tests/run_restart_suite.sh`: **PASS**; 10/10 arranques de Main, persistencia entre procesos, recuperación y preservación de temporales abandonados.
@@ -61,4 +61,4 @@ La importación inicial dentro del sandbox informó restricciones de certificado
 
 No se ejecutó interacción táctil, evaluación audiovisual, balance ni build/dispositivo iOS. El wiring temporal de Main todavía no inicia automáticamente las oleadas; los tests usan la API pública existente de WaveDirector. No se implementa navegación ni reinicio activo RST-01. La repetición de una oleada aquí valida sólo el rearme de este estado, no la aceptación de selecciones duplicadas ni un reinicio completo de partida.
 
-El estado terminal del CI del commit publicado se registra en el PR y en el reporte de entrega; los resultados locales no se presentan como validación CI independiente del merge base de PR #48.
+Seguimiento de auditoría del 2026-09-30: NB1 queda cubierto con `wave_01` consecutiva; NB2 fija el armado previo al spawn y a `boss_started`; NB3 fecha la aclaración de D3; NB4 elimina la marca `[Hipótesis]` de `warm_welcome`; NB5 incorpora `_encounter_token` y `_first_dish_pending` a RST-01. El estado terminal del CI del nuevo commit se registra en el PR y en el reporte de entrega; los resultados locales previos no se presentan como validación del nuevo head.
