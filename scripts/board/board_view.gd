@@ -31,6 +31,21 @@ var _dragging := false
 var _ingredients: Array[String] = []
 var _board_state = BoardStateModel.new()
 var _board_seed := DEFAULT_BOARD_SEED
+var _input_forgiveness := 0.0
+
+
+func set_input_forgiveness(value) -> bool:
+	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+		return false
+	var next := float(value)
+	if not is_finite(next) or next < 0.0 or next > 1.0:
+		return false
+	_input_forgiveness = next
+	return true
+
+
+func get_input_forgiveness() -> float:
+	return _input_forgiveness
 
 
 func _ready() -> void:
@@ -196,10 +211,35 @@ func _finish_chain() -> void:
 func _coord_at_position(position: Vector2) -> Vector2i:
 	# _gui_input supplies BoardView-local coordinates; cell rects use canvas coordinates.
 	var canvas_position := get_global_transform() * position
+	var rects: Array[Rect2] = []
 	for child in grid.get_children():
-		if child is Control and (child as Control).get_global_rect().has_point(canvas_position):
-			return child.get_meta("coord", Vector2i(-1, -1))
+		rects.append((child as Control).get_global_rect())
+	var index := cell_index_at_canvas_position(canvas_position, rects, _input_forgiveness)
+	if index >= 0:
+		return grid.get_child(index).get_meta("coord", Vector2i(-1, -1))
 	return Vector2i(-1, -1)
+
+
+# Pure D8 geometry. Rects are supplied in stable row-major order, in canvas space.
+static func cell_index_at_canvas_position(point: Vector2, rects: Array[Rect2], forgiveness: float) -> int:
+	for index in range(rects.size()):
+		if rects[index].has_point(point):
+			return index
+	if forgiveness <= 0.0:
+		return -1
+	var nearest := -1
+	var nearest_distance := INF
+	for index in range(rects.size()):
+		var rect := rects[index]
+		var margin := forgiveness * minf(rect.size.x, rect.size.y)
+		if not rect.grow(margin).has_point(point):
+			continue
+		var distance := point.distance_squared_to(rect.get_center())
+		# Strict comparison leaves exact ties with the first (lowest row-major) index.
+		if nearest == -1 or distance < nearest_distance:
+			nearest = index
+			nearest_distance = distance
+	return nearest
 
 
 func _refresh_selection() -> void:

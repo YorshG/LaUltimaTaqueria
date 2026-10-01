@@ -180,6 +180,8 @@ func _on_upgrade_selected(payload: Dictionary) -> Dictionary:
 		return {"ok": false, "error": "INVALID_GLOBAL_SPEED"}
 	if not reputation.set_reputation_damage_multiplier(derived["modifiers"]["reputation_damage_taken"]):
 		return {"ok": false, "error": "INVALID_REPUTATION_DAMAGE_MULTIPLIER"}
+	if not board_view.set_input_forgiveness(derived["modifiers"]["input_forgiveness"]):
+		return {"ok": false, "error": "INVALID_INPUT_FORGIVENESS"}
 	var selected := upgrade_selector.get_selected_upgrades()
 	var selection_number = payload.get("selection_number", null)
 	if typeof(selection_number) != TYPE_INT or selection_number < 1 or selection_number > selected.size():
