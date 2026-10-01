@@ -194,8 +194,10 @@ func _finish_chain() -> void:
 
 
 func _coord_at_position(position: Vector2) -> Vector2i:
+	# _gui_input supplies BoardView-local coordinates; cell rects use canvas coordinates.
+	var canvas_position := get_global_transform() * position
 	for child in grid.get_children():
-		if child is Control and (child as Control).get_global_rect().has_point(position):
+		if child is Control and (child as Control).get_global_rect().has_point(canvas_position):
 			return child.get_meta("coord", Vector2i(-1, -1))
 	return Vector2i(-1, -1)
 
