@@ -19,6 +19,7 @@ var failures := 0
 func _init() -> void:
 	_test_setter()
 	_test_geometry()
+	await _test_non_control_child()
 	for viewport_size in [Vector2i(1080, 1620), Vector2i(1080, 1920), Vector2i(1080, 2400), Vector2i(720, 1280)]:
 		var viewport := _viewport(viewport_size)
 		var main = MAIN.instantiate()
@@ -107,6 +108,45 @@ func _test_geometry() -> void:
 	_expect(_hit(Vector2(-9.95, 50), varying) == -1, "unequal: 99x100 does not use side 100")
 	_expect(_hit(Vector2(191.95, 50), varying) == 1, "unequal: second cell computes its own 8.1 margin")
 	_expect(_hit(Vector2(191.85, 50), varying) == -1, "unequal: second cell does not reuse first cell margin")
+	# Both expansions contain this gap point, but the distance metrics disagree.
+	var metric_rects: Array[Rect2] = [Rect2(0, 0, 100, 100), Rect2(104, 60, 40, 40)]
+	var metric_point := Vector2(100, 33)
+	_expect(not metric_rects[0].has_point(metric_point) and not metric_rects[1].has_point(metric_point), "metric: fixture has no exact hit")
+	_expect(metric_rects[0].grow(100.0).has_point(metric_point) and metric_rects[1].grow(40.0).has_point(metric_point), "metric: both candidates contain point at forgiveness 1.0")
+	_expect(metric_point.distance_squared_to(metric_rects[0].get_center()) == 2789.0 and metric_point.distance_squared_to(metric_rects[1].get_center()) == 2785.0, "metric: squared Euclidean distances are A=2789, B=2785")
+	var offset_a := (metric_point - metric_rects[0].get_center()).abs()
+	var offset_b := (metric_point - metric_rects[1].get_center()).abs()
+	_expect(offset_a.x + offset_a.y == 67.0 and offset_b.x + offset_b.y == 71.0, "metric: Manhattan instead favors A=67 over B=71")
+	_expect(_hit(metric_point, metric_rects, 1.0) == 1, "metric: squared Euclidean chooses B (index 1), not Manhattan A (index 0)")
+
+
+func _test_non_control_child() -> void:
+	var viewport := _viewport(Vector2i(720, 1280))
+	var board := BOARD.instantiate() as BoardView
+	viewport.add_child(board)
+	await _layout()
+	var cells: Array[Control] = []
+	for child in board.grid.get_children():
+		cells.append(child)
+	var non_control := Node.new()
+	non_control.set_meta("coord", Vector2i(99, 99))
+	board.grid.add_child(non_control)
+	board.grid.move_child(non_control, 1)
+	await _layout()
+	_expect(not non_control is Control and board.grid.get_child(1) == non_control, "alignment: non-Control inserted between real cells")
+	_expect(board.grid.get_child(2) == cells[1], "alignment: grid child index differs from geometric cell index")
+	for f in [0.0, 0.1]:
+		_expect(board.set_input_forgiveness(f), "alignment: neutral/active forgiveness accepted")
+		for cell in cells:
+			var local_point := board.get_global_transform().affine_inverse() * cell.get_global_rect().get_center()
+			_expect(board._coord_at_position(local_point) == cell.get_meta("coord"), "alignment: exact geometry returns correct coord despite non-Control child")
+		var outside := board.get_global_transform().affine_inverse() * Vector2(-1000, -1000)
+		_expect(board._coord_at_position(outside) == Vector2i(-1, -1), "alignment: no candidate remains invalid with non-Control child")
+	var second_rect := cells[1].get_global_rect()
+	var gap := Vector2(second_rect.end.x + 1.0, second_rect.get_center().y)
+	_expect(board._coord_at_position(board.get_global_transform().affine_inverse() * gap) == Vector2i(1, 0), "alignment: expanded geometric index maps to second cell coord, not grid child")
+	viewport.queue_free()
+	await process_frame
 
 
 func _viewport(size: Vector2i) -> SubViewport:
