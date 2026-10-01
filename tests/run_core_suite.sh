@@ -11,6 +11,7 @@ GODOT_BIN="${GODOT_BIN:-godot}"
 CORE_SUITE_TESTS=(
   "res://tests/content_registry_test.gd"
   "res://tests/board_view_test.gd"
+  "res://tests/board_input_test.gd"
   "res://tests/chain_path_test.gd"
   "res://tests/board_refill_test.gd"
   "res://tests/board_playability_test.gd"
