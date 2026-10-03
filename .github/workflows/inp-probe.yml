@@ -1,0 +1,31 @@
+name: INP-01 Diagnostic Probe
+
+on:
+  pull_request:
+    paths:
+      - "tests/inp_*"
+      - "tests/run_inp_probe_test.py"
+      - "tests/INPTouchProbe.tscn"
+      - "scripts/board/**"
+      - "scenes/board/**"
+      - ".github/workflows/inp-probe.yml"
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
+      - name: Import without engine diagnostics
+        shell: bash
+        run: |
+          set -o pipefail
+          godot --headless --path . --editor --import 2>&1 | tee /tmp/inp-import.log
+          ! grep -Eiq 'SCRIPT ERROR|Parse Error|Invalid call|ObjectDB.*leak|resources still in use|signal.*already connected|freed instance|^[[:space:]]*ERROR:|leaked at exit' /tmp/inp-import.log
+      - name: Verify observational probe and synthetic input matrix
+        run: python3 tests/run_inp_probe_test.py
