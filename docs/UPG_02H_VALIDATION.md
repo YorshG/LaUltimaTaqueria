@@ -170,3 +170,32 @@ los límites previos; D8 no amplía ese alcance.
 Logs completos, exits y detalle de assertions mutantes quedan fuera del checkout en
 `/private/tmp/upg02h-validation.qJoWBF`. La entrega final registra SHA/PR, scope,
 higiene y estado remoto. CI remoto se reporta por separado, sin inferirlo del éxito local.
+
+## Evidencia posterior al cierre UPG-02 — 2026-10-03
+
+Las cifras **1201** anteriores corresponden a la entrega original y a sus nueve
+experimentos de mutación. Se conservan como historia; no se reejecutaron esas
+mutaciones en esta auditoría. El follow-up `0b9d8a8`, integrado por PR #53 en
+`61dfce3`, agregó **62 checks**: la suite vigente pasa **1263 checks**, dentro de
+core **22/22 PASS**, en Godot `4.7.2.stable.official.ed1daf0bf`.
+
+- **N1, métrica:** el fixture distingue distancia euclídea cuadrada (A=2789,
+  B=2785) de Manhattan (A=67, B=71); debe ganar B. Cierra la falta de sensibilidad
+  que tenía la suite original ante esa sustitución de métrica.
+- **N2, alineación:** un Node no Control intercalado en Grid no puede desalinear
+  los índices de geometría y celda. Verifica centros con forgiveness 0/0.1, ausencia
+  de candidato y gap expandido. El hit-test mantiene arrays paralelos de Controls
+  y rects. Su último caso hereda 0.1 del bucle previo: hacer explícito ese estado
+  es una mejora de fixture pendiente, sin fallo observado.
+
+Este follow-up no endurece `_sync_cells()` ni `_refresh_selection()` para hijos
+arbitrarios: ambos siguen asumiendo celdas en el Grid real. El riesgo es latente
+si se agregan otros hijos y se registra separado del alcance RST/RUN.
+Touch + mouse emulado queda rastreado en **INP-01** del
+[backlog](../planning/BACKLOG.md), con validación física pendiente.
+
+La regresión completa, warnings esperados, seis observaciones heredadas y el
+nombre vigente del workflow están en [M3_BASELINE_VALIDATION](M3_BASELINE_VALIDATION.md).
+La preparación iOS y los contadores para INP-01 están en
+[IOS_01_PREPARATION](IOS_01_PREPARATION.md). Estos resultados no acreditan una
+build física ni la finalización de M3.
