@@ -211,12 +211,15 @@ func _finish_chain() -> void:
 func _coord_at_position(position: Vector2) -> Vector2i:
 	# _gui_input supplies BoardView-local coordinates; cell rects use canvas coordinates.
 	var canvas_position := get_global_transform() * position
+	var cells: Array[Control] = []
 	var rects: Array[Rect2] = []
 	for child in grid.get_children():
-		rects.append((child as Control).get_global_rect())
+		if child is Control:
+			cells.append(child)
+			rects.append(child.get_global_rect())
 	var index := cell_index_at_canvas_position(canvas_position, rects, _input_forgiveness)
 	if index >= 0:
-		return grid.get_child(index).get_meta("coord", Vector2i(-1, -1))
+		return cells[index].get_meta("coord", Vector2i(-1, -1))
 	return Vector2i(-1, -1)
 
 
