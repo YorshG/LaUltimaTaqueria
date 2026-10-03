@@ -32,6 +32,7 @@ func _init() -> void:
 
 func _create_main(seed_value: int = 2):
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	var selector = main.get_node("%UpgradeSelector")
 	selector.set_script(SeededSelector)
 	selector.fixture_seed = seed_value

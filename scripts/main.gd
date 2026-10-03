@@ -4,6 +4,11 @@ signal boss_started(payload: Dictionary)
 signal boss_phase_changed(payload: Dictionary)
 signal boss_encounter_completed(payload: Dictionary)
 signal run_ended(payload: Dictionary)
+signal run_phase_changed(payload: Dictionary)
+
+# Standalone module fixtures opt out before entering the tree; gameplay defaults on.
+@export var auto_start_run := true
+@export_range(0.0, 10.0) var wave_countdown_sec := 0.0
 
 const Registry = preload("res://scripts/content/content_registry.gd")
 const Resolver = preload("res://scripts/recipes/recipe_resolver.gd")
@@ -19,6 +24,8 @@ const DEFAULT_RUN_SEED := 20260921
 @onready var hud: VBoxContainer = %Hud
 @onready var feedback_layer: VBoxContainer = %FeedbackLayer
 @onready var feedback_audio: AudioStreamPlayer = %FeedbackAudio
+@onready var upgrade_choice = %UpgradeChoice
+@onready var run_status: Label = %RunStatus
 
 var recipe_resolver: RecipeResolver
 var reputation: ReputationState
@@ -32,6 +39,99 @@ var _completed_normal_waves: Dictionary = {}
 var _breach_results_by_sequence: Dictionary = {}
 var _encounter_token := 0
 var _first_dish_pending := false
+var _wave_order: Array[String] = []
+var _wave_index := -1
+var _run_phase := "setup"
+var _run_terminal := false
+var _run_outcome := ""
+var _selection_in_progress := false
+var _logical_elapsed_sec := 0.0
+var _started_at_msec := 0
+var _ended_at_msec := 0
+
+
+func _process(delta: float) -> void:
+	if not auto_start_run or _run_terminal:
+		return
+	if _run_phase in ["countdown", "wave", "boss"]:
+		_logical_elapsed_sec += delta
+	if _run_phase == "countdown":
+		if wave_director.state != WaveDirector.State.COUNTDOWN:
+			_set_run_phase("wave")
+		else:
+			run_status.text = "Oleada %d / %d · %d" % [_wave_index + 1, _wave_order.size(), ceili(wave_director.countdown_remaining_sec)]
+
+
+func get_run_snapshot() -> Dictionary:
+	var last_msec := _ended_at_msec if _run_terminal else Time.get_ticks_msec()
+	return {"phase": _run_phase, "terminal": _run_terminal, "outcome": _run_outcome,
+		"wave_number": _wave_index + 1, "logical_elapsed_sec": _logical_elapsed_sec,
+		"wall_elapsed_sec": maxf(0.0, (last_msec - _started_at_msec) / 1000.0),
+		"run_seed": DEFAULT_RUN_SEED, "board_seed": board_view.get_board_seed()}
+
+
+func _set_run_phase(phase: String, notify: bool = true) -> void:
+	_run_phase = phase
+	match phase:
+		"countdown", "wave":
+			run_status.text = "Oleada %d / %d" % [_wave_index + 1, _wave_order.size()]
+		"upgrade":
+			run_status.text = "Oleada %d completada" % (_wave_index + 1)
+		"boss":
+			run_status.text = "El último cliente"
+		"ended":
+			match _run_outcome:
+				"victory": run_status.text = "Victoria"
+				"defeat": run_status.text = "Derrota — reputación agotada"
+				"boss_escaped": run_status.text = "El jefe llegó al mostrador — partida terminada"
+	if notify:
+		run_phase_changed.emit(get_run_snapshot())
+
+
+func _set_gameplay_paused(value: bool) -> void:
+	wave_director.set_paused(value)
+	var mode := Node.PROCESS_MODE_DISABLED if value else Node.PROCESS_MODE_INHERIT
+	board_view.process_mode = mode
+	lane_field.process_mode = mode
+	wave_director.process_mode = mode
+	board_view.mouse_filter = Control.MOUSE_FILTER_IGNORE if value else Control.MOUSE_FILTER_STOP
+
+
+func _start_next_wave() -> Dictionary:
+	if _run_terminal or _wave_index + 1 >= _wave_order.size():
+		return {"ok": false, "error": "NO_NEXT_WAVE"}
+	_wave_index += 1
+	upgrade_choice.dismiss()
+	_set_gameplay_paused(false)
+	_set_run_phase("countdown" if wave_countdown_sec > 0.0 else "wave", false)
+	var result := wave_director.start_wave(_wave_order[_wave_index], wave_countdown_sec)
+	# Observers only see a fully installed transition; callbacks may act synchronously.
+	run_phase_changed.emit(get_run_snapshot())
+	return result
+
+
+func _on_upgrade_choice_requested(upgrade_id: String) -> Dictionary:
+	if _run_terminal or _run_phase != "upgrade" or _selection_in_progress or not can_process():
+		return {"ok": false, "error": "NO_ACTIVE_OFFER"}
+	_selection_in_progress = true
+	var result: Dictionary = upgrade_selector.select_upgrade(upgrade_id)
+	_selection_in_progress = false
+	if not result.get("ok", false):
+		upgrade_choice.allow_choice()
+	return result
+
+
+func _end_playable_run(outcome: String) -> bool:
+	if _run_terminal:
+		return false
+	_run_terminal = true
+	_run_outcome = outcome
+	_ended_at_msec = Time.get_ticks_msec()
+	upgrade_choice.dismiss()
+	_set_gameplay_paused(true)
+	_set_run_phase("ended", false)
+	process_mode = Node.PROCESS_MODE_DISABLED
+	return true
 
 
 func _ready() -> void:
@@ -69,6 +169,15 @@ func _ready() -> void:
 	_boss_content = content_result["content"]["boss"].duplicate(true)
 	for wave in content_result["content"]["waves"]:
 		_normal_wave_ids[str(wave["id"])] = true
+		_wave_order.append(str(wave["id"]))
+	upgrade_choice.configure(content_result["content"]["localization"])
+	upgrade_choice.choice_requested.connect(_on_upgrade_choice_requested)
+	_started_at_msec = Time.get_ticks_msec()
+	if auto_start_run:
+		run_status.show()
+		var started := _start_next_wave()
+		if not started.get("ok", false):
+			push_error("RUN-01 could not start first wave: %s" % started)
 	print("La Última Taquería — BOSS-01 temporary wiring ready.")
 
 
@@ -98,7 +207,7 @@ func _wire_feedback(localization: Dictionary) -> void:
 # Temporary BoardView -> RecipeResolver -> LaneField bridge.
 # A future GameSession implementation can replace this without moving rules into Main.
 func _on_chain_completed(points: Array[Vector2i], ingredient_id: String) -> Dictionary:
-	if recipe_resolver == null or reputation.defeated:
+	if recipe_resolver == null or reputation.defeated or (auto_start_run and (_run_terminal or _run_phase == "upgrade")):
 		return {"ok": false, "target_found": false}
 	var derived := Modifiers.derive(upgrade_selector.get_active_effects())
 	if not derived.get("ok", false):
@@ -151,24 +260,38 @@ func _on_monster_reached_counter(payload: Dictionary) -> void:
 
 
 func _on_reputation_run_ended(payload: Dictionary) -> void:
-	# Terminal stop only; no pause/resume or navigation system.
-	process_mode = Node.PROCESS_MODE_DISABLED
+	var became_terminal := _end_playable_run("defeat")
 	run_ended.emit(payload.duplicate(true))
+	if became_terminal:
+		run_phase_changed.emit(get_run_snapshot())
 
 
 # Temporary WaveDirector -> UpgradeSelector bridge.
 # A future GameSession implementation can replace this without moving rules into Main.
 func _on_wave_completed(payload: Dictionary) -> Dictionary:
-	if reputation.defeated:
+	if reputation.defeated or (auto_start_run and _run_terminal):
 		return {"ok": false, "error": "RUN_ENDED"}
 	var wave_id := str(payload.get("wave_id", ""))
+	if auto_start_run and (
+		_wave_index < 0 or wave_id != _wave_order[_wave_index]
+		or wave_director.current_wave_id != wave_id
+		or wave_director.state != WaveDirector.State.COMPLETED
+		or _run_phase not in ["countdown", "wave"]
+	):
+		return {"ok": false, "error": "UNEXPECTED_WAVE_COMPLETION"}
 	if (
 		_normal_wave_ids.has(wave_id)
 		and wave_director.current_wave_id == wave_id
 		and wave_director.state == WaveDirector.State.COMPLETED
 	):
 		_completed_normal_waves[wave_id] = true
-	return upgrade_selector.receive_wave_completed(payload)
+	var result := upgrade_selector.receive_wave_completed(payload)
+	if auto_start_run and result.get("ok", false):
+		_set_gameplay_paused(true)
+		_set_run_phase("upgrade", false)
+		upgrade_choice.present(result["offer"], _wave_index + 1)
+		run_phase_changed.emit(get_run_snapshot())
+	return result
 
 
 # Refresh every selection before the fifth-selection bridge can spawn the boss.
@@ -194,9 +317,13 @@ func _on_upgrade_selected(payload: Dictionary) -> Dictionary:
 		var applied := reputation.apply_selection_effect(selection_number, actual_upgrade["id"], effect)
 		if not applied["ok"]:
 			return applied
-	if reputation.defeated:
+	if reputation.defeated or (auto_start_run and _run_terminal):
 		return {"ok": false, "error": "RUN_ENDED"}
-	if boss_has_started or not payload.get("is_final_selection", false):
+	if boss_has_started:
+		return {"ok": true}
+	if not payload.get("is_final_selection", false):
+		if auto_start_run and _run_phase == "upgrade" and selection_number == _wave_index + 1:
+			return _start_next_wave()
 		return {"ok": true}
 	if not upgrade_selector.is_selection_complete():
 		return {"ok": true}
@@ -206,6 +333,10 @@ func _on_upgrade_selected(payload: Dictionary) -> Dictionary:
 		return {"ok": true}
 	boss_has_started = true
 	boss_encounter_active = true
+	if auto_start_run:
+		upgrade_choice.dismiss()
+		_set_gameplay_paused(false)
+		_set_run_phase("boss", false)
 	_begin_encounter()
 	boss_runner = lane_field.spawn_runner(
 		int(_boss_content["lane"]),
@@ -221,6 +352,8 @@ func _on_upgrade_selected(payload: Dictionary) -> Dictionary:
 		"spawn_sequence": boss_runner.monster_state.spawn_sequence,
 		"lane": boss_runner.monster_state.lane,
 	})
+	if auto_start_run and not _run_terminal:
+		run_phase_changed.emit(get_run_snapshot())
 	return {"ok": true}
 
 
@@ -249,6 +382,9 @@ func _complete_boss_encounter(payload: Dictionary, was_satisfied: bool) -> void:
 	boss_encounter_active = false
 	if was_satisfied and not reputation.defeated:
 		hud.show_outcome("victory")
+	var became_terminal := false
+	if auto_start_run:
+		became_terminal = _end_playable_run("victory" if was_satisfied and not reputation.defeated else "boss_escaped")
 	boss_encounter_completed.emit({
 		"monster_id": boss_runner.monster_state.monster_id,
 		"spawn_sequence": boss_runner.monster_state.spawn_sequence,
@@ -257,3 +393,5 @@ func _complete_boss_encounter(payload: Dictionary, was_satisfied: bool) -> void:
 		"reputation_damage_on_breach": _boss_content["reputation_damage_on_breach"],
 		"reputation_damage": 0.0 if was_satisfied else breach_result["damage_applied"],
 	})
+	if became_terminal:
+		run_phase_changed.emit(get_run_snapshot())

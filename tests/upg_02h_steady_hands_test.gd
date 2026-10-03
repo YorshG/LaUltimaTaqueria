@@ -23,6 +23,7 @@ func _init() -> void:
 	for viewport_size in [Vector2i(1080, 1620), Vector2i(1080, 1920), Vector2i(1080, 2400), Vector2i(720, 1280)]:
 		var viewport := _viewport(viewport_size)
 		var main = MAIN.instantiate()
+		main.auto_start_run = false
 		viewport.add_child(main)
 		await _layout()
 		_expect(main.upgrade_selector.get_selection_count() == 0, "viewport: no upgrades selected")
@@ -290,6 +291,7 @@ func _test_transformed_viewport() -> void:
 func _test_public_selection() -> void:
 	var viewport := _viewport(Vector2i(1080, 1920))
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	viewport.add_child(main)
 	await _layout()
 	var board: BoardView = main.board_view
@@ -333,6 +335,7 @@ func _test_public_selection() -> void:
 
 func _test_invalid_wiring() -> void:
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	main.get_node("%UpgradeSelector").set_script(InvalidForgivenessSelector)
 	root.add_child(main)
 	await _layout()

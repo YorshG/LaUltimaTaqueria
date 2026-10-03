@@ -66,10 +66,11 @@ func _test_wave_completed_signal_flow(content: Dictionary) -> void:
 func _test_main_wiring() -> void:
 	var packed: PackedScene = load("res://scenes/Main.tscn")
 	var main = packed.instantiate()
+	main.auto_start_run = false
 	get_root().add_child(main)
 	await process_frame
 
-	_expect(main.wave_director.state == Director.State.IDLE, "Main must not auto-start a wave")
+	_expect(main.wave_director.state == Director.State.IDLE, "Main fixture with auto_start_run=false must not auto-start a wave")
 	_expect(main.upgrade_selector.state == Selector.State.IDLE, "Main must start selector without creating an offer")
 	_expect(main.upgrade_selector.get_selection_count() == 0, "Main must not auto-select an upgrade")
 	main.wave_director.wave_completed.emit({"wave_id": "wave_01"})
