@@ -42,15 +42,16 @@ func _run() -> void:
 	await _whole_run_reset()
 	await _charges_and_forgiveness()
 	await _terminal_and_audio()
+	await _reentrant_terminal_restarts()
 	await _stale_callbacks_and_timers()
 	await _real_modal_input()
 	await _repeat_and_metadata()
 	await _production_scene()
-	for case_number in range(1, 27):
+	for case_number in range(1, 31):
 		_expect(covered.has(case_number), "coverage contains RST-%02d" % case_number)
 	viewport.free()
 	if failures == 0:
-		print("RST-01 PASS: 26/26 cases; %d checks; atomic replacement, real input, %d restarts, stale callbacks, metadata." % [checks, restart_cycles])
+		print("RST-01 PASS: 30/30 cases; %d checks; atomic replacement, real input, %d restarts, stale callbacks, metadata." % [checks, restart_cycles])
 	else:
 		push_error("RST-01 FAIL: %d/%d checks" % [failures, checks])
 	quit(0 if failures == 0 else 1)
@@ -130,20 +131,27 @@ func _whole_run_reset() -> void:
 	app.confirm_restart()
 	var fresh = app.get_session()
 	fresh.wave_director.auto_advance = false
-	_case(3, not is_instance_valid(main) and fresh.get_instance_id() != old_id and app.get_generation() == old_generation + 1, "confirmed replacement frees the old session synchronously")
+	_case(3, _retired(main) and fresh.get_instance_id() != old_id and _official(app, fresh, old_generation + 1), "replacement retires old immediately and installs exactly one official ready session")
 	_case(4, fresh.reputation.snapshot() == initial["reputation_snapshot"] and fresh.reputation._processed_breaches.is_empty() and fresh.reputation._applied_selections.is_empty(), "reputation, maximum and dedupe reset")
 	_case(5, _wave_snapshot(fresh) == initial["wave"], "wave schedule, counts, timers and paused state reset")
 	_case(6, _board_snapshot(fresh) == initial["board"], "board, RNG and gesture reset")
 	_case(7, _upgrade_snapshot(fresh) == initial["upgrades"], "selected, blocked and offered upgrades plus RNG reset")
 	_case(8, fresh.lane_field.global_speed_multiplier == 1.0 and fresh.reputation.reputation_damage_multiplier == 1.0 and fresh.reputation.maximum == 100.0, "applied effects reset, not just selected IDs")
 	_case(12, fresh._encounter_token == 0 and not fresh._first_dish_pending, "encounter token and first dish reset")
-	_case(13, not is_instance_valid(old_boss) and not fresh.boss_has_started and not fresh.boss_encounter_active and fresh.boss_runner == null, "boss and its encounter are destroyed")
-	_case(14, not is_instance_valid(old_runner), "old runner cannot emit a breach after synchronous free")
+	_case(13, not old_boss.is_inside_tree() and not old_boss.can_process() and not fresh.boss_has_started and not fresh.boss_encounter_active and fresh.boss_runner == null, "old boss is detached and inactive; new encounter is clean")
+	_case(14, not old_runner.is_inside_tree() and not old_runner.can_process(), "old runner is immediately outside gameplay")
 	var fresh_snapshot := _snapshot(fresh)
 	old_reputation.reputation_changed.emit({"current": 1.0, "maximum": 1.0, "defeated": true})
 	old_reputation.run_ended.emit({"outcome": "defeat"})
 	old_feedback.feedback_requested.emit({"cue_id": "defeat", "text_key": "feedback.defeat", "sound_id": "defeat", "terminal": true})
-	_case(26, _snapshot(fresh) == fresh_snapshot and not app.is_terminal(), "retained old RefCounted signals cannot affect the replacement")
+	old_runner.reached_counter.emit({"spawn_sequence": old_runner.monster_state.spawn_sequence, "monster_id": "nibbler", "lane": 0})
+	main.run_ended.emit({"outcome": "defeat"})
+	main.boss_encounter_completed.emit({"satisfied": true})
+	_case(26, _snapshot(fresh) == fresh_snapshot and not app.is_terminal(), "old node and RefCounted signals cannot affect the replacement before deletion")
+	await process_frame
+	_case(3, not is_instance_valid(main), "old Main is destroyed by the next frame")
+	_case(13, not is_instance_valid(old_boss), "old boss is destroyed by the next frame")
+	_case(14, not is_instance_valid(old_runner), "old runner is destroyed by the next frame")
 	var generation: int = app.get_generation()
 	app.confirm_restart()
 	app.confirm_restart()
@@ -209,6 +217,55 @@ func _terminal_and_audio() -> void:
 	app.free()
 
 
+func _retired(old: Node) -> bool:
+	return is_instance_valid(old) and not old.is_inside_tree() and old.process_mode == Node.PROCESS_MODE_DISABLED and old.is_queued_for_deletion()
+
+
+func _official(app, fresh, generation: int) -> bool:
+	return app.get_session() == fresh and fresh.is_inside_tree() and fresh.is_node_ready() and app.get_generation() == generation and app.session_host.get_child_count() == 1 and app.session_host.get_child(0) == fresh and not app._replacing
+
+
+func _reentrant_terminal_restarts() -> void:
+	# These real emitters stay locked until each synchronous listener returns.
+	for terminal_kind in ["defeat", "satisfied", "escaped"]:
+		for double_request in [false, true]:
+			var app = await _new_app()
+			var old = app.get_session()
+			if terminal_kind != "defeat":
+				_drive_to_boss(old, BOOST_PATH)
+			var generation: int = app.get_generation()
+			var observations: Array = []
+			var listener := func(_payload: Dictionary):
+				app.request_restart()
+				observations.append(_retired(old) and _official(app, app.get_session(), generation + 1))
+				if double_request:
+					app.request_restart()
+					observations.append(_official(app, app.get_session(), generation + 1) and app.is_confirmation_pending())
+			if terminal_kind == "defeat":
+				old.run_ended.connect(listener, CONNECT_ONE_SHOT)
+				old.reputation.apply_damage(1000.0)
+			else:
+				old.boss_encounter_completed.connect(listener, CONNECT_ONE_SHOT)
+				if terminal_kind == "satisfied":
+					old.lane_field.resolve_dish({"ok": true, "satisfaction_final": 10000.0, "special_effect_triggered": false})
+				else:
+					old.boss_runner.advance(1000.0)
+			var fresh = app.get_session()
+			fresh.wave_director.auto_advance = false
+			_case(27 if terminal_kind == "defeat" else 28, observations.size() == (2 if double_request else 1) and observations.all(func(value): return value) and _official(app, fresh, generation + 1), "terminal listener installs one ready session synchronously: %s" % terminal_kind)
+			if double_request:
+				_case(29, app.is_confirmation_pending() and app.get_generation() == generation + 1, "second listener request can only open confirmation for the fresh run")
+				app.cancel_restart()
+			var snapshot := _snapshot(fresh)
+			old.run_ended.emit({"outcome": "defeat"})
+			old.boss_encounter_completed.emit({"satisfied": false})
+			app._on_terminal({"outcome": "defeat"}, generation)
+			_case(30, not app.is_terminal() and app.restart_button.text == "Reiniciar" and not app.is_confirmation_pending() and _snapshot(fresh) == snapshot and _official(app, fresh, generation + 1), "previous-generation callbacks are ineffective before deletion")
+			await process_frame
+			_case(27 if terminal_kind == "defeat" else 28, not is_instance_valid(old), "terminal emitter is destroyed after the frame unwinds")
+			app.free()
+
+
 func _stale_callbacks_and_timers() -> void:
 	var app = await _new_app()
 	var main = app.get_session()
@@ -235,7 +292,9 @@ func _stale_callbacks_and_timers() -> void:
 	_expect(main.wave_director.countdown_remaining_sec < countdown and runner.motion.progress > progress and timer.time_left < remaining, "cancel resumes the original clocks")
 	app.request_restart()
 	app.confirm_restart()
-	_case(15, not is_instance_valid(timer), "old gameplay Timer is freed synchronously")
+	_case(15, _retired(main) and not timer.is_inside_tree() and not timer.can_process(), "old Timer is immediately detached and inactive")
+	await process_frame
+	_case(15, not is_instance_valid(timer), "old gameplay Timer is destroyed by the next frame")
 	await create_timer(0.14).timeout
 	_expect(fired.is_empty(), "old timeout cannot fire after replacement")
 	app.free()
@@ -277,7 +336,9 @@ func _real_modal_input() -> void:
 		var confirm_point: Vector2 = app.confirm_button.get_global_rect().get_center()
 		_press(confirm_point, touch, true)
 		_press(confirm_point, touch, false)
-		_expect(not is_instance_valid(main) and app.get_generation() == 2, "real confirm creates exactly one replacement")
+		_expect(_retired(main) and _official(app, app.get_session(), 2), "real confirm synchronously installs one replacement")
+		await process_frame
+		_expect(not is_instance_valid(main), "real confirm destroys old by the next frame")
 		app.free()
 
 
@@ -302,15 +363,18 @@ func _repeat_and_metadata() -> void:
 			repetitions = maxi(20, int(argument.trim_prefix("--cycles=")))
 	restart_cycles = repetitions
 	for cycle in range(repetitions):
-		app.get_session().reputation.apply_damage(1.25)
+		var old = app.get_session()
+		var generation: int = app.get_generation()
+		old.reputation.apply_damage(1.25)
 		app.request_restart()
 		app.confirm_restart()
 		var fresh = app.get_session()
 		fresh.wave_director.auto_advance = false
-		_case(20, _node_count(app) == nodes and app.session_host.get_child_count() == 1, "stable nodes after replacement %d" % cycle)
+		_case(20, _retired(old) and _official(app, fresh, generation + 1) and _node_count(app) == nodes, "stable nodes after replacement %d" % cycle)
 		_case(21, _connections(fresh) == connections, "stable signal listeners after replacement %d" % cycle)
 		_case(22, _snapshot(fresh) == initial, "default seeds reproduce initial logical state %d" % cycle)
 		await process_frame
+		_case(20, not is_instance_valid(old), "old session destroyed after replacement %d" % cycle)
 	_case(16, _connections(app.get_session()) == connections, "signal wiring has no duplicate connections")
 	var source := FileAccess.get_file_as_string("res://scripts/app.gd")
 	_case(23, FileAccess.get_file_as_bytes(path) == bytes and save.get_record() == 321 and save.get_coins() == 654 and save.get_preferences() == {"audio": false} and not source.contains("save_service") and not source.contains("FileAccess") and not source.contains("DirAccess"), "App does not load/write metadata and fixture bytes are unchanged")

@@ -102,7 +102,9 @@ func _replace_session() -> void:
 	if is_instance_valid(_session):
 		_session.process_mode = Node.PROCESS_MODE_DISABLED
 		session_host.remove_child(_session)
-		_session.free()
+		# The old Main may still be emitting a terminal signal on this stack.
+		# Retire ownership now; Godot destroys the detached subtree at frame end.
+		_session.queue_free()
 	_session = next
 	_generation += 1
 	_terminal = false

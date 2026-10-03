@@ -43,6 +43,7 @@ func _run() -> void:
 		app.get_session().reputation.apply_damage(1000.0)
 		app.request_restart()
 	app.free()
+	await process_frame
 	var reader := Save.new()
 	var ok := reader.load_save() == OK and reader.get_record() == 987 and reader.get_coins() == 654 and reader.get_preferences() == {"audio": false} and FileAccess.get_file_as_bytes(Save.DEFAULT_SAVE_PATH) == before
 	if ok:

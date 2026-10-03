@@ -80,10 +80,15 @@ conexiones se crean antes de añadir Main al árbol; un inicio productivo desde
 El host suspende el subtree completo durante la confirmación, incluidos nodos
 con modo `ALWAYS` y streams de audio. Conserva y restaura los valores anteriores
 al cancelar; no limpia una cadena pendiente ni reescribe RNG, clocks u ofertas.
-El modal queda fuera de ese subtree. Confirmar retira y libera la instancia
-anterior antes de activar la nueva, sin espera ni `queue_free`. La reconstrucción
-restaura las semillas por defecto y todos los estados runtime, también los de
-futuros hijos de Main.
+El modal queda fuera de ese subtree. D9 revisada deshabilita el Main anterior,
+lo retira del SceneTree mediante `remove_child`, programa `queue_free` y activa
+la nueva sesión dentro de la misma llamada. No hay `await` ni comando diferido:
+al retornar existe exactamente un Main activo y oficial, con generación nueva.
+El objeto anterior puede seguir válido fuera del árbol hasta final del frame;
+sus señales llevan la generación anterior y no afectan la sesión nueva.
+Esta separación entre retiro inmediato y destrucción al final del frame evita
+liberar un emisor terminal bloqueado por Godot. La reconstrucción restaura las
+semillas por defecto y todos los estados runtime, también los de futuros hijos.
 
 SaveService mantiene su responsabilidad de metapersistencia fuera de esta
 operación. App no lo carga ni escribe; no se guarda/restaura una partida activa.
