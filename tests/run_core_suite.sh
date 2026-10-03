@@ -31,17 +31,25 @@ CORE_SUITE_TESTS=(
   "res://tests/upg_02g_assist_serve_test.gd"
   "res://tests/upg_02h_steady_hands_test.gd"
   "res://tests/upgrade_selector_integration_test.gd"
+  "res://tests/run_loop_test.gd"
 )
+
+output_dir="$(mktemp -d)"
+trap 'rm -rf "$output_dir"' EXIT
 
 failures=0
 declare -a results=()
 
 for test_path in "${CORE_SUITE_TESTS[@]}"; do
   echo "=== Running ${test_path} ==="
-  if "${GODOT_BIN}" --headless --path . --script "${test_path}"; then
+  output_file="$output_dir/$(basename "$test_path").log"
+  status=0
+  "${GODOT_BIN}" --headless --path . --log-file "$output_dir/engine.log" --script "${test_path}" > "$output_file" 2>&1 || status=$?
+  cat "$output_file"
+  if [ "$status" -eq 0 ] && ! grep -Eiq 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' "$output_file"; then
     results+=("PASS ${test_path}")
   else
-    results+=("FAIL ${test_path}")
+    results+=("FAIL ${test_path} (exit $status or engine diagnostic)")
     failures=$((failures + 1))
   fi
 done

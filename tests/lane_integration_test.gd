@@ -28,6 +28,7 @@ func _init() -> void:
 func _test_board_recipe_lane_bridge() -> void:
 	var packed: PackedScene = load("res://scenes/Main.tscn")
 	var main = packed.instantiate()
+	main.auto_start_run = false
 	get_root().add_child(main)
 	await process_frame
 

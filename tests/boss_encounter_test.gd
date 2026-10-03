@@ -29,6 +29,7 @@ func _init() -> void:
 
 func _create_main():
 	var main = MAIN_SCENE.instantiate()
+	main.auto_start_run = false
 	get_root().add_child(main)
 	await process_frame
 	main.wave_director.auto_advance = false

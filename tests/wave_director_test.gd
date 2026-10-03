@@ -11,7 +11,7 @@ func _init() -> void:
 	await _test_homogeneous_resolution_paths()
 	await _test_resolution_paths_and_one_shot_completion()
 	await _test_all_five_content_waves()
-	await _test_main_wiring_does_not_auto_start()
+	await _test_manual_main_fixture_does_not_auto_start()
 
 	if failures == 0:
 		print("WAV-01 tests passed: countdown, schedule, resolution, pause and five waves.")
@@ -273,12 +273,13 @@ func _test_all_five_content_waves() -> void:
 	await _free_harness(harness)
 
 
-func _test_main_wiring_does_not_auto_start() -> void:
+func _test_manual_main_fixture_does_not_auto_start() -> void:
 	var packed: PackedScene = load("res://scenes/Main.tscn")
 	var main = packed.instantiate()
+	main.auto_start_run = false
 	get_root().add_child(main)
 	await process_frame
-	_expect(main.wave_director.state == Director.State.IDLE, "Main must configure but not auto-start waves")
+	_expect(main.wave_director.state == Director.State.IDLE, "Main fixture with auto_start_run=false must configure without starting waves")
 	_expect(main.wave_director.has_wave("wave_01"), "Main must reuse validated wave content")
 	_expect(main.wave_director.get_spawned_count() == 0, "Main must not spawn a wave automatically")
 	main.queue_free()
