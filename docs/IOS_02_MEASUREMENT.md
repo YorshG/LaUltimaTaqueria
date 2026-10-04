@@ -68,6 +68,25 @@ https://docs.godotengine.org/en/4.7/classes/class_performance.html
 El workflow `.github/workflows/ios-02-memory-preflight.yml` conserva el log como
 artifact y también rechaza parser/runtime errors y mensajes de leak del motor.
 
+
+### Resultado CI inicial del preflight
+
+PR run `37175345547` sobre el primer head del PR #60: **SUCCESS**.
+
+Muestras relevantes del probe de 1.000 reinicios:
+
+| Ciclo | MEMORY_STATIC | Delta vs ciclo 100 | Objetos | Recursos | Nodos | Huérfanos |
+|---:|---:|---:|---:|---:|---:|---:|
+| 100 | 30.287.497 B | 0 B | 1.713 | 29 | 74 | 0 |
+| 400 | 31.026.565 B | +739.068 B | 1.713 | 29 | 74 | 0 |
+| 700 | 32.009.765 B | +1.722.268 B | 1.713 | 29 | 74 | 0 |
+| 1.000 | 32.009.769 B | +1.722.272 B | 1.713 | 29 | 74 | 0 |
+
+El crecimiento ocurrió por escalones mientras los cuatro conteos estructurales
+permanecieron exactamente estables. Este resultado **no prueba leak de producto** y
+tampoco invalida el riesgo: reproduce en otro host headless el patrón que motivó
+IOS-02. La decisión queda deliberadamente pendiente de Instruments en dispositivo.
+
 ## Fuente de verdad para memoria iOS
 
 La aceptación física usará herramientas de Apple:
