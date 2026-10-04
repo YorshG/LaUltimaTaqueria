@@ -99,9 +99,16 @@ func _run() -> void:
 			print("BOT RESULT ", JSON.stringify({"snapshot": snapshot, "waves": waves, "choices": choices, "bosses": boss_count, "board_actions": actions, "time_scale": Engine.time_scale, "restart_stages": reset_done}))
 			if has_app:
 				var old = main
+				var generation: int = app.get_generation()
 				app.request_restart()
-				_expect(not is_instance_valid(old), "terminal restart direct")
-				_expect(app.get_session().wave_director.current_wave_id == "wave_01", "victory restart starts wave1")
+				_expect(app.get_generation() == generation + 1, "terminal restart replaces once")
+				var fresh = app.get_session()
+				_expect(fresh != old and fresh.is_inside_tree() and fresh.is_node_ready(), "terminal restart installs new session immediately")
+				if is_instance_valid(old):
+					_expect(not old.is_inside_tree() and old.process_mode == Node.PROCESS_MODE_DISABLED and old.is_queued_for_deletion(), "terminal restart retires old session immediately")
+				_expect(fresh.wave_director.current_wave_id == "wave_01", "victory restart starts wave1")
+				await process_frame
+				_expect(not is_instance_valid(old), "terminal old session freed after frame")
 			app.free()
 			await process_frame
 			print("M3 RUNTIME BOT PASS" if failures == 0 else "M3 RUNTIME BOT FAIL")
