@@ -32,6 +32,7 @@ CORE_SUITE_TESTS=(
   "res://tests/upg_02h_steady_hands_test.gd"
   "res://tests/upgrade_selector_integration_test.gd"
   "res://tests/run_loop_test.gd"
+  "res://tests/ui_mobile_layout_test.gd"
 )
 
 output_dir="$(mktemp -d)"
