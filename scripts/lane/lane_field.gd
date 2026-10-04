@@ -65,7 +65,8 @@ func spawn_runner(
 		_next_spawn_sequence
 	)
 	runner.set_global_speed_multiplier(global_speed_multiplier)
-	runner.reached_counter.connect(_on_runner_reached_counter)
+	runner.reached_counter.connect(_on_runner_reached_counter.bind(runner))
+	runner.tree_exiting.connect(_on_runner_tree_exiting.bind(runner))
 	_next_spawn_sequence += 1
 	_runners.append(runner)
 	return runner
@@ -128,6 +129,12 @@ func resolve_dish(resolution: Dictionary) -> Dictionary:
 
 	# D7: finish primary, special and splash mutations before service signals.
 	var splash := _apply_splash(resolution, target, primary_lane)
+	var splash_runner: LaneRunner = null
+	if splash.get("monster_became_satisfied", false):
+		for runner in _runners:
+			if is_instance_valid(runner) and runner.monster_state.spawn_sequence == splash["spawn_sequence"]:
+				splash_runner = runner
+				break
 	var primary_satisfied_payload := {
 		"spawn_sequence": target.monster_state.spawn_sequence,
 		"monster_id": target.monster_state.monster_id,
@@ -148,6 +155,10 @@ func resolve_dish(resolution: Dictionary) -> Dictionary:
 			"monster_id": splash["monster_id"],
 			"lane": splash["lane"],
 		})
+	# Keep both objects intact through every synchronous service/boss listener.
+	# Retire only this dish's targets; a nested resolution may still own others.
+	_retire_runner(target)
+	_retire_runner(splash_runner)
 
 	return {
 		"ok": base_result.get("ok", false),
@@ -195,8 +206,23 @@ func get_lane_host(lane_index: int) -> Control:
 	return lane_hosts[lane_index]
 
 
-func _on_runner_reached_counter(payload: Dictionary) -> void:
+func _on_runner_reached_counter(payload: Dictionary, runner: LaneRunner) -> void:
 	monster_reached_counter.emit(payload)
+	_retire_runner(runner)
+
+
+func _retire_runner(runner) -> void:
+	# A synchronous observer may already have removed the visual node.
+	if not is_instance_valid(runner) or runner.monster_state.active or runner.is_queued_for_deletion():
+		return
+	runner.hide()
+	runner.process_mode = Node.PROCESS_MODE_DISABLED
+	runner.queue_free()
+
+
+func _on_runner_tree_exiting(runner: LaneRunner) -> void:
+	# Deferred destruction preserves existing synchronous readers/iterations.
+	_runners.erase(runner)
 
 
 func _is_higher_priority(candidate: LaneRunner, current: LaneRunner) -> bool:

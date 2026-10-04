@@ -142,7 +142,9 @@ func get_pending_count() -> int:
 
 
 func get_spawned_runner(spawn_sequence: int) -> LaneRunner:
-	return _spawned_runners.get(spawn_sequence, null) as LaneRunner
+	# Completed spawns retain their counting slot after their visual node is freed.
+	var runner = _spawned_runners.get(spawn_sequence, null)
+	return runner as LaneRunner if is_instance_valid(runner) else null
 
 
 func has_wave(wave_id: String) -> bool:

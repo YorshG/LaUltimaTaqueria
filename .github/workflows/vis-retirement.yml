@@ -1,0 +1,31 @@
+name: VIS-01 Runner Retirement
+
+on:
+  pull_request:
+    paths:
+      - "scripts/lane/**"
+      - "scripts/waves/**"
+      - "scenes/lane/**"
+      - "scripts/main.gd"
+      - "scenes/Main.tscn"
+      - "project.godot"
+      - "tests/vis_runner_*.gd"
+      - "tests/run_vis_retirement_checks.py"
+      - ".github/workflows/vis-retirement.yml"
+  push:
+    branches:
+      - "feature/vis-01-*"
+
+jobs:
+  retirement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
+      - name: Verify retirement, event lifetime and mutation sensitivity
+        run: python3 tests/run_vis_retirement_checks.py
