@@ -49,6 +49,11 @@ autowrap_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="LaneField" parent="Margin/Content" instance=ExtResource("3_lane")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
 [node name="FeedbackLayer" parent="Margin/Content" instance=ExtResource("7_feedback")]
 unique_name_in_owner = true
 layout_mode = 2
@@ -62,11 +67,6 @@ stretch_mode = 2
 [node name="BoardView" parent="Margin/Content/BoardHost" instance=ExtResource("2_board")]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="LaneField" parent="Margin/Content" instance=ExtResource("3_lane")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
 
 [node name="WaveDirector" type="Node" parent="."]
 unique_name_in_owner = true

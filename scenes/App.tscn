@@ -20,24 +20,32 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="TopBar" type="MarginContainer" parent="Layout"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 8
+
+[node name="Row" type="HBoxContainer" parent="Layout/TopBar"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Layout/TopBar/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RestartButton" type="Button" parent="Layout/TopBar/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Reiniciar"
+
 [node name="SessionHost" type="Control" parent="Layout"]
 unique_name_in_owner = true
 process_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="Footer" type="MarginContainer" parent="Layout"]
-layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
-
-[node name="RestartButton" type="Button" parent="Layout/Footer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 88)
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Reiniciar"
 
 [node name="RestartConfirmation" type="Control" parent="."]
 unique_name_in_owner = true
