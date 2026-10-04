@@ -104,6 +104,7 @@ func _test_invalid_modifiers() -> void:
 
 func _test_main_public_selection() -> void:
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	get_root().add_child(main)
 	await process_frame
 	var target: LaneRunner = main.lane_field.spawn_runner(1, 55.0, "T", "salsa_tank", 2000.0)
@@ -157,6 +158,7 @@ func _test_main_public_selection() -> void:
 
 func _test_live_conditionals_without_encounter() -> void:
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	get_root().add_child(main)
 	await process_frame
 	var target: LaneRunner = main.lane_field.spawn_runner(1, 55.0, "T", "salsa_tank", 2000.0)
@@ -178,6 +180,7 @@ func _test_live_conditionals_without_encounter() -> void:
 
 func _test_main_failures_are_atomic() -> void:
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	get_root().add_child(main)
 	await process_frame
 	var target: LaneRunner = main.lane_field.spawn_runner(1, 55.0, "T", "salsa_tank", 2000.0)

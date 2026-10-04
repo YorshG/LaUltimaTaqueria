@@ -411,6 +411,7 @@ func _test_feedback_rearm() -> void:
 
 func _create_main(seed_two: bool = false):
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	main.get_node("%LaneField").set_script(ObservedField)
 	if seed_two:
 		main.get_node("%UpgradeSelector").set_script(SeededSelector)

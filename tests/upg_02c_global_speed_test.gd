@@ -216,6 +216,7 @@ func _test_invalid_derivation() -> void:
 
 func _create_main():
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	main.get_node("%LaneField").set_script(ObservedLaneField)
 	get_root().add_child(main)
 	await process_frame

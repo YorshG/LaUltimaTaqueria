@@ -13,6 +13,7 @@ func _init() -> void:
 		viewport.size = viewport_size
 		root.add_child(viewport)
 		var main = MAIN.instantiate()
+		main.auto_start_run = false
 		viewport.add_child(main)
 		await process_frame
 		await process_frame

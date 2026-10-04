@@ -344,6 +344,7 @@ func _test_inconsistent_fifth_selection() -> void:
 
 func _create_main(shield_seed: bool = false):
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	main.get_node("%LaneField").set_script(ObservedField)
 	if shield_seed:
 		main.get_node("%UpgradeSelector").set_script(SeededSelector)

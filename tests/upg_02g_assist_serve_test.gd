@@ -238,6 +238,7 @@ func _test_order_and_clamp() -> void:
 
 func _main(selector_script: Script, effects: Array = []):
 	var main = MAIN.instantiate()
+	main.auto_start_run = false
 	var selector = main.get_node("%UpgradeSelector")
 	selector.set_script(selector_script)
 	if selector is EffectsSelector:
