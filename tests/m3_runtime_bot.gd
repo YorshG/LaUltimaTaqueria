@@ -70,12 +70,17 @@ func _run() -> void:
 				_expect(not main.upgrade_choice.options.get_child(0).disabled, "cancel preserves usable upgrade options")
 			app.request_restart()
 			app.confirm_restart()
-			_expect(not is_instance_valid(old), "old session freed synchronously in " + phase)
 			_expect(app.get_generation() == generation + 1, "one replacement in " + phase)
+			var fresh = app.get_session()
+			_expect(fresh != old and fresh.is_inside_tree() and fresh.is_node_ready(), "new session official immediately in " + phase)
+			if is_instance_valid(old):
+				_expect(not old.is_inside_tree() and old.process_mode == Node.PROCESS_MODE_DISABLED and old.is_queued_for_deletion(), "old session retired immediately in " + phase)
 			_bind_session()
 			_expect(main.wave_director.current_wave_id == "wave_01", "restart goes to wave1 " + phase)
 			_expect(main.upgrade_selector.get_selection_count() == 0, "restart has no upgrades " + phase)
 			_expect(not main.boss_has_started, "restart has no boss " + phase)
+			await process_frame
+			_expect(not is_instance_valid(old), "old session freed after frame in " + phase)
 			reset_done.append(phase)
 			print("BOT restart verified: ", phase)
 			continue
