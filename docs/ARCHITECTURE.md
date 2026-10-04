@@ -1,8 +1,8 @@
-# Arquitectura propuesta
+# Arquitectura del prototipo
 
-Godot 2D, versión estable a confirmar al iniciar implementación. Contenido dirigido por datos y simulación reproducible mediante una semilla registrable por partida.
+Godot 4.7.2 stable, 2D y GDScript. Contenido dirigido por datos y simulación reproducible mediante una semilla registrable por partida.
 
-## Árbol conceptual
+## Árbol conceptual histórico
 
 ```text
 App
@@ -49,3 +49,48 @@ La lógica central debe probarse sin escenas visuales cuando sea posible. Las pr
 ## Rendimiento iOS
 
 Objetivo provisional: 60 FPS, con modo aceptable a 30 FPS; sin asignaciones masivas por frame y con límites configurables de entidades y partículas. En M4 se medirán tiempo de frame, memoria, tiempo de carga y temperatura en el iPhone 17 con iOS 27.0, y se hará una prueba de humo adicional en el iPhone 16 Pro Max. Estos datos se registrarán junto con build, commit y versión de iOS; no se fijarán presupuestos adicionales sin medición.
+
+## Frontera de lifecycle implementada — RST-01 / D9
+
+El árbol conceptual anterior sigue siendo una distribución de responsabilidades,
+no una afirmación de que Navigation o GameSession ya existan como módulos.
+El runtime del prototipo ahora arranca en `scenes/App.tscn`:
+
+```text
+App (lifecycle y confirmación)
+├── Layout
+│   ├── SessionHost
+│   │   └── Main (una instancia por partida)
+│   │       ├── BoardView / BoardState / ChainPath
+│   │       ├── LaneField / LaneRunner / MonsterState / LaneMotion
+│   │       ├── WaveDirector
+│   │       ├── UpgradeSelector
+│   │       ├── HUD / FeedbackLayer / FeedbackAudio
+│   │       └── RecipeResolver / ReputationState / FeedbackCoordinator
+│   └── Reiniciar / Nueva partida
+└── Confirmación de reinicio
+```
+
+`Main` conserva el wiring temporal de la partida. App no inicia oleadas, selecciona
+mejoras, deriva efectos ni determina resultados. Observa `run_ended` y
+`boss_encounter_completed` para distinguir partida activa de terminal. Las
+conexiones se crean antes de añadir Main al árbol; un inicio productivo desde
+`Main._ready()` queda dentro del mismo contrato.
+
+El host suspende el subtree completo durante la confirmación, incluidos nodos
+con modo `ALWAYS` y streams de audio. Conserva y restaura los valores anteriores
+al cancelar; no limpia una cadena pendiente ni reescribe RNG, clocks u ofertas.
+El modal queda fuera de ese subtree. D9 revisada deshabilita el Main anterior,
+lo retira del SceneTree mediante `remove_child`, programa `queue_free` y activa
+la nueva sesión dentro de la misma llamada. No hay `await` ni comando diferido:
+al retornar existe exactamente un Main activo y oficial, con generación nueva.
+El objeto anterior puede seguir válido fuera del árbol hasta final del frame;
+sus señales llevan la generación anterior y no afectan la sesión nueva.
+Esta separación entre retiro inmediato y destrucción al final del frame evita
+liberar un emisor terminal bloqueado por Godot. La reconstrucción restaura las
+semillas por defecto y todos los estados runtime, también los de futuros hijos.
+
+SaveService mantiene su responsabilidad de metapersistencia fuera de esta
+operación. App no lo carga ni escribe; no se guarda/restaura una partida activa.
+La implementación de reinicio no acredita por sí sola el loop jugable M3: su
+orquestación continúa siendo responsabilidad de Main y del ticket RUN-01.

@@ -1,0 +1,32 @@
+name: RST-01 Session Lifecycle
+
+on:
+  pull_request:
+    paths:
+      - "project.godot"
+      - "scenes/**"
+      - "scripts/**"
+      - "tests/restart_session_test.gd"
+      - "tests/restart_meta_probe.gd"
+      - "tests/run_restart_mutations.py"
+      - ".github/workflows/restart-session.yml"
+  push:
+    branches:
+      - "feature/rst-01-*"
+
+jobs:
+  restart:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Godot 4.7.2
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
+      - name: Import project
+        run: godot --headless --path . --editor --quit
+      - name: RST matrix and isolated mutation checks
+        run: python3 tests/run_restart_mutations.py
