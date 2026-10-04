@@ -1,0 +1,53 @@
+name: IOS-02 Memory Preflight
+
+on:
+  pull_request:
+    paths:
+      - "project.godot"
+      - "scenes/App.tscn"
+      - "scenes/Main.tscn"
+      - "scripts/app.gd"
+      - "scripts/main.gd"
+      - "tests/ios_02_memory_probe.gd"
+      - ".github/workflows/ios-02-memory-preflight.yml"
+  workflow_dispatch:
+
+jobs:
+  restart-memory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Godot 4.7.2
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
+
+      - name: Import project headlessly
+        run: godot --headless --path . --editor --quit
+
+      - name: Run 1000-restart structural and memory preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          log=/tmp/ios-02-memory-preflight.log
+          godot --headless --path . --script res://tests/ios_02_memory_probe.gd -- 1000 100 100 2>&1 | tee "$log"
+          if grep -Eqi 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' "$log"; then
+            echo "Unexpected engine diagnostic in IOS-02 memory preflight"
+            exit 1
+          fi
+          grep -q "IOS02_RESULT=" "$log"
+          grep -q "IOS-02 MEMORY PREFLIGHT PASS" "$log"
+
+      - name: Preserve preflight log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-02-memory-preflight
+          path: /tmp/ios-02-memory-preflight.log
+          if-no-files-found: error
