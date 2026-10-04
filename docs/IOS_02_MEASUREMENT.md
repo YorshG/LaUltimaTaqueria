@@ -119,6 +119,31 @@ IOS-02 registrará ese estado/track térmico.
 Referencia:
 https://developer.apple.com/documentation/foundation/processinfo/thermalstate-swift.enum
 
+## Dispositivo principal disponible
+
+Jorge confirmó que su **iPhone 17** está disponible como dispositivo principal para
+IOS-01/IOS-02. Por tanto, no es necesario esperar al iPhone 16 Pro Max de Xavier
+para iniciar la validación física; ese segundo dispositivo queda como smoke
+secundario.
+
+Antes de exportar, ejecutar en la Mac de Jorge:
+
+```sh
+bash scripts/ios_readiness_check.sh
+```
+
+El script está diseñado para imprimir solo versiones, presencia de template,
+conteo de identidades válidas y disponibilidad/versiones iOS de dispositivos
+físicos. No imprime UDID, Team ID, certificados ni perfiles.
+
+Godot 4.7 requiere macOS + Xcode, templates de exportación y un preset iOS con
+App Store Team ID y Bundle Identifier no vacíos para generar el proyecto Xcode.
+El preset debe crearse/configurarse localmente con valores reales; no se
+inventarán ni se publicarán credenciales.
+
+Referencia oficial:
+https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_ios.html
+
 ## Protocolo físico — iPhone 17 (principal)
 
 ### A. Identidad de build
