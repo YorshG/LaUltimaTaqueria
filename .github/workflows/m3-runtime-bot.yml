@@ -11,7 +11,7 @@ on:
       - ".github/workflows/m3-runtime-bot.yml"
   push:
     branches:
-      - "ci/m3-runtime-bot"
+      - "uat"
 
 jobs:
   runtime-bot:
@@ -41,8 +41,8 @@ jobs:
           set -euo pipefail
           log=/tmp/m3-runtime-bot.log
           godot --headless --path . --script res://tests/m3_runtime_bot.gd -- 20 2>&1 | tee "$log"
-          if grep -q "SCRIPT ERROR" "$log"; then
-            echo "Unexpected SCRIPT ERROR in runtime bot"
+          if grep -Eq 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' "$log"; then
+            echo "Unexpected engine error/leak in runtime bot"
             exit 1
           fi
           grep -q "M3 RUNTIME BOT PASS" "$log"
@@ -53,8 +53,8 @@ jobs:
           set -euo pipefail
           log=/tmp/m3-runtime-bot-restart.log
           godot --headless --path . --script res://tests/m3_runtime_bot.gd -- 20 restart 2>&1 | tee "$log"
-          if grep -q "SCRIPT ERROR" "$log"; then
-            echo "Unexpected SCRIPT ERROR in restart runtime bot"
+          if grep -Eq 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' "$log"; then
+            echo "Unexpected engine error/leak in restart runtime bot"
             exit 1
           fi
           grep -q "M3 RUNTIME BOT PASS" "$log"
