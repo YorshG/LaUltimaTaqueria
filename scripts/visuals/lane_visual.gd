@@ -60,7 +60,8 @@ func _draw() -> void:
 	for lane in range(_field.lane_count()):
 		var area := get_global_transform().affine_inverse() * _field.get_lane_host(lane).get_global_rect()
 		draw_style_box(_panels[lane], area)
-		_text("%d · Hambre · provisional" % (lane + 1), area.position + Vector2(4, 24), area.size.x - 8, 22)
+		# Proxy status remains documented in the catalog, never in gameplay copy.
+		_text(Art.catalog().labels.lane % (lane + 1), area.position + Vector2(4, 24), area.size.x - 8, 22)
 		draw_line(area.position + Vector2(area.size.x / 2, 32), area.end - Vector2(area.size.x / 2, 6), Color("635773"), 2)
 	var selected: Dictionary = {}
 	for card in cards():
@@ -84,20 +85,17 @@ func _draw_card(card: Dictionary, selected: bool) -> void:
 		_text(spec.token, image_rect.position + Vector2(0, unit * 0.62), unit, 28, Art.color("ink"))
 	var name: String = spec.token if card.crowded else spec.label
 	if card.boss: name = Art.catalog().labels.get(phase, "Calma")
-	var current := String.num(runner.monster_state.hunger_remaining, 1).trim_suffix(".0")
-	var maximum := String.num(runner.monster_state.hunger_max, 1).trim_suffix(".0")
+	var hunger := hunger_text(runner.monster_state.hunger_remaining, runner.monster_state.hunger_max)
 	var bar_y := image_rect.end.y + 68
 	if card.boss:
-		_text("%s %s/%s" % [name, current, maximum], Vector2(rect.position.x, image_rect.end.y + 28), rect.size.x, 26)
+		_fitted_text("%s %s" % [name, hunger], Vector2(rect.position.x, image_rect.end.y + 28), rect.size.x, 26)
 		bar_y = image_rect.end.y + 36
 	elif card.crowded:
-		# The token is already on the figure. Two numeric rows fit fractional
-		# hunger at a larger size without spilling into the adjacent client.
-		_text(current, Vector2(rect.position.x, image_rect.end.y + 28), rect.size.x, 32)
-		_text("/" + maximum, Vector2(rect.position.x, image_rect.end.y + 60), rect.size.x, 32)
+		# One numeric line, even when the model contains fractional satisfaction.
+		_fitted_text(hunger, Vector2(rect.position.x, image_rect.end.y + 42), rect.size.x, 32)
 	else:
 		_text(name, Vector2(rect.position.x, image_rect.end.y + 26), rect.size.x, 26)
-		_text("%s/%s" % [current, maximum], Vector2(rect.position.x, image_rect.end.y + 60), rect.size.x, 32)
+		_fitted_text(hunger, Vector2(rect.position.x, image_rect.end.y + 60), rect.size.x, 32)
 	var bar := Rect2(rect.position.x + 4, bar_y, rect.size.x - 8, 12)
 	draw_rect(bar, Art.color("ink"))
 	var ratio := clampf(runner.monster_state.hunger_remaining / runner.monster_state.hunger_max, 0, 1)
@@ -108,3 +106,27 @@ func _draw_card(card: Dictionary, selected: bool) -> void:
 
 func _text(value: String, origin: Vector2, width: float, font_size: int, tint: Color = Color("fff1d2")) -> void:
 	draw_string(ThemeDB.fallback_font, origin, value, HORIZONTAL_ALIGNMENT_CENTER, width, font_size, tint)
+
+static func hunger_text(current: float, maximum: float) -> String:
+	# Nearest integer for display only; MonsterState and bar ratio retain floats.
+	return "%.0f/%.0f" % [round(current), round(maximum)]
+
+static func text_fit(value: String, width: float, preferred_size: int = 32) -> Dictionary:
+	var font := ThemeDB.fallback_font
+	var font_size := preferred_size
+	var available := maxf(1, width - 4)
+	var measured := font.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	if measured > available:
+		# Measure only the chosen size; avoid populating a font atlas at every
+		# intermediate point size for each client on every redraw.
+		font_size = maxi(24, floori(preferred_size * available / measured))
+		measured = font.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	return {"font_size": font_size, "scale_x": minf(1, available / maxf(1, measured)), "width": measured}
+
+func _fitted_text(value: String, origin: Vector2, width: float, preferred_size: int) -> void:
+	var fit := text_fit(value, width, preferred_size)
+	# draw_string is one line. Horizontal fit also handles out-of-content stress
+	# values without clipping, wrapping or shrinking the vertical glyph height.
+	draw_set_transform(origin + Vector2((width - fit.width * fit.scale_x) / 2, 0), 0, Vector2(fit.scale_x, 1))
+	draw_string(ThemeDB.fallback_font, Vector2.ZERO, value, HORIZONTAL_ALIGNMENT_LEFT, -1, fit.font_size, Art.color("paper"))
+	draw_set_transform(Vector2.ZERO)

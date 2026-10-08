@@ -9,6 +9,7 @@ on:
       - "data/visuals/**"
       - "assets/provisional/**"
       - "tests/art_01*"
+      - "tests/run_art_01c*"
       - ".github/workflows/art-01-visual.yml"
 
 jobs:
@@ -29,9 +30,11 @@ jobs:
           godot --headless --path . --editor --quit 2>&1 | tee import.log
           godot --headless --path . --script res://tests/art_01_visual_test.gd 2>&1 | tee art.log
           godot --headless --path . --script res://tests/art_01b_layout_test.gd 2>&1 | tee layout.log
-          if grep -Ei 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' import.log art.log layout.log; then exit 1; fi
-          grep -E 'ART_VISUAL [0-9]+ checks 0 failures' art.log
-          grep -E 'ART_01B_LAYOUT [0-9]+ checks 0 failures' layout.log
+          godot --headless --path . --script res://tests/art_01c_audit_test.gd 2>&1 | tee audit.log
+          if grep -Ei 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' import.log art.log layout.log audit.log; then exit 1; fi
+          grep -E 'ART_VISUAL [1-9][0-9]* checks 0 failures' art.log
+          grep -E 'ART_01B_LAYOUT [1-9][0-9]* checks 0 failures' layout.log
+          grep -E 'ART_01C_AUDIT [1-9][0-9]* checks 0 failures' audit.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -40,3 +43,4 @@ jobs:
             import.log
             art.log
             layout.log
+            audit.log

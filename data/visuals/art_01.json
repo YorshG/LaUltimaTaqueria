@@ -10,7 +10,7 @@
     "counter": "Mostrador",
     "target": "Objetivo",
     "empty": "Sin objetivo",
-    "lane": "Carril %d · provisional",
+    "lane": "Carril %d · Hambre",
     "calm": "Calma",
     "phase2_transition_cue_cosmetic_only": "Hambre",
     "final_bite": "Embate"
