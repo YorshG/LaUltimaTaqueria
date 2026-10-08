@@ -1,0 +1,8 @@
+#61 9832846fe5837919d441273f496f31ef3430c0cf
+#62 e894b438939e6260a4c8cc6c566373c351ddc2a7
+PASS #61 exact typography and its board/lane assertions over ART-01B.
+PASS ART-01 observers, ART-01B spatial/safe/touch checks and restart.
+#62 exact scenes passed initial disposable audit (stack-audit-before.log).
+Final App/Main implement its hierarchy intent with adaptive Controllers.
+Original #62 test's VBox/order/min<=64 assertions are superseded, not claimed to pass here.
+No merge performed. Final composition is not a blind overlay of #62 scenes.

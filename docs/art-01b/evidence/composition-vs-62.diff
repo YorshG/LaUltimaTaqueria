@@ -1,0 +1,91 @@
+diff --git a/scenes/App.tscn b/scenes/App.tscn
+index d0c4aa0..de93a61 100644
+--- a/scenes/App.tscn
++++ b/scenes/App.tscn
+@@ -1 +1 @@
+-[gd_scene load_steps=2 format=3]
++[gd_scene load_steps=4 format=3]
+@@ -3,0 +4,2 @@
++[ext_resource type="Script" path="res://scripts/visuals/safe_area_layout.gd" id="2_safe"]
++[ext_resource type="Theme" path="res://assets/provisional/controls.tres" id="3_theme"]
+@@ -15 +17 @@ script = ExtResource("1_app")
+-[node name="Layout" type="VBoxContainer" parent="."]
++[node name="Layout" type="Control" parent="."]
+@@ -21,0 +24,2 @@ grow_vertical = 2
++mouse_filter = 2
++script = ExtResource("2_safe")
+@@ -23 +27,3 @@ grow_vertical = 2
+-[node name="TopBar" type="MarginContainer" parent="Layout"]
++[node name="SessionHost" type="Control" parent="Layout"]
++unique_name_in_owner = true
++process_mode = 1
+@@ -25,4 +31,4 @@ layout_mode = 2
+-theme_override_constants/margin_left = 24
+-theme_override_constants/margin_top = 24
+-theme_override_constants/margin_right = 24
+-theme_override_constants/margin_bottom = 8
++size_flags_vertical = 3
++anchors_preset = 15
++anchor_right = 1.0
++anchor_bottom = 1.0
+@@ -30,2 +36,3 @@ theme_override_constants/margin_bottom = 8
+-[node name="Row" type="HBoxContainer" parent="Layout/TopBar"]
+-layout_mode = 2
++[node name="TopBar" type="MarginContainer" parent="Layout"]
++layout_mode = 0
++mouse_filter = 2
+@@ -33 +40 @@ layout_mode = 2
+-[node name="Spacer" type="Control" parent="Layout/TopBar/Row"]
++[node name="Row" type="HBoxContainer" parent="Layout/TopBar"]
+@@ -35 +42 @@ layout_mode = 2
+-size_flags_horizontal = 3
++mouse_filter = 2
+@@ -37,0 +45 @@ size_flags_horizontal = 3
++theme = ExtResource("3_theme")
+@@ -39 +47 @@ unique_name_in_owner = true
+-custom_minimum_size = Vector2(180, 64)
++custom_minimum_size = Vector2(250, 132)
+@@ -41 +49 @@ layout_mode = 2
+-theme_override_font_sizes/font_size = 28
++theme_override_font_sizes/font_size = 36
+@@ -44,6 +51,0 @@ text = "Reiniciar"
+-[node name="SessionHost" type="Control" parent="Layout"]
+-unique_name_in_owner = true
+-process_mode = 1
+-layout_mode = 2
+-size_flags_vertical = 3
+-
+@@ -80,0 +83 @@ mouse_filter = 2
++theme = ExtResource("3_theme")
+diff --git a/scenes/Main.tscn b/scenes/Main.tscn
+index cf4e440..247428f 100644
+--- a/scenes/Main.tscn
++++ b/scenes/Main.tscn
+@@ -1 +1 @@
+-[gd_scene load_steps=10 format=3]
++[gd_scene load_steps=12 format=3]
+@@ -12,0 +13,2 @@
++[ext_resource type="Script" path="res://scripts/visuals/gameplay_layout.gd" id="10_layout"]
++[ext_resource type="Script" path="res://scripts/visuals/counter_visual.gd" id="11_counter"]
+@@ -35 +37 @@ theme_override_constants/margin_bottom = 48
+-[node name="Content" type="VBoxContainer" parent="Margin"]
++[node name="Content" type="Control" parent="Margin"]
+@@ -37 +39 @@ layout_mode = 2
+-theme_override_constants/separation = 24
++script = ExtResource("10_layout")
+@@ -52 +54 @@ layout_mode = 2
+-[node name="LaneField" parent="Margin/Content" instance=ExtResource("3_lane")]
++[node name="FeedbackLayer" parent="Margin/Content" instance=ExtResource("7_feedback")]
+@@ -55 +56,0 @@ layout_mode = 2
+-size_flags_vertical = 3
+@@ -57 +58 @@ size_flags_vertical = 3
+-[node name="FeedbackLayer" parent="Margin/Content" instance=ExtResource("7_feedback")]
++[node name="LaneField" parent="Margin/Content" instance=ExtResource("3_lane")]
+@@ -59 +60,6 @@ unique_name_in_owner = true
+-layout_mode = 2
++layout_mode = 0
++
++[node name="Counter" type="Control" parent="Margin/Content"]
++layout_mode = 0
++mouse_filter = 2
++script = ExtResource("11_counter")

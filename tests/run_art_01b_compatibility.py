@@ -26,7 +26,7 @@ def main():
             evidence.run(project, "compatibility-" + script, "--headless", "--script", f"res://tests/{script}.gd")
         # Exact overlap is visible to the independent auditor, including the
         # different presentation already present in ART-01 (not all new B work).
-        delta = subprocess.check_output(["git", "diff", HEAD62, "--", "scenes/App.tscn", "scenes/Main.tscn"], cwd=ROOT, text=True)
+        delta = subprocess.check_output(["git", "diff", "--unified=0", HEAD62, "--", "scenes/App.tscn", "scenes/Main.tscn"], cwd=ROOT, text=True)
         (OUT / "composition-vs-62.diff").write_text(delta)
         (OUT / "compatibility-summary.txt").write_text(
             f"#61 {HEAD61}\n#62 {HEAD62}\n"
