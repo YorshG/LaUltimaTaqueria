@@ -1,5 +1,7 @@
 # Registro de decisiones
 
+ART-01, 2026-10-07: Jorge decidió mostrar **«Monedas —»** como pendiente en la primera slice visual. No representa saldo cero ni conecta recompensas: las cantidades/fuente runtime siguen pendientes. Los placeholders y parámetros de exportación de `docs/art-01/PLAN.md` / `PIPELINE.md` son provisionales, no arte final aprobado; ART-01 queda sujeto a evidencia y revisión humana, sin merge.
+
 Fecha inicial: 2026-09-18.
 
 | Decisión | Estado | Justificación |
