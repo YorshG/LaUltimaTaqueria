@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+BOT restart verified: wave
+BOT wave completed: wave_01 elapsed=20.0484666666667
+La Última Taquería — BOSS-01 temporary wiring ready.
+BOT restart verified: upgrade
+BOT wave completed: wave_01 elapsed=20.0960755555556
+BOT wave completed: wave_02 elapsed=24.67434
+BOT wave completed: wave_03 elapsed=28.04328
+BOT wave completed: wave_04 elapsed=30.007468888889
+BOT wave completed: wave_05 elapsed=34.6709066666667
+La Última Taquería — BOSS-01 temporary wiring ready.
+BOT restart verified: boss
+BOT wave completed: wave_01 elapsed=20.0257577777778
+BOT wave completed: wave_02 elapsed=24.56044
+BOT wave completed: wave_03 elapsed=28.1356800000001
+BOT wave completed: wave_04 elapsed=30.0665600000001
+BOT wave completed: wave_05 elapsed=34.6179200000001
+BOT RESULT {"board_actions":99,"bosses":1,"choices":["steady_hands","second_chance","chain5_effect_boost","reputation_boost","slow_salsa"],"restart_stages":["wave","upgrade","boss"],"snapshot":{"board_seed":20260920,"logical_elapsed_sec":142.785237777776,"outcome":"victory","phase":"ended","run_seed":20260921,"terminal":true,"wall_elapsed_sec":7.163,"wave_number":5},"time_scale":20.0,"waves":["wave_01","wave_02","wave_03","wave_04","wave_05"]}
+La Última Taquería — BOSS-01 temporary wiring ready.
+M3 RUNTIME BOT PASS

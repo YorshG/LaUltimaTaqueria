@@ -1,0 +1,8 @@
+e89935b944d73f6636533003ab40dc80da4303d1
+100644 82a81b2d036b15708d49c5dceedde459241dbf86 1	scenes/App.tscn
+100644 d0c4aa04b8365654ef582537a7f591886a7658e2 2	scenes/App.tscn
+100644 de93a619a67db090d181b5a4057dbd7c27ddb4bb 3	scenes/App.tscn
+
+Auto-merging scenes/App.tscn
+CONFLICT (content): Merge conflict in scenes/App.tscn
+Auto-merging scenes/Main.tscn

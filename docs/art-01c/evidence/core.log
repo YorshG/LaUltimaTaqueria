@@ -1,0 +1,192 @@
+=== Running res://tests/content_registry_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ContentRegistry tests passed.
+=== Running res://tests/board_view_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BoardView tests passed: 25 cells / 5 columns.
+=== Running res://tests/board_input_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+Board input tests passed: 398 checks; real viewport mouse/touch, translated/scaled layouts, borders and orthogonal chains.
+=== Running res://tests/chain_path_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BRD-02 tests passed: orthogonal 3+, no diagonal/repeat/swap.
+=== Running res://tests/board_refill_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BRD-03 tests passed: gravity, refill, no holes, deterministic seed.
+=== Running res://tests/board_playability_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BRD-04 tests passed: detection, recovery, multiset, determinism, refill integration.
+=== Running res://tests/recipe_resolver_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+REC-01 tests passed: recipes, tiers, effects, errors, isolation, determinism.
+=== Running res://tests/monster_state_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+MonsterState tests passed: hunger, validation, clamping, single transition.
+=== Running res://tests/lane_field_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+LANE-01 tests passed: 3 lanes / independent configurable movement.
+=== Running res://tests/lane_targeting_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+LANE-02 targeting tests passed: eligibility, progress, lane and spawn tie-breaks.
+=== Running res://tests/lane_integration_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+LANE-02 integration tests passed: board bridge, events and scoped 5+ effects.
+=== Running res://tests/wave_director_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+WAV-01 tests passed: countdown, schedule, resolution, pause and five waves.
+=== Running res://tests/upgrade_selector_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+UPG-01 tests passed: deterministic offers, exclusions and five selections.
+=== Running res://tests/upgrade_modifiers_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+UPG-02a tests passed: 963 checks; pure deterministic modifiers, conditionals and input isolation.
+=== Running res://tests/upg_02b_satisfaction_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02b tests passed: 607 checks; D4 arithmetic, boosted effects, public selection, neutral path and atomic failures.
+=== Running res://tests/upg_02c_global_speed_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02c tests passed: 406 checks; absolute speed, active/future runners, public selections, pre-spawn boss inheritance and all phases.
+=== Running res://tests/upg_02d_reputation_defense_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02d tests passed: 526 checks; one-shots, validation, dedupe/reentrancy, HUD/low threshold, public fifth selections and effective boss damage.
+=== Running res://tests/upg_02e_survival_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02e tests passed: 692 checks; patient_service, atomic second_chance, D6, reentrancy, public boss selections and veggie 6.5.
+=== Running res://tests/upg_02f_conditionals_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02f tests passed: 400 checks; encounter runs, failures, late selection, synchronous boss, strict threshold and D4 isolation.
+=== Running res://tests/upg_02g_assist_serve_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02g tests passed: 268 checks; flat splash, D7, R1 and R2.
+=== Running res://tests/upg_02h_steady_hands_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+D8 accepted exterior band at (1080, 1920): 3.200 canvas px; geometry accepts, initial press is outside BoardView.
+D8 accepted exterior band at (1080, 1920): 3.200 canvas px; geometry accepts, initial press is outside BoardView.
+La Última Taquería — BOSS-01 temporary wiring ready.
+D8 accepted exterior band at (1080, 2400): 3.400 canvas px; geometry accepts, initial press is outside BoardView.
+D8 accepted exterior band at (1080, 2400): 3.400 canvas px; geometry accepts, initial press is outside BoardView.
+La Última Taquería — BOSS-01 temporary wiring ready.
+D8 scale fixture: canvas margin 7.040, local margin 7.800.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02h tests passed: 1263 checks; D8 geometry, real mouse/touch, absolute runtime setter, public selection and deterministic refill.
+=== Running res://tests/upgrade_selector_integration_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-01 integration tests passed: WaveDirector signal and Main bridge.
+=== Running res://tests/run_loop_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+RUN-01 tests passed: 376 checks; configured scene, 5 waves/choices, real UI, victory/breach/defeat, pause, duplicate guards, deterministic runs.
+
+=== TST-01 core suite summary ===
+PASS res://tests/content_registry_test.gd
+PASS res://tests/board_view_test.gd
+PASS res://tests/board_input_test.gd
+PASS res://tests/chain_path_test.gd
+PASS res://tests/board_refill_test.gd
+PASS res://tests/board_playability_test.gd
+PASS res://tests/recipe_resolver_test.gd
+PASS res://tests/monster_state_test.gd
+PASS res://tests/lane_field_test.gd
+PASS res://tests/lane_targeting_test.gd
+PASS res://tests/lane_integration_test.gd
+PASS res://tests/wave_director_test.gd
+PASS res://tests/upgrade_selector_test.gd
+PASS res://tests/upgrade_modifiers_test.gd
+PASS res://tests/upg_02b_satisfaction_test.gd
+PASS res://tests/upg_02c_global_speed_test.gd
+PASS res://tests/upg_02d_reputation_defense_test.gd
+PASS res://tests/upg_02e_survival_test.gd
+PASS res://tests/upg_02f_conditionals_test.gd
+PASS res://tests/upg_02g_assist_serve_test.gd
+PASS res://tests/upg_02h_steady_hands_test.gd
+PASS res://tests/upgrade_selector_integration_test.gd
+PASS res://tests/run_loop_test.gd
+23/23 test files passed.
