@@ -61,6 +61,7 @@ func _exercise(viewport: SubViewport, board: BoardView) -> void:
 		completed.append({"points": points.duplicate(), "ingredient": ingredient})
 	board.chain_completed.connect(on_completed)
 	_expect(board.global_position != Vector2.ZERO, "fixture has a nonzero board origin")
+	_expect((board.grid.get_child(0) as Button).get_theme_font_size("font_size") >= 42, "board ingredient letters keep mobile legibility override")
 	for touch in [false, true]:
 		for index in range(25):
 			var expected := Vector2i(index % 5, index / 5)

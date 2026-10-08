@@ -1,0 +1,8 @@
+RST metadata PASS: isolated default user:// sentinel unchanged; 40 restarts and 20 cancels.
+RST mutation killed: old-stays-in-tree -> RST-03:
+RST mutation killed: old-not-disabled -> RST-28:
+RST mutation killed: old-never-destroyed -> RST-03:
+RST mutation killed: stale-generation-effective -> RST-26:
+RST mutation killed: modal-keeps-simulating -> RST-24:
+RST mutation killed: terminal-audio-latch -> RST-17:
+RST mutation PASS: 6/6; disposable copies removed; checkout source unchanged.

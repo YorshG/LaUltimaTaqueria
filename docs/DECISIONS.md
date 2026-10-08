@@ -1,5 +1,13 @@
 # Registro de decisiones
 
+ART-01D, 2026-10-08: misión explícita de Jorge. Sustituye únicamente el redondeo visual aprobado en ART-01C por `ceil` cuando hambre > 0; cero exacto sigue 0. Modelo, barra, targeting y satisfacción conservan precisión. Refuerza el contorno/orden y añade conectores ortogonales por los márgenes sin cambiar geometría ni reglas. Autoriza preservar las cinco líneas de legibilidad/assertions de #61 y rescatar documentación, assertions espaciales compatibles y entrada core de #62 en la rama de #63. Se exige conteo positivo y rechazo de errores de motor con prueba negativa. #63 es candidato a sustituir la composición de #62; aceptación, promoción y cierres siguen pendientes. PR DRAFT, sin merge/rebase/force push; iPhone 17/16 Pro Max pendientes. [Matriz actual](art-01d/PR_MATRIX.md).
+
+ART-01C, 2026-10-07: misión explícita de Jorge para corregir la auditoría de Xavier sin rediseñar ni integrar. Selección con contorno y orden independientes, conservando píxeles del ingrediente; hambre redondeada al entero más cercano **solo al dibujar** (incluido `0/30` para un remanente positivo menor a 0.5), con barra y elegibilidad que conservan el float real. No cambia D1 de reputación. Etiquetas técnicas pasan a código/documentación. Fixtures derivadas de `monsters.json`, identificadas como tales. La [recomendación #61/#62/#63](art-01c/PR_MATRIX.md) es una propuesta pendiente de Jorge, no una decisión de integración aprobada. Se autoriza exclusivamente actualizar #63 DRAFT → uat con las correcciones; main/uat/#61/#62 quedan intactos. No se autoriza merge ni cierre de #62.
+
+ART-01B, 2026-10-07: misión explícita de Jorge sobre el mismo PR #63 DRAFT. La distribución requerida es **HUD compacto → tres carriles → mostrador → tablero 5×5 inferior**. Se autoriza adaptar presentación/App/Main tras auditar #61/#62, sin fusionar sus ramas ni promover a `uat`/`main`. Se conserva «Monedas —». El rect seguro se proyecta de píxeles de pantalla a canvas; las mediciones sintéticas no sustituyen prueba física. La implementación propone un mínimo de 44 pt para celdas y controles en los perfiles ensayados. Jorge aprueba el resultado visual y Xavier lo audita; pasar pruebas no constituye esa aprobación. El atlas de proxies sigue siendo provisional.
+
+ART-01, 2026-10-07: Jorge decidió mostrar **«Monedas —»** como pendiente en la primera slice visual. No representa saldo cero ni conecta recompensas: las cantidades/fuente runtime siguen pendientes. Los placeholders y parámetros de exportación de `docs/art-01/PLAN.md` / `PIPELINE.md` son provisionales, no arte final aprobado; ART-01 queda sujeto a evidencia y revisión humana, sin merge.
+
 Fecha inicial: 2026-09-18.
 
 | Decisión | Estado | Justificación |

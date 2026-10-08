@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/upgrade_choice.gd" id="1_choice"]
+[ext_resource type="Theme" path="res://assets/provisional/controls.tres" id="2_theme"]
 
 [node name="UpgradeChoice" type="PanelContainer"]
+theme = ExtResource("2_theme")
 visible = false
 layout_mode = 3
 anchors_preset = 15

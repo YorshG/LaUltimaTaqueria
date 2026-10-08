@@ -1,0 +1,16 @@
+{
+  "initial": "c283b337dd5ccd7355ad554a58743ff972151d3b",
+  "runtime_changed_only": [
+    "scenes/lane/LaneRunner.tscn",
+    "scripts/board/board_view.gd",
+    "scripts/visuals/board_visual.gd",
+    "scripts/visuals/lane_visual.gd"
+  ],
+  "exact_pr61_files": [
+    "scripts/board/board_view.gd",
+    "scenes/lane/LaneRunner.tscn",
+    "tests/board_input_test.gd",
+    "tests/lane_integration_test.gd"
+  ],
+  "gameplay_data_scenes_app_main_unchanged": true
+}

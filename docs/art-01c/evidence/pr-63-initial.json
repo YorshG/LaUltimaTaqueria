@@ -1,0 +1,92 @@
+{
+  "baseRefName": "uat",
+  "headRefName": "codex/art-01-visual-slice",
+  "headRefOid": "5e4bc11dd2c68a2b7563437e8cdeb98d39a97dc3",
+  "isDraft": true,
+  "number": 63,
+  "state": "OPEN",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-08T01:48:50Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/YorshG/LaUltimaTaqueria/actions/runs/37714749004/job/113108567285",
+      "name": "presentation",
+      "startedAt": "2026-10-08T01:48:33Z",
+      "status": "COMPLETED",
+      "workflowName": "ART-01 presentation contract"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-08T01:48:45Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/YorshG/LaUltimaTaqueria/actions/runs/37714748991/job/113108567524",
+      "name": "board",
+      "startedAt": "2026-10-08T01:48:33Z",
+      "status": "COMPLETED",
+      "workflowName": "BoardView Smoke"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-08T01:49:05Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/YorshG/LaUltimaTaqueria/actions/runs/37714748971/job/113108567244",
+      "name": "smoke",
+      "startedAt": "2026-10-08T01:48:33Z",
+      "status": "COMPLETED",
+      "workflowName": "Godot TEC-01 Smoke"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-08T01:48:45Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/YorshG/LaUltimaTaqueria/actions/runs/37714749068/job/113108567813",
+      "name": "probe",
+      "startedAt": "2026-10-08T01:48:34Z",
+      "status": "COMPLETED",
+      "workflowName": "INP-01 Diagnostic Probe"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-08T01:48:45Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/YorshG/LaUltimaTaqueria/actions/runs/37714749115/job/113108567571",
+      "name": "lane",
+      "startedAt": "2026-10-08T01:48:33Z",
+      "status": "COMPLETED",
+      "workflowName": "LaneField Smoke"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-08T01:49:13Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/YorshG/LaUltimaTaqueria/actions/runs/37714749052/job/113108567402",
+      "name": "runtime-bot",
+      "startedAt": "2026-10-08T01:48:35Z",
+      "status": "COMPLETED",
+      "workflowName": "M3 Runtime Bot"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-08T01:49:18Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/YorshG/LaUltimaTaqueria/actions/runs/37714749144/job/113108568372",
+      "name": "restart",
+      "startedAt": "2026-10-08T01:48:34Z",
+      "status": "COMPLETED",
+      "workflowName": "RST-01 Session Lifecycle"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-08T01:49:15Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/YorshG/LaUltimaTaqueria/actions/runs/37714748937/job/113108567613",
+      "name": "retirement",
+      "startedAt": "2026-10-08T01:48:33Z",
+      "status": "COMPLETED",
+      "workflowName": "VIS-01 Runner Retirement"
+    }
+  ],
+  "title": "ART-01/01B: slice visual y distribuci\u00f3n m\u00f3vil con safe area",
+  "url": "https://github.com/YorshG/LaUltimaTaqueria/pull/63"
+}

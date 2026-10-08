@@ -165,6 +165,7 @@ func _build_cells() -> void:
 		cell.focus_mode = Control.FOCUS_NONE
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.custom_minimum_size = Vector2(52.0, 52.0)
+		cell.add_theme_font_size_override("font_size", 42)
 		cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		cell.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		cell.tooltip_text = ingredient

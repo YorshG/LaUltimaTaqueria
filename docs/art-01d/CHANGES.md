@@ -1,0 +1,14 @@
+# ART-01D · cambios
+
+Inicio `c283b337dd5ccd7355ad554a58743ff972151d3b`. Rama `codex/art-01-visual-slice`, PR #63, base uat. El SHA final y su CI se identifican en la entrega y descripción de #63.
+
+- **Cadena:** BoardVisual lee los mismos rects/orden aceptados por BoardView. Contorno claro de 8 unidades (antes 4), respaldo oscuro de 12, inset 2; conectores de 10 con respaldo de 18 dibujados después de los contornos entre bordes enfrentados. Guard Manhattan == 1. Badges de orden 26 (antes 14), 20 para dos dígitos; situados en el margen izquierdo fuera del rect del ingrediente. No nodos adicionales, desplazamientos, nuevas hitboxes ni lógica de selección.
+- **Hambre:** `hunger_text()` aplica `ceil` únicamente al valor actual positivo. Cero exacto muestra 0; máximo conserva el formateo anterior. Una línea sin decimales. Barra, estado, satisfacción, elegibilidad y targeting no se editan. La decisión reemplaza explícitamente el redondeo visual de C en DECISIONS.
+- **#61:** se preservan exactamente sus cuatro archivos/cinco líneas: fuente 42 de Button, 32/outline 4 de runner, dos assertions originales. Protegen el fallback; los proxies reciben comprobaciones gráficas independientes.
+- **#62:** se rescatan documento e intención espacial, adaptados a rects públicos. Layout incorporado a core junto a ART-01B y D. Sin copiar escenas, casts VBox, orden de hijos ni límite fijo de 64. La integración completa permanece detenida por conflictos en App.tscn y planning/BACKLOG.md.
+- **Falsos positivos:** scripts recuperados exigen checks > 0; ejecutor compartido comprueba salida, errores de motor y un único resumen de assertions positivas. Pruebas negativas ejecutan un error de script real seguido de resumen falso, cero checks y ausencia de resumen; deben salir distinto de cero. Control positivo incluido. Se ejecuta en CI smoke y presentation.
+- **Evidencia:** mismo fixture y scripts copiados sobre exportaciones Git inmutables C/uat, tres tamaños y safe area sintética. BoardState solo se prepara desde tests para las trayectorias; nunca se añade lógica de fixture al runtime. Casos subunit, fracciones, nueve corredores coincidentes, tablero completo, orden 2–5, giros y gris. Métricas sin selección y con cinco celdas seleccionadas.
+
+La primera inspección gráfica detectó que el contorno tapaba los conectores. Se corrigió el orden de dibujo/inset y se añadieron 522 assertions gráficas. Las métricas y logs de ese primer intento se conservan en `evidence/initial-fit/`; no son los resultados finales. Se regeneró la evidencia final.
+
+No hay sprites finales ni assets declarados congelados. Sin cambios en atlas, contenido canónico, App/Main, servicios, reglas, balance, progreso, jefe o persistencia. El único cambio en BoardView es la línea de fuente recuperada de #61. [Auditoría de alcance](evidence/scope-audit.json), [inventario](FILES.md).

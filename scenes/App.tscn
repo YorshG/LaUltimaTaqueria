@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/app.gd" id="1_app"]
+[ext_resource type="Script" path="res://scripts/visuals/safe_area_layout.gd" id="2_safe"]
+[ext_resource type="Theme" path="res://assets/provisional/controls.tres" id="3_theme"]
 
 [node name="App" type="Control"]
 process_mode = 3
@@ -12,31 +14,39 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_app")
 
-[node name="Layout" type="VBoxContainer" parent="."]
+[node name="Layout" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_safe")
 
 [node name="SessionHost" type="Control" parent="Layout"]
 unique_name_in_owner = true
 process_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 
-[node name="Footer" type="MarginContainer" parent="Layout"]
+[node name="TopBar" type="MarginContainer" parent="Layout"]
+layout_mode = 0
+mouse_filter = 2
+
+[node name="Row" type="HBoxContainer" parent="Layout/TopBar"]
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+mouse_filter = 2
 
-[node name="RestartButton" type="Button" parent="Layout/Footer"]
+[node name="RestartButton" type="Button" parent="Layout/TopBar/Row"]
+theme = ExtResource("3_theme")
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 88)
+custom_minimum_size = Vector2(250, 132)
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 36
 text = "Reiniciar"
 
 [node name="RestartConfirmation" type="Control" parent="."]
@@ -70,6 +80,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Panel" type="PanelContainer" parent="RestartConfirmation/Center"]
+theme = ExtResource("3_theme")
 custom_minimum_size = Vector2(600, 0)
 layout_mode = 2
 

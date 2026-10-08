@@ -1,0 +1,49 @@
+{
+  "baseline_refs": {
+    "uat": "d46cc8cdebb363a7791da8417d78870da3e676d1",
+    "art01b": "5e4bc11dd2c68a2b7563437e8cdeb98d39a97dc3"
+  },
+  "fixture": "tests/art_01c_fixture.gd",
+  "board_seed": 20260920,
+  "monsters_sha256": "468db0e284c2ce66026f50c2e791349755122fc3f4ba1bc93eb2d2fca935521e",
+  "fixture_sha256": "2505d63f23e85a78d5a77480aba8a61b2e6753f29df418ba09701e60949bea5f",
+  "canonical_monsters": [
+    {
+      "id": "nibbler",
+      "display_name_key": "monster.nibbler",
+      "tags": [
+        "basic"
+      ],
+      "speed": 55,
+      "hunger": 30,
+      "reputation_damage": 10,
+      "initial_value_hypothesis": true
+    },
+    {
+      "id": "salsa_tank",
+      "display_name_key": "monster.salsa_tank",
+      "tags": [
+        "tank",
+        "slow"
+      ],
+      "speed": 30,
+      "hunger": 70,
+      "reputation_damage": 25,
+      "initial_value_hypothesis": true
+    },
+    {
+      "id": "swift_hopper",
+      "display_name_key": "monster.swift_hopper",
+      "tags": [
+        "fast",
+        "priority"
+      ],
+      "speed": 90,
+      "hunger": 18,
+      "reputation_damage": 15,
+      "initial_value_hypothesis": true
+    }
+  ],
+  "not_played_sessions": true,
+  "physical_testing": false
+}

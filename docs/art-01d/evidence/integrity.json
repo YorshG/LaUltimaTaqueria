@@ -1,0 +1,12 @@
+{
+  "png_count": 127,
+  "matching_c_d_snapshots": 33,
+  "runtime_sha256": {
+    "scripts/board/board_view.gd": "c4b43c796b728e415eeffca0fc103557c3c1670c0b8dfa4bf7b94f86adde5b60",
+    "scenes/lane/LaneRunner.tscn": "54fca0daddfbc79355be334305ccd13545370ba51dba40db1f72f6d2549b507b",
+    "scripts/visuals/board_visual.gd": "bd88ab4ac944f60c5f252d06caf96f54c9890dd1449d56524d0087d04c34cdcb",
+    "scripts/visuals/lane_visual.gd": "83bae7df4697452471d70eeead5d4e06309a8e3f9c20b8e72a2600cfcda3adc1"
+  },
+  "positive_logs_checked": 123,
+  "initial_ref": "c283b337dd5ccd7355ad554a58743ff972151d3b"
+}

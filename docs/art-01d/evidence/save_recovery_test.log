@@ -1,0 +1,40 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WARNING: Exponent too high
+     at: built_in_strtod (core/string/ustring.cpp:2553)
+     GDScript backtrace (most recent call first):
+         [0] load_save (res://scripts/save/save_service.gd:72)
+         [1] _expect_recovery_bytes (res://tests/save_recovery_test.gd:435)
+         [2] _expect_recovery (res://tests/save_recovery_test.gd:426)
+         [3] _test_nonfinite_json (res://tests/save_recovery_test.gd:236)
+         [4] _run_case (res://tests/save_recovery_test.gd:81)
+         [5] _init (res://tests/save_recovery_test.gd:58)
+WARNING: Exponent too high
+     at: built_in_strtod (core/string/ustring.cpp:2553)
+     GDScript backtrace (most recent call first):
+         [0] load_save (res://scripts/save/save_service.gd:72)
+         [1] _expect_recovery_bytes (res://tests/save_recovery_test.gd:435)
+         [2] _expect_recovery (res://tests/save_recovery_test.gd:426)
+         [3] _test_nonfinite_json (res://tests/save_recovery_test.gd:237)
+         [4] _run_case (res://tests/save_recovery_test.gd:81)
+         [5] _init (res://tests/save_recovery_test.gd:58)
+WARNING: Exponent too high
+     at: built_in_strtod (core/string/ustring.cpp:2553)
+     GDScript backtrace (most recent call first):
+         [0] load_save (res://scripts/save/save_service.gd:72)
+         [1] _expect_recovery_bytes (res://tests/save_recovery_test.gd:435)
+         [2] _expect_recovery (res://tests/save_recovery_test.gd:426)
+         [3] _test_nonfinite_json (res://tests/save_recovery_test.gd:236)
+         [4] _run_case (res://tests/save_recovery_test.gd:81)
+         [5] _init (res://tests/save_recovery_test.gd:58)
+WARNING: Exponent too high
+     at: built_in_strtod (core/string/ustring.cpp:2553)
+     GDScript backtrace (most recent call first):
+         [0] load_save (res://scripts/save/save_service.gd:72)
+         [1] _expect_recovery_bytes (res://tests/save_recovery_test.gd:435)
+         [2] _expect_recovery (res://tests/save_recovery_test.gd:426)
+         [3] _test_nonfinite_json (res://tests/save_recovery_test.gd:237)
+         [4] _run_case (res://tests/save_recovery_test.gd:81)
+         [5] _init (res://tests/save_recovery_test.gd:58)
+Unicode parsing error, some characters were replaced with � (U+FFFD): Invalid UTF-8 leading byte (ff)
+SAV-02 tests passed: 29 cases, 1023 assertions, 0 platform skips; safe quarantine, complete defaults, explicit load outcomes and filesystem failure preservation.

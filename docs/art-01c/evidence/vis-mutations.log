@@ -1,0 +1,16 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+VIS_STRESS settled nodes=7 across 100 cycles / 1200 runners
+VIS-01 PASS: 189 checks; primary/breach, D7 splash, nested listeners, five waves, both boss outcomes, 100x12 stress.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+VIS_EVENT_LIFETIME PASS: { "count": 1, "alive": true, "visible": true }
+VIS mutation killed: no-hide -> VIS_HIDDEN
+VIS mutation killed: hide-before-listeners -> VIS_LISTENER_VISIBLE
+VIS mutation killed: free-before-signal -> VIS_EVENT_LIFETIME FAIL
+VIS mutation killed: double-resolve -> VIS_ONCE
+VIS mutation killed: runner-residual -> VIS_FREED
+VIS mutation killed: boss-residual -> VIS_BOSS
+VIS mutation PASS: 6/6; source unchanged; disposable copies removed.

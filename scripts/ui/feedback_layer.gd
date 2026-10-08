@@ -8,6 +8,11 @@ var _localization: Dictionary = {}
 var _messages: Array[Dictionary] = []
 
 
+func _ready() -> void:
+	for label in message_labels:
+		label.hide()
+
+
 func configure(localization: Dictionary) -> void:
 	_localization = localization.duplicate(true)
 
@@ -29,6 +34,7 @@ func present(payload: Dictionary) -> void:
 		_messages.pop_front()
 	for index in range(MAX_MESSAGES):
 		message_labels[index].text = _messages[index]["text"] if index < _messages.size() else ""
+		message_labels[index].visible = index < _messages.size()
 
 
 func get_messages() -> Array[Dictionary]:

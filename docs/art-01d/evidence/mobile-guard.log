@@ -1,0 +1,5 @@
+script-error-positive correctly rejected
+zero-checks correctly rejected
+missing-summary correctly rejected
+positive-control correctly accepted
+MOBILE_GUARD 6 checks 0 failures

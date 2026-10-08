@@ -1,0 +1,55 @@
+name: ART-01 presentation contract
+
+on:
+  pull_request:
+    paths:
+      - "project.godot"
+      - "scenes/**"
+      - "scripts/**"
+      - "data/visuals/**"
+      - "assets/provisional/**"
+      - "tests/art_01*"
+      - "tests/run_art_01*"
+      - "tests/run_checked_godot.py"
+      - "tests/run_mobile_guard_test.py"
+      - "tests/ui_mobile_layout_test.gd"
+      - ".github/workflows/art-01-visual.yml"
+
+jobs:
+  presentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
+      - name: Import and verify presentation observes gameplay
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --path . --editor --quit 2>&1 | tee import.log
+          godot --headless --path . --script res://tests/art_01_visual_test.gd 2>&1 | tee art.log
+          godot --headless --path . --script res://tests/art_01b_layout_test.gd 2>&1 | tee layout.log
+          godot --headless --path . --script res://tests/art_01c_audit_test.gd 2>&1 | tee audit.log
+          python3 tests/run_checked_godot.py --script res://tests/art_01d_audit_test.gd 2>&1 | tee correction.log
+          python3 tests/run_checked_godot.py --script res://tests/ui_mobile_layout_test.gd 2>&1 | tee mobile.log
+          python3 tests/run_mobile_guard_test.py
+          if grep -Ei 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' import.log art.log layout.log audit.log correction.log mobile.log; then exit 1; fi
+          grep -E 'ART_VISUAL [1-9][0-9]* checks 0 failures' art.log
+          grep -E 'ART_01B_LAYOUT [1-9][0-9]* checks 0 failures' layout.log
+          grep -E 'ART_01C_AUDIT [1-9][0-9]* checks 0 failures' audit.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-01-presentation
+          path: |
+            import.log
+            art.log
+            layout.log
+            audit.log
+            correction.log
+            mobile.log
+            docs/art-01d/evidence/guard-*.log

@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward Mobile - Using Device #0: Apple - Apple M2 (Apple8)
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_PERFORMANCE {"after":[103.0,39.0,0.0],"before":[103.0,39.0,0.0],"desktop_only":true,"draw_calls":160.0,"fixture":"canonical-seven","frame_interval_ms_max":32.718,"frame_interval_ms_median":16.702,"frame_interval_ms_p95":17.568,"memory_static_bytes":46998078.0,"process_ms_median":21.598,"process_ms_p95":32.643,"runners":7,"sample_frames":180,"stable_counts":true,"warmup_frames":60}

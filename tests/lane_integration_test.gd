@@ -33,6 +33,7 @@ func _test_board_recipe_lane_bridge() -> void:
 	await process_frame
 
 	var runner: LaneRunner = main.lane_field.spawn_runner(1, 55.0, "N", "nibbler", 30.0)
+	_expect(runner.label.get_theme_font_size("font_size") >= 32, "runner letters keep mobile legibility override")
 	runner.auto_advance = false
 	runner.motion.progress = 0.4
 	var events: Array[String] = []

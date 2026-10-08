@@ -1,0 +1,323 @@
+{
+  "uat": [
+    {
+      "after": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "memory_static_bytes": 41382993.0,
+      "process_ms_median": 9.464,
+      "process_ms_p95": 9.464,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "memory_static_bytes": 41382993.0,
+      "process_ms_median": 9.41,
+      "process_ms_p95": 9.41,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "memory_static_bytes": 41382993.0,
+      "process_ms_median": 9.378,
+      "process_ms_p95": 9.378,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "memory_static_bytes": 41382993.0,
+      "process_ms_median": 9.449,
+      "process_ms_p95": 9.449,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        21.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "memory_static_bytes": 41382993.0,
+      "process_ms_median": 9.189,
+      "process_ms_p95": 9.477,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    }
+  ],
+  "art01": [
+    {
+      "after": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "before": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 329.0,
+      "memory_static_bytes": 44051553.0,
+      "process_ms_median": 9.746,
+      "process_ms_p95": 10.214,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "before": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 329.0,
+      "memory_static_bytes": 44051553.0,
+      "process_ms_median": 9.792,
+      "process_ms_p95": 9.792,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "before": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 329.0,
+      "memory_static_bytes": 44051553.0,
+      "process_ms_median": 9.69,
+      "process_ms_p95": 10.321,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "before": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 329.0,
+      "memory_static_bytes": 44051553.0,
+      "process_ms_median": 9.51,
+      "process_ms_p95": 9.653,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "before": [
+        101.0,
+        28.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 329.0,
+      "memory_static_bytes": 44051553.0,
+      "process_ms_median": 9.292,
+      "process_ms_p95": 9.558,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    }
+  ],
+  "art01b": [
+    {
+      "after": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "memory_static_bytes": 46675250.0,
+      "process_ms_median": 22.384,
+      "process_ms_p95": 22.384,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "memory_static_bytes": 46675250.0,
+      "process_ms_median": 10.421,
+      "process_ms_p95": 10.421,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "memory_static_bytes": 46675250.0,
+      "process_ms_median": 10.339,
+      "process_ms_p95": 10.339,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "memory_static_bytes": 46675250.0,
+      "process_ms_median": 11.506,
+      "process_ms_p95": 11.506,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        38.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "memory_static_bytes": 46675250.0,
+      "process_ms_median": 10.761,
+      "process_ms_p95": 10.761,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    }
+  ]
+}

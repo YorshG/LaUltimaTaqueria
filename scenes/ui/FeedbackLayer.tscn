@@ -8,38 +8,47 @@ mouse_filter = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_feedback")
 
-[node name="Message0" type="Label" parent="."]
+[node name="Rows" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 2
+theme_override_constants/h_separation = 12
+
+[node name="Message0" type="Label" parent="Rows"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 0)
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/font_size = 40
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Message1" type="Label" parent="."]
+[node name="Message1" type="Label" parent="Rows"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 0)
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/font_size = 40
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Message2" type="Label" parent="."]
+[node name="Message2" type="Label" parent="Rows"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 0)
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/font_size = 40
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Message3" type="Label" parent="."]
+[node name="Message3" type="Label" parent="Rows"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 0)
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/font_size = 40
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 autowrap_mode = 3

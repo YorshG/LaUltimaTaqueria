@@ -1,0 +1,35 @@
+uat-import PASS
+art01c-import PASS
+import PASS
+art01c-regular-1620 PASS
+art01c-fractional-1620 PASS
+art01c-crowded-1620 PASS
+art01c-unselected-1620 PASS
+art01c-bounds-1620 PASS
+art01c-turns-1620 PASS
+art01c-chain-2-1620 PASS
+Traceback (most recent call last):
+  File "/Users/jorgeguinto/.codex/worktrees/art-01-visual-slice/La Ultima Taqueria/tests/run_art_01d_evidence.py", line 79, in <module>
+    main()
+  File "/Users/jorgeguinto/.codex/worktrees/art-01-visual-slice/La Ultima Taqueria/tests/run_art_01d_evidence.py", line 48, in main
+    run(projects[prefix], label, '--script', 'res://tests/art_01d_capture.gd', '--', str(OUT / (label + '.png')), str(height), mode)
+  File "/Users/jorgeguinto/.codex/worktrees/art-01-visual-slice/La Ultima Taqueria/tests/run_art_01d_evidence.py", line 22, in run
+    evidence.run(project, label, '--resolution', '540x960', *args)
+  File "/Users/jorgeguinto/.codex/worktrees/art-01-visual-slice/La Ultima Taqueria/tests/run_art_01_evidence.py", line 20, in run
+    result = subprocess.run(command, cwd=project, capture_output=True, text=True, timeout=90)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 507, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1134, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1980, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1178, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['godot', '--path', '/var/folders/6y/gwcmff155nq3kf84s2hcx2580000gn/T/art01d-art01c6nd8phpb', '--log-file', '/Users/jorgeguinto/.codex/worktrees/art-01-visual-slice/La Ultima Taqueria/docs/art-01d/evidence/art01c-chain-3-1620.engine.log', '--resolution', '540x960', '--script', 'res://tests/art_01d_capture.gd', '--', '/Users/jorgeguinto/.codex/worktrees/art-01-visual-slice/La Ultima Taqueria/docs/art-01d/evidence/art01c-chain-3-1620.png', '1620', 'chain-3']' timed out after 90 seconds
+
+ENGINE LOG
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 4.0 - Forward Mobile - Using Device #0: Apple - Apple M2 (Apple8)
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01D_FIXTURE {"fixture":true,"mode":"chain-3","monsters":[{"id":"nibbler","lane":0,"maximum":30.0,"progress":0.28,"remaining":30.0,"sequence":1,"speed":55.0},{"id":"salsa_tank","lane":1,"maximum":70.0,"progress":0.46,"remaining":70.0,"sequence":2,"speed":30.0},{"id":"swift_hopper","lane":2,"maximum":18.0,"progress":0.68,"remaining":18.0,"sequence":3,"speed":90.0}],"seed":20260920}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/board/BoardView.tscn" id="2_board"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" path="res://scripts/ui/feedback_audio.gd" id="8_audio"]
 
 [ext_resource type="PackedScene" path="res://scenes/ui/UpgradeChoice.tscn" id="9_choice"]
+[ext_resource type="Script" path="res://scripts/visuals/gameplay_layout.gd" id="10_layout"]
+[ext_resource type="Script" path="res://scripts/visuals/counter_visual.gd" id="11_counter"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -32,9 +34,9 @@ theme_override_constants/margin_top = 48
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 48
 
-[node name="Content" type="VBoxContainer" parent="Margin"]
+[node name="Content" type="Control" parent="Margin"]
 layout_mode = 2
-theme_override_constants/separation = 24
+script = ExtResource("10_layout")
 
 [node name="RunStatus" type="Label" parent="Margin/Content"]
 unique_name_in_owner = true
@@ -53,6 +55,15 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="LaneField" parent="Margin/Content" instance=ExtResource("3_lane")]
+unique_name_in_owner = true
+layout_mode = 0
+
+[node name="Counter" type="Control" parent="Margin/Content"]
+layout_mode = 0
+mouse_filter = 2
+script = ExtResource("11_counter")
+
 [node name="BoardHost" type="AspectRatioContainer" parent="Margin/Content"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -62,11 +73,6 @@ stretch_mode = 2
 [node name="BoardView" parent="Margin/Content/BoardHost" instance=ExtResource("2_board")]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="LaneField" parent="Margin/Content" instance=ExtResource("3_lane")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
 
 [node name="WaveDirector" type="Node" parent="."]
 unique_name_in_owner = true

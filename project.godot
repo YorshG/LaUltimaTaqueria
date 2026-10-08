@@ -21,5 +21,6 @@ window/stretch/aspect="expand"
 
 [rendering]
 
+environment/defaults/default_clear_color=Color(0.10, 0.09, 0.18, 1)
 renderer/rendering_method="mobile"
 renderer/rendering_method.mobile="mobile"
