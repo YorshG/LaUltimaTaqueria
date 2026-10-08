@@ -1,0 +1,11 @@
+FAIL: exit status, engine diagnostic, or missing/zero checks
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Invalid call. Nonexistent function 'get_children' in base 'Nil'.
+          at: broken (/var/folders/6y/gwcmff155nq3kf84s2hcx2580000gn/T/mobile-guard-sr8yh86i/script-error-positive.gd:4)
+          GDScript backtrace (most recent call first):
+              [0] broken (/var/folders/6y/gwcmff155nq3kf84s2hcx2580000gn/T/mobile-guard-sr8yh86i/script-error-positive.gd:4)
+              [1] _initialize (/var/folders/6y/gwcmff155nq3kf84s2hcx2580000gn/T/mobile-guard-sr8yh86i/script-error-positive.gd:6)
+UI_MOBILE_LAYOUT 1 checks 0 failures
+
+WRAPPER_EXIT=1

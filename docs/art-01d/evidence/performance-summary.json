@@ -1,0 +1,80 @@
+[
+  {
+    "reference": "uat",
+    "nodes": 72.0,
+    "resources": 22.0,
+    "draw_calls": 59.0,
+    "memory_mib": 39.501976013183594,
+    "memory_min_mib": 39.501976013183594,
+    "memory_max_mib": 39.501976013183594,
+    "process_p95_ms_median": 22.646,
+    "interval_median_ms": 16.688,
+    "interval_p95_ms_median": 17.922,
+    "interval_max_ms": 33.724
+  },
+  {
+    "reference": "art01c",
+    "nodes": 103.0,
+    "resources": 39.0,
+    "draw_calls": 160.0,
+    "memory_mib": 44.82085990905762,
+    "memory_min_mib": 44.82085990905762,
+    "memory_max_mib": 44.82085990905762,
+    "process_p95_ms_median": 32.908,
+    "interval_median_ms": 16.702,
+    "interval_p95_ms_median": 17.786,
+    "interval_max_ms": 33.254
+  },
+  {
+    "reference": "art01d",
+    "nodes": 103.0,
+    "resources": 39.0,
+    "draw_calls": 171.0,
+    "memory_mib": 45.496222496032715,
+    "memory_min_mib": 45.496222496032715,
+    "memory_max_mib": 45.496222496032715,
+    "process_p95_ms_median": 23.879,
+    "interval_median_ms": 16.691,
+    "interval_p95_ms_median": 17.685,
+    "interval_max_ms": 33.324
+  },
+  {
+    "reference": "uat-selected",
+    "nodes": 72.0,
+    "resources": 23.0,
+    "draw_calls": 63.0,
+    "memory_mib": 43.86716651916504,
+    "memory_min_mib": 43.86716651916504,
+    "memory_max_mib": 43.86716651916504,
+    "process_p95_ms_median": 23.419,
+    "interval_median_ms": 16.687,
+    "interval_p95_ms_median": 17.565,
+    "interval_max_ms": 33.734
+  },
+  {
+    "reference": "art01c-selected",
+    "nodes": 103.0,
+    "resources": 40.0,
+    "draw_calls": 184.0,
+    "memory_mib": 45.19792175292969,
+    "memory_min_mib": 45.19792175292969,
+    "memory_max_mib": 45.19792175292969,
+    "process_p95_ms_median": 20.91,
+    "interval_median_ms": 16.684,
+    "interval_p95_ms_median": 17.798,
+    "interval_max_ms": 33.026
+  },
+  {
+    "reference": "art01d-selected",
+    "nodes": 103.0,
+    "resources": 40.0,
+    "draw_calls": 196.0,
+    "memory_mib": 46.11231327056885,
+    "memory_min_mib": 46.11231327056885,
+    "memory_max_mib": 46.11231327056885,
+    "process_p95_ms_median": 32.587,
+    "interval_median_ms": 16.691,
+    "interval_p95_ms_median": 17.89,
+    "interval_max_ms": 32.849
+  }
+]

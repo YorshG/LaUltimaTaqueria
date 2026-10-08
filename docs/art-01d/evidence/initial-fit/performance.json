@@ -1,0 +1,764 @@
+{
+  "uat": [
+    {
+      "after": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 25.148,
+      "frame_interval_ms_median": 8.112,
+      "frame_interval_ms_p95": 9.333,
+      "memory_static_bytes": 41420824.0,
+      "process_ms_median": 25.028,
+      "process_ms_p95": 25.028,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 25.636,
+      "frame_interval_ms_median": 8.157,
+      "frame_interval_ms_p95": 10.619,
+      "memory_static_bytes": 41420824.0,
+      "process_ms_median": 23.587,
+      "process_ms_p95": 25.433,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 25.33,
+      "frame_interval_ms_median": 8.174,
+      "frame_interval_ms_p95": 9.561,
+      "memory_static_bytes": 41420824.0,
+      "process_ms_median": 25.004,
+      "process_ms_p95": 25.154,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 25.951,
+      "frame_interval_ms_median": 8.091,
+      "frame_interval_ms_p95": 9.259,
+      "memory_static_bytes": 41420824.0,
+      "process_ms_median": 25.877,
+      "process_ms_p95": 25.877,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        22.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 59.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 26.14,
+      "frame_interval_ms_median": 8.142,
+      "frame_interval_ms_p95": 9.434,
+      "memory_static_bytes": 41420824.0,
+      "process_ms_median": 24.914,
+      "process_ms_p95": 25.939,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    }
+  ],
+  "art01c": [
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 12.795,
+      "frame_interval_ms_median": 8.398,
+      "frame_interval_ms_p95": 9.537,
+      "memory_static_bytes": 46998078.0,
+      "process_ms_median": 10.223,
+      "process_ms_p95": 12.775,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 10.762,
+      "frame_interval_ms_median": 8.405,
+      "frame_interval_ms_p95": 9.377,
+      "memory_static_bytes": 46998078.0,
+      "process_ms_median": 11.257,
+      "process_ms_p95": 11.257,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 11.616,
+      "frame_interval_ms_median": 8.306,
+      "frame_interval_ms_p95": 9.644,
+      "memory_static_bytes": 46998078.0,
+      "process_ms_median": 12.433,
+      "process_ms_p95": 12.433,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 24.341,
+      "frame_interval_ms_median": 8.404,
+      "frame_interval_ms_p95": 9.53,
+      "memory_static_bytes": 46998078.0,
+      "process_ms_median": 10.079,
+      "process_ms_p95": 24.16,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 160.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 9.781,
+      "frame_interval_ms_median": 8.188,
+      "frame_interval_ms_p95": 9.451,
+      "memory_static_bytes": 46998078.0,
+      "process_ms_median": 10.87,
+      "process_ms_p95": 10.87,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    }
+  ],
+  "art01d": [
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 171.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 11.197,
+      "frame_interval_ms_median": 8.325,
+      "frame_interval_ms_p95": 9.192,
+      "memory_static_bytes": 47705296.0,
+      "process_ms_median": 10.586,
+      "process_ms_p95": 11.077,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 171.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 11.309,
+      "frame_interval_ms_median": 8.369,
+      "frame_interval_ms_p95": 9.377,
+      "memory_static_bytes": 47705296.0,
+      "process_ms_median": 12.533,
+      "process_ms_p95": 12.533,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 171.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 12.802,
+      "frame_interval_ms_median": 8.227,
+      "frame_interval_ms_p95": 9.615,
+      "memory_static_bytes": 47705296.0,
+      "process_ms_median": 10.136,
+      "process_ms_p95": 12.626,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 171.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 12.231,
+      "frame_interval_ms_median": 8.28,
+      "frame_interval_ms_p95": 9.217,
+      "memory_static_bytes": 47705296.0,
+      "process_ms_median": 10.381,
+      "process_ms_p95": 12.184,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        39.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 171.0,
+      "fixture": "canonical-seven",
+      "frame_interval_ms_max": 12.162,
+      "frame_interval_ms_median": 8.335,
+      "frame_interval_ms_p95": 9.456,
+      "memory_static_bytes": 47705296.0,
+      "process_ms_median": 11.506,
+      "process_ms_p95": 12.049,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    }
+  ],
+  "uat-selected": [
+    {
+      "after": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 63.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 24.961,
+      "frame_interval_ms_median": 8.068,
+      "frame_interval_ms_p95": 9.304,
+      "memory_static_bytes": 45996342.0,
+      "process_ms_median": 9.292,
+      "process_ms_p95": 24.844,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 63.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 25.931,
+      "frame_interval_ms_median": 8.163,
+      "frame_interval_ms_p95": 9.378,
+      "memory_static_bytes": 45996342.0,
+      "process_ms_median": 9.167,
+      "process_ms_p95": 11.34,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 63.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 25.572,
+      "frame_interval_ms_median": 8.228,
+      "frame_interval_ms_p95": 9.441,
+      "memory_static_bytes": 45996342.0,
+      "process_ms_median": 25.247,
+      "process_ms_p95": 25.247,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 63.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 9.484,
+      "frame_interval_ms_median": 8.097,
+      "frame_interval_ms_p95": 9.26,
+      "memory_static_bytes": 45996342.0,
+      "process_ms_median": 24.867,
+      "process_ms_p95": 24.867,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "before": [
+        72.0,
+        23.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 63.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 25.869,
+      "frame_interval_ms_median": 8.184,
+      "frame_interval_ms_p95": 9.443,
+      "memory_static_bytes": 45996342.0,
+      "process_ms_median": 9.689,
+      "process_ms_p95": 25.79,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    }
+  ],
+  "art01c-selected": [
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 184.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 11.339,
+      "frame_interval_ms_median": 8.372,
+      "frame_interval_ms_p95": 9.349,
+      "memory_static_bytes": 47391740.0,
+      "process_ms_median": 10.596,
+      "process_ms_p95": 11.321,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 184.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 9.66,
+      "frame_interval_ms_median": 8.294,
+      "frame_interval_ms_p95": 9.203,
+      "memory_static_bytes": 47391740.0,
+      "process_ms_median": 9.483,
+      "process_ms_p95": 9.483,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 184.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 10.411,
+      "frame_interval_ms_median": 8.297,
+      "frame_interval_ms_p95": 9.411,
+      "memory_static_bytes": 47391740.0,
+      "process_ms_median": 9.49,
+      "process_ms_p95": 10.223,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 184.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 10.096,
+      "frame_interval_ms_median": 8.291,
+      "frame_interval_ms_p95": 9.419,
+      "memory_static_bytes": 47391740.0,
+      "process_ms_median": 9.158,
+      "process_ms_p95": 9.444,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 184.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 14.201,
+      "frame_interval_ms_median": 8.381,
+      "frame_interval_ms_p95": 9.401,
+      "memory_static_bytes": 47391740.0,
+      "process_ms_median": 14.173,
+      "process_ms_p95": 14.173,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    }
+  ],
+  "art01d-selected": [
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 196.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 11.883,
+      "frame_interval_ms_median": 8.403,
+      "frame_interval_ms_p95": 9.2,
+      "memory_static_bytes": 48349702.0,
+      "process_ms_median": 9.279,
+      "process_ms_p95": 11.693,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 196.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 9.858,
+      "frame_interval_ms_median": 8.463,
+      "frame_interval_ms_p95": 9.193,
+      "memory_static_bytes": 48349702.0,
+      "process_ms_median": 10.616,
+      "process_ms_p95": 10.616,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 196.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 10.909,
+      "frame_interval_ms_median": 8.351,
+      "frame_interval_ms_p95": 9.367,
+      "memory_static_bytes": 48349702.0,
+      "process_ms_median": 12.456,
+      "process_ms_p95": 12.456,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 196.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 12.975,
+      "frame_interval_ms_median": 8.302,
+      "frame_interval_ms_p95": 9.387,
+      "memory_static_bytes": 48349702.0,
+      "process_ms_median": 13.468,
+      "process_ms_p95": 13.468,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    },
+    {
+      "after": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "before": [
+        103.0,
+        40.0,
+        0.0
+      ],
+      "desktop_only": true,
+      "draw_calls": 196.0,
+      "fixture": "canonical-seven-selected-five",
+      "frame_interval_ms_max": 16.338,
+      "frame_interval_ms_median": 8.334,
+      "frame_interval_ms_p95": 9.387,
+      "memory_static_bytes": 48349702.0,
+      "process_ms_median": 9.589,
+      "process_ms_p95": 16.214,
+      "runners": 7,
+      "sample_frames": 180,
+      "stable_counts": true,
+      "warmup_frames": 60
+    }
+  ]
+}

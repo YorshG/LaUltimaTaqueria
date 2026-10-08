@@ -9,8 +9,8 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
-	for sample in [[27.5, 30.0, "28/30"], [67.625, 70.0, "68/70"], [17.6666666666667, 18.0, "18/18"], [0.49, 30.0, "0/30"], [123456789.375, 987654321.75, "123456789/987654322"]]:
-		_expect(LaneVisual.hunger_text(sample[0], sample[1]) == sample[2], "nearest integer display, including stress values")
+	for sample in [[27.5, 30.0, "28/30"], [67.625, 70.0, "68/70"], [17.6666666666667, 18.0, "18/18"], [0.49, 30.0, "1/30"], [123456789.375, 987654321.75, "123456790/987654322"]]:
+		_expect(LaneVisual.hunger_text(sample[0], sample[1]) == sample[2], "positive hunger rounds up for display, including stress values")
 	_expect(not "provisional" in Art.catalog().labels.lane.to_lower(), "no provisional lane label")
 	for height in [1620, 1920, 2400]:
 		var viewport := SubViewport.new()
@@ -69,7 +69,7 @@ func _run() -> void:
 		viewport.queue_free()
 		await process_frame
 	print("ART_01C_AUDIT %d checks %d failures" % [checks, failures])
-	quit(0 if failures == 0 else 1)
+	quit(0 if checks > 0 and failures == 0 else 1)
 
 func _expect(ok: bool, message: String) -> void:
 	checks += 1

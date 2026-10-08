@@ -108,8 +108,9 @@ func _text(value: String, origin: Vector2, width: float, font_size: int, tint: C
 	draw_string(ThemeDB.fallback_font, origin, value, HORIZONTAL_ALIGNMENT_CENTER, width, font_size, tint)
 
 static func hunger_text(current: float, maximum: float) -> String:
-	# Nearest integer for display only; MonsterState and bar ratio retain floats.
-	return "%.0f/%.0f" % [round(current), round(maximum)]
+	# Positive fractional hunger must never read as satisfied. Presentation only;
+	# MonsterState, target eligibility and the bar ratio retain their exact floats.
+	return "%.0f/%.0f" % [ceil(current) if current > 0 else 0, round(maximum)]
 
 static func text_fit(value: String, width: float, preferred_size: int = 32) -> Dictionary:
 	var font := ThemeDB.fallback_font

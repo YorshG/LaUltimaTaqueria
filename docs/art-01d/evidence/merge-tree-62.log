@@ -1,0 +1,15 @@
+baa17bbc7f7fe23518628a2e4f054886946d8470
+100644 b593e5819dd15d8eb2ab0535cc9ad9a69456213d 1	planning/BACKLOG.md
+100644 bbda2e5e698f0f1d5c6f1ad3a7af249100962fca 2	planning/BACKLOG.md
+100644 f726d76c88b7566811d843fd30e6a9af2a0dc860 3	planning/BACKLOG.md
+100644 82a81b2d036b15708d49c5dceedde459241dbf86 1	scenes/App.tscn
+100644 d0c4aa04b8365654ef582537a7f591886a7658e2 2	scenes/App.tscn
+100644 de93a619a67db090d181b5a4057dbd7c27ddb4bb 3	scenes/App.tscn
+
+Auto-merging planning/BACKLOG.md
+CONFLICT (content): Merge conflict in planning/BACKLOG.md
+Auto-merging scenes/App.tscn
+CONFLICT (content): Merge conflict in scenes/App.tscn
+Auto-merging scenes/Main.tscn
+
+EXIT=1

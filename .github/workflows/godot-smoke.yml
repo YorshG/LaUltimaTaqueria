@@ -38,6 +38,9 @@ jobs:
       - name: Run bootstrap scene headlessly
         run: godot --headless --path . --scene res://scenes/Main.tscn --quit-after 3
 
+      - name: Reject mobile false positives (real script errors and zero checks)
+        run: python3 tests/run_mobile_guard_test.py
+
       - name: Run TST-01 core rules suite
         run: bash tests/run_core_suite.sh
 

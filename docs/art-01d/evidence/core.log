@@ -1,0 +1,252 @@
+=== Running res://tests/content_registry_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ContentRegistry tests passed.
+=== Running res://tests/board_view_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BoardView tests passed: 25 cells / 5 columns.
+=== Running res://tests/board_input_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+Board input tests passed: 403 checks; real viewport mouse/touch, translated/scaled layouts, borders and orthogonal chains.
+=== Running res://tests/chain_path_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BRD-02 tests passed: orthogonal 3+, no diagonal/repeat/swap.
+=== Running res://tests/board_refill_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BRD-03 tests passed: gravity, refill, no holes, deterministic seed.
+=== Running res://tests/board_playability_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BRD-04 tests passed: detection, recovery, multiset, determinism, refill integration.
+=== Running res://tests/recipe_resolver_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+REC-01 tests passed: recipes, tiers, effects, errors, isolation, determinism.
+=== Running res://tests/monster_state_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+MonsterState tests passed: hunger, validation, clamping, single transition.
+=== Running res://tests/lane_field_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+LANE-01 tests passed: 3 lanes / independent configurable movement.
+=== Running res://tests/lane_targeting_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+LANE-02 targeting tests passed: eligibility, progress, lane and spawn tie-breaks.
+=== Running res://tests/lane_integration_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+LANE-02 integration tests passed: board bridge, events and scoped 5+ effects.
+=== Running res://tests/wave_director_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+WAV-01 tests passed: countdown, schedule, resolution, pause and five waves.
+=== Running res://tests/upgrade_selector_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+UPG-01 tests passed: deterministic offers, exclusions and five selections.
+=== Running res://tests/upgrade_modifiers_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+UPG-02a tests passed: 963 checks; pure deterministic modifiers, conditionals and input isolation.
+=== Running res://tests/upg_02b_satisfaction_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02b tests passed: 607 checks; D4 arithmetic, boosted effects, public selection, neutral path and atomic failures.
+=== Running res://tests/upg_02c_global_speed_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02c tests passed: 406 checks; absolute speed, active/future runners, public selections, pre-spawn boss inheritance and all phases.
+=== Running res://tests/upg_02d_reputation_defense_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02d tests passed: 526 checks; one-shots, validation, dedupe/reentrancy, HUD/low threshold, public fifth selections and effective boss damage.
+=== Running res://tests/upg_02e_survival_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02e tests passed: 692 checks; patient_service, atomic second_chance, D6, reentrancy, public boss selections and veggie 6.5.
+=== Running res://tests/upg_02f_conditionals_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02f tests passed: 400 checks; encounter runs, failures, late selection, synchronous boss, strict threshold and D4 isolation.
+=== Running res://tests/upg_02g_assist_serve_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02g tests passed: 268 checks; flat splash, D7, R1 and R2.
+=== Running res://tests/upg_02h_steady_hands_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+D8 accepted exterior band at (1080, 1920): 3.200 canvas px; geometry accepts, initial press is outside BoardView.
+D8 accepted exterior band at (1080, 1920): 3.200 canvas px; geometry accepts, initial press is outside BoardView.
+La Última Taquería — BOSS-01 temporary wiring ready.
+D8 accepted exterior band at (1080, 2400): 3.400 canvas px; geometry accepts, initial press is outside BoardView.
+D8 accepted exterior band at (1080, 2400): 3.400 canvas px; geometry accepts, initial press is outside BoardView.
+La Última Taquería — BOSS-01 temporary wiring ready.
+D8 scale fixture: canvas margin 7.040, local margin 7.800.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-02h tests passed: 1263 checks; D8 geometry, real mouse/touch, absolute runtime setter, public selection and deterministic refill.
+=== Running res://tests/upgrade_selector_integration_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+UPG-01 integration tests passed: WaveDirector signal and Main bridge.
+=== Running res://tests/run_loop_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+RUN-01 tests passed: 376 checks; configured scene, 5 waves/choices, real UI, victory/breach/defeat, pause, duplicate guards, deterministic runs.
+=== Running res://tests/ui_mobile_layout_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UI_MOBILE_LAYOUT 18 checks 0 failures
+=== Running res://tests/art_01b_layout_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 1341.0)] hud=[P: (36.0, 239.0), S: (728.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1002.0, 341.0)] counter=[P: (36.0, 716.0), S: (1002.0, 44.0)] board=[P: (166.0, 768.0), S: (742.0, 742.0)] cell_pt=(45.33333, 45.33333) restart_pt=(83.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 1341.0)] hud=[P: (36.0, 239.0), S: (728.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1002.0, 341.0)] counter=[P: (36.0, 716.0), S: (1002.0, 44.0)] board=[P: (166.0, 768.0), S: (742.0, 742.0)] cell_pt=(45.33333, 45.33333) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=2400 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 2224.0)] hud=[P: (24.0, 158.0), S: (758.0, 112.0)] lanes=[P: (24.0, 286.0), S: (1032.0, 934.0)] counter=[P: (24.0, 1228.0), S: (1032.0, 44.0)] board=[P: (24.0, 1280.0), S: (1032.0, 1032.0)] cell_pt=(64.66666, 64.66666) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=2400 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 2224.0)] hud=[P: (24.0, 158.0), S: (728.0, 112.0)] lanes=[P: (24.0, 331.0), S: (1032.0, 889.0)] counter=[P: (24.0, 1228.0), S: (1032.0, 44.0)] board=[P: (24.0, 1280.0), S: (1032.0, 1032.0)] cell_pt=(64.66666, 64.66666) restart_pt=(93.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 1341.0)] hud=[P: (36.0, 239.0), S: (727.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1001.0, 340.56)] counter=[P: (36.0, 715.5599), S: (1001.0, 44.0)] board=[P: (165.78, 767.5599), S: (741.4399, 741.4399)] cell_pt=(45.33333, 45.33333) restart_pt=(83.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 1341.0)] hud=[P: (36.0, 239.0), S: (727.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1001.0, 340.56)] counter=[P: (36.0, 715.5599), S: (1001.0, 44.0)] board=[P: (165.78, 767.5599), S: (741.4399, 741.4399)] cell_pt=(45.33333, 45.33333) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=2400 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 2224.0)] hud=[P: (24.0, 158.0), S: (757.0, 112.0)] lanes=[P: (24.0, 286.0), S: (1031.0, 935.0)] counter=[P: (24.0, 1229.0), S: (1031.0, 44.0)] board=[P: (24.0, 1281.0), S: (1031.0, 1031.0)] cell_pt=(64.66666, 64.66666) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=2400 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 2224.0)] hud=[P: (24.0, 158.0), S: (727.0, 112.0)] lanes=[P: (24.0, 331.0), S: (1031.0, 890.0)] counter=[P: (24.0, 1229.0), S: (1031.0, 44.0)] board=[P: (24.0, 1281.0), S: (1031.0, 1031.0)] cell_pt=(64.66666, 64.66666) restart_pt=(93.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=1920 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 1641.0)] hud=[P: (36.0, 239.0), S: (728.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1002.0, 473.0)] counter=[P: (36.0, 848.0), S: (1002.0, 44.0)] board=[P: (82.0, 900.0), S: (910.0, 910.0)] cell_pt=(56.66667, 56.66667) restart_pt=(83.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=1920 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 1641.0)] hud=[P: (36.0, 239.0), S: (728.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1002.0, 473.0)] counter=[P: (36.0, 848.0), S: (1002.0, 44.0)] board=[P: (82.0, 900.0), S: (910.0, 910.0)] cell_pt=(56.66667, 56.66667) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 1444.0)] hud=[P: (24.0, 158.0), S: (758.0, 112.0)] lanes=[P: (24.0, 286.0), S: (1032.0, 386.32)] counter=[P: (24.0, 680.32), S: (1032.0, 44.0)] board=[P: (140.16, 732.3201), S: (799.6799, 799.6799)] cell_pt=(49.0, 49.0) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 1444.0)] hud=[P: (24.0, 158.0), S: (728.0, 112.0)] lanes=[P: (24.0, 331.0), S: (1032.0, 341.32)] counter=[P: (24.0, 680.32), S: (1032.0, 44.0)] board=[P: (140.16, 732.3201), S: (799.6799, 799.6799)] cell_pt=(49.0, 49.0) restart_pt=(93.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=1920 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 1641.0)] hud=[P: (36.0, 239.0), S: (727.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1001.0, 472.56)] counter=[P: (36.0, 847.5599), S: (1001.0, 44.0)] board=[P: (81.78, 899.5599), S: (909.4399, 909.4399)] cell_pt=(56.33333, 56.33333) restart_pt=(83.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=1920 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 1641.0)] hud=[P: (36.0, 239.0), S: (727.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1001.0, 472.56)] counter=[P: (36.0, 847.5599), S: (1001.0, 44.0)] board=[P: (81.78, 899.5599), S: (909.4399, 909.4399)] cell_pt=(56.33333, 56.33333) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 1444.0)] hud=[P: (24.0, 158.0), S: (757.0, 112.0)] lanes=[P: (24.0, 286.0), S: (1031.0, 386.32)] counter=[P: (24.0, 680.32), S: (1031.0, 44.0)] board=[P: (139.66, 732.3201), S: (799.6799, 799.6799)] cell_pt=(49.0, 49.0) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 1444.0)] hud=[P: (24.0, 158.0), S: (727.0, 112.0)] lanes=[P: (24.0, 331.0), S: (1031.0, 341.32)] counter=[P: (24.0, 680.32), S: (1031.0, 44.0)] board=[P: (139.66, 732.3201), S: (799.6799, 799.6799)] cell_pt=(49.0, 49.0) restart_pt=(93.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=2400 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 2121.0)] hud=[P: (36.0, 239.0), S: (728.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1002.0, 861.0)] counter=[P: (36.0, 1236.0), S: (1002.0, 44.0)] board=[P: (36.0, 1288.0), S: (1002.0, 1002.0)] cell_pt=(62.66667, 62.66667) restart_pt=(83.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=2400 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 2121.0)] hud=[P: (36.0, 239.0), S: (728.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1002.0, 861.0)] counter=[P: (36.0, 1236.0), S: (1002.0, 44.0)] board=[P: (36.0, 1288.0), S: (1002.0, 1002.0)] cell_pt=(62.66667, 62.66667) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 1444.0)] hud=[P: (24.0, 158.0), S: (758.0, 112.0)] lanes=[P: (24.0, 286.0), S: (1032.0, 386.32)] counter=[P: (24.0, 680.32), S: (1032.0, 44.0)] board=[P: (140.16, 732.3201), S: (799.6799, 799.6799)] cell_pt=(49.0, 49.0) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 1444.0)] hud=[P: (24.0, 158.0), S: (728.0, 112.0)] lanes=[P: (24.0, 331.0), S: (1032.0, 341.32)] counter=[P: (24.0, 680.32), S: (1032.0, 44.0)] board=[P: (140.16, 732.3201), S: (799.6799, 799.6799)] cell_pt=(49.0, 49.0) restart_pt=(93.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=2400 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 2121.0)] hud=[P: (36.0, 239.0), S: (727.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1001.0, 861.0)] counter=[P: (36.0, 1236.0), S: (1001.0, 44.0)] board=[P: (36.0, 1288.0), S: (1001.0, 1001.0)] cell_pt=(62.66667, 62.66667) restart_pt=(83.33334, 44.0)
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01B_SAFE height=2400 source=synthetic safe=[P: (12.0, 177.0), S: (1050.0, 2121.0)] hud=[P: (36.0, 239.0), S: (727.0, 112.0)] lanes=[P: (36.0, 367.0), S: (1001.0, 861.0)] counter=[P: (36.0, 1236.0), S: (1001.0, 44.0)] board=[P: (36.0, 1288.0), S: (1001.0, 1001.0)] cell_pt=(62.66667, 62.66667) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 1444.0)] hud=[P: (24.0, 158.0), S: (757.0, 112.0)] lanes=[P: (24.0, 286.0), S: (1031.0, 386.32)] counter=[P: (24.0, 680.32), S: (1031.0, 44.0)] board=[P: (139.66, 732.3201), S: (799.6799, 799.6799)] cell_pt=(49.0, 49.0) restart_pt=(83.33334, 44.0)
+ART_01B_SAFE height=1620 source=synthetic safe=[P: (0.0, 96.0), S: (1080.0, 1444.0)] hud=[P: (24.0, 158.0), S: (727.0, 112.0)] lanes=[P: (24.0, 331.0), S: (1031.0, 341.32)] counter=[P: (24.0, 680.32), S: (1031.0, 44.0)] board=[P: (139.66, 732.3201), S: (799.6799, 799.6799)] cell_pt=(49.0, 49.0) restart_pt=(93.33334, 44.0)
+ART_01B_LAYOUT 2005 checks 0 failures
+=== Running res://tests/art_01d_audit_test.gd ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01D_TOUCH height=1620 72 chains overall; real subunit=0.2
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01D_TOUCH height=1920 72 chains overall; real subunit=0.2
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_01D_TOUCH height=2400 72 chains overall; real subunit=0.2
+ART_01D_AUDIT 4094 checks 0 failures
+
+=== TST-01 core suite summary ===
+PASS res://tests/content_registry_test.gd
+PASS res://tests/board_view_test.gd
+PASS res://tests/board_input_test.gd
+PASS res://tests/chain_path_test.gd
+PASS res://tests/board_refill_test.gd
+PASS res://tests/board_playability_test.gd
+PASS res://tests/recipe_resolver_test.gd
+PASS res://tests/monster_state_test.gd
+PASS res://tests/lane_field_test.gd
+PASS res://tests/lane_targeting_test.gd
+PASS res://tests/lane_integration_test.gd
+PASS res://tests/wave_director_test.gd
+PASS res://tests/upgrade_selector_test.gd
+PASS res://tests/upgrade_modifiers_test.gd
+PASS res://tests/upg_02b_satisfaction_test.gd
+PASS res://tests/upg_02c_global_speed_test.gd
+PASS res://tests/upg_02d_reputation_defense_test.gd
+PASS res://tests/upg_02e_survival_test.gd
+PASS res://tests/upg_02f_conditionals_test.gd
+PASS res://tests/upg_02g_assist_serve_test.gd
+PASS res://tests/upg_02h_steady_hands_test.gd
+PASS res://tests/upgrade_selector_integration_test.gd
+PASS res://tests/run_loop_test.gd
+PASS res://tests/ui_mobile_layout_test.gd
+PASS res://tests/art_01b_layout_test.gd
+PASS res://tests/art_01d_audit_test.gd
+26/26 test files passed.

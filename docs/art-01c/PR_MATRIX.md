@@ -1,3 +1,5 @@
+> Actualización 8/oct: la consolidación selectiva autorizada por ART-01D se registra en la [matriz vigente](../art-01d/PR_MATRIX.md). El resto de este documento conserva el diagnóstico histórico de ART-01C.
+
 # Comparación técnica y propuesta de integración (no ejecutada)
 
 Referencias congeladas verificadas en GitHub: #61 `9832846fe5837919d441273f496f31ef3430c0cf` (base uat); #62 `e894b438939e6260a4c8cc6c566373c351ddc2a7` (base **rama #61**); #63 inicial `5e4bc11dd2c68a2b7563437e8cdeb98d39a97dc3` (base uat). Los tres OPEN DRAFT. #62 contiene #61 como ancestro; #63 parte directamente de uat y no contiene los commits de #61/#62.

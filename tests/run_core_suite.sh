@@ -4,6 +4,7 @@
 # rules required by TST-01 (content validation, board, recipes,
 # lane targeting/satisfaction, waves, upgrades). It does not add new
 # gameplay tests; it orchestrates the ones already delivered per feature.
+# Mobile spatial/presentation contracts are included to prevent silent omissions.
 set -u
 
 GODOT_BIN="${GODOT_BIN:-godot}"
@@ -32,6 +33,9 @@ CORE_SUITE_TESTS=(
   "res://tests/upg_02h_steady_hands_test.gd"
   "res://tests/upgrade_selector_integration_test.gd"
   "res://tests/run_loop_test.gd"
+  "res://tests/ui_mobile_layout_test.gd"
+  "res://tests/art_01b_layout_test.gd"
+  "res://tests/art_01d_audit_test.gd"
 )
 
 output_dir="$(mktemp -d)"
@@ -44,7 +48,7 @@ for test_path in "${CORE_SUITE_TESTS[@]}"; do
   echo "=== Running ${test_path} ==="
   output_file="$output_dir/$(basename "$test_path").log"
   status=0
-  "${GODOT_BIN}" --headless --path . --log-file "$output_dir/engine.log" --script "${test_path}" > "$output_file" 2>&1 || status=$?
+  GODOT_BIN="${GODOT_BIN}" python3 tests/run_checked_godot.py --script "${test_path}" > "$output_file" 2>&1 || status=$?
   cat "$output_file"
   if [ "$status" -eq 0 ] && ! grep -Eiq 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' "$output_file"; then
     results+=("PASS ${test_path}")

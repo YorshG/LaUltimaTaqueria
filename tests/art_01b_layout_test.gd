@@ -104,7 +104,7 @@ func _run() -> void:
 	var bounds := Rect2(0, 0, 1080, 1920)
 	_expect(Safe.project_safe_rect(Rect2(9999, 9999, 2, 2), Transform2D.IDENTITY, bounds) == bounds, "invalid/off-window safe area falls back to viewport")
 	print("ART_01B_LAYOUT %d checks %d failures" % [checks, failures])
-	quit(0 if failures == 0 else 1)
+	quit(0 if checks > 0 and failures == 0 else 1)
 
 func _check_regions(app, safe: Rect2, height: int) -> void:
 	var main = app.get_session()
