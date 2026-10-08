@@ -7,6 +7,7 @@ on:
       - "scenes/**"
       - "scripts/**"
       - "data/visuals/**"
+      - "assets/provisional/**"
       - "tests/art_01*"
       - ".github/workflows/art-01-visual.yml"
 
@@ -27,8 +28,10 @@ jobs:
           set -euo pipefail
           godot --headless --path . --editor --quit 2>&1 | tee import.log
           godot --headless --path . --script res://tests/art_01_visual_test.gd 2>&1 | tee art.log
-          if grep -Ei 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' import.log art.log; then exit 1; fi
+          godot --headless --path . --script res://tests/art_01b_layout_test.gd 2>&1 | tee layout.log
+          if grep -Ei 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' import.log art.log layout.log; then exit 1; fi
           grep -E 'ART_VISUAL [0-9]+ checks 0 failures' art.log
+          grep -E 'ART_01B_LAYOUT [0-9]+ checks 0 failures' layout.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -36,3 +39,4 @@ jobs:
           path: |
             import.log
             art.log
+            layout.log
