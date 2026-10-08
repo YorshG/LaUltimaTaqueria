@@ -1,5 +1,7 @@
 # Registro de decisiones
 
+ART-01B, 2026-10-07: misión explícita de Jorge sobre el mismo PR #63 DRAFT. La distribución requerida es **HUD compacto → tres carriles → mostrador → tablero 5×5 inferior**. Se autoriza adaptar presentación/App/Main tras auditar #61/#62, sin fusionar sus ramas ni promover a `uat`/`main`. Se conserva «Monedas —». El rect seguro se proyecta de píxeles de pantalla a canvas; las mediciones sintéticas no sustituyen prueba física. La implementación propone un mínimo de 44 pt para celdas y controles en los perfiles ensayados. Jorge aprueba el resultado visual y Xavier lo audita; pasar pruebas no constituye esa aprobación. El atlas de proxies sigue siendo provisional.
+
 ART-01, 2026-10-07: Jorge decidió mostrar **«Monedas —»** como pendiente en la primera slice visual. No representa saldo cero ni conecta recompensas: las cantidades/fuente runtime siguen pendientes. Los placeholders y parámetros de exportación de `docs/art-01/PLAN.md` / `PIPELINE.md` son provisionales, no arte final aprobado; ART-01 queda sujeto a evidencia y revisión humana, sin merge.
 
 Fecha inicial: 2026-09-18.

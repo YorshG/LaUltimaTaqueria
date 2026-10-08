@@ -82,9 +82,21 @@ static func draw_proxy(canvas: CanvasItem, rect: Rect2, id: String, phase: Strin
 		canvas.draw_polyline(outline, Color.BLACK, width, true)
 		return
 	polygon(canvas, contour, Color(spec.base), width)
-	# A lower value strip, no detailed face: deliberately a labelled shape proxy.
+	# Geometric stand-ins, not approved production character designs.
 	var lower := PackedVector2Array([contour[0], contour[contour.size()-1], contour[contour.size()-2]])
 	canvas.draw_colored_polygon(lower, Color(spec.shadow))
 	if id == "boss_big_glutton":
-		# One consistent bib marker across poses. Character expression remains pending.
+		# Rounded teeth and raised brows keep the hungry pose anxious, not angry.
 		polygon(canvas, mapped([[0.39,0.46],[0.65,0.46],[0.62,0.72],[0.43,0.72]], rect), color("paper"), width * 0.6)
+		var unit := rect.size.x
+		for x in [0.42, 0.62]:
+			var eye := rect.position + rect.size * Vector2(x, 0.28)
+			canvas.draw_circle(eye, unit * 0.048, color("paper"))
+			canvas.draw_circle(eye + Vector2(0, -unit * 0.009 if phase == "phase2_transition_cue_cosmetic_only" else 0), unit * 0.023, color("ink"))
+			if phase == "phase2_transition_cue_cosmetic_only":
+				canvas.draw_arc(eye - Vector2(0, unit * 0.05), unit * 0.055, PI * 1.15, PI * 1.85, 10, color("ink"), width * 0.55, true)
+		var mouth := rect.position + rect.size * Vector2(0.52, 0.39)
+		var radius := unit * (0.065 if phase == "calm" else 0.09)
+		canvas.draw_circle(mouth, radius, color("ink"))
+		for offset in [-0.026, 0.026]:
+			canvas.draw_circle(mouth + Vector2(unit * offset, -radius * 0.55), unit * 0.022, color("paper"))

@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/visuals/lane_visual.gd" id="2_art"]
 
 [node name="LaneField" type="Control"]
-custom_minimum_size = Vector2(300, 360)
+custom_minimum_size = Vector2(300, 120)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

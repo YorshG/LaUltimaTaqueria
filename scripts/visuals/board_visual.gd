@@ -14,6 +14,7 @@ func _ready() -> void:
 
 func _bind() -> void:
 	for cell in _board.grid.get_children():
+		cell.resized.connect(queue_redraw)
 		var visual := IngredientVisual.new()
 		visual.name = "IngredientVisual"
 		cell.add_child(visual)
