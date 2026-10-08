@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/board/board_view.gd" id="1_board"]
+[ext_resource type="Script" path="res://scripts/visuals/board_visual.gd" id="2_art"]
+
+[sub_resource type="StyleBoxFlat" id="BoardSurface"]
+bg_color = Color(0.204, 0.188, 0.306, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.09, 0.09, 0.184, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_left = 20
+corner_radius_bottom_right = 20
 
 [node name="BoardView" type="Control"]
 custom_minimum_size = Vector2(320, 320)
@@ -11,6 +24,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_board")
+
+[node name="Surface" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("BoardSurface")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -32,3 +55,13 @@ size_flags_vertical = 3
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 8
 columns = 5
+
+[node name="BoardVisual" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_art")

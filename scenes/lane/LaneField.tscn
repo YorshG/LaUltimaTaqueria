@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/lane/lane_field.gd" id="1_field"]
+[ext_resource type="Script" path="res://scripts/visuals/lane_visual.gd" id="2_art"]
 
 [node name="LaneField" type="Control"]
 custom_minimum_size = Vector2(300, 360)
@@ -45,3 +46,13 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="LaneVisual" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_art")

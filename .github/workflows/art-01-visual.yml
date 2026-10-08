@@ -1,0 +1,38 @@
+name: ART-01 presentation contract
+
+on:
+  pull_request:
+    paths:
+      - "project.godot"
+      - "scenes/**"
+      - "scripts/**"
+      - "data/visuals/**"
+      - "tests/art_01*"
+      - ".github/workflows/art-01-visual.yml"
+
+jobs:
+  presentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: false
+      - name: Import and verify presentation observes gameplay
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --path . --editor --quit 2>&1 | tee import.log
+          godot --headless --path . --script res://tests/art_01_visual_test.gd 2>&1 | tee art.log
+          if grep -Ei 'SCRIPT ERROR|Parse Error|^[[:space:]]*ERROR:|leaked at exit|still in use at exit' import.log art.log; then exit 1; fi
+          grep -E 'ART_VISUAL [0-9]+ checks 0 failures' art.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: art-01-presentation
+          path: |
+            import.log
+            art.log

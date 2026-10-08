@@ -1,0 +1,33 @@
+{
+  "status": "geometric_placeholders_not_approved_character_art",
+  "ink": "17172f",
+  "paper": "fff1d2",
+  "board": "34304e",
+  "cell": "eee0be",
+  "target": "ffdf8e",
+  "lanes": ["302e50", "393454", "292d4b"],
+  "labels": {
+    "counter": "Mostrador",
+    "target": "Objetivo",
+    "empty": "Sin objetivo",
+    "lane": "Carril %d · provisional",
+    "calm": "Calma",
+    "phase2_transition_cue_cosmetic_only": "Hambre",
+    "final_bite": "Embate"
+  },
+  "ingredients": {
+    "tortilla": {"label": "Tortilla", "base": "f3cc70", "shadow": "c99746"},
+    "meat": {"label": "Carne", "base": "cc7865", "shadow": "914851"},
+    "veggie": {"label": "Verdura", "base": "82b879", "shadow": "467c63"}
+  },
+  "monsters": {
+    "nibbler": {"label": "Nibbler", "token": "N", "base": "f3cc70", "shadow": "c99746", "points": [[0.50,0.06],[0.78,0.21],[0.90,0.52],[0.84,0.82],[0.65,0.95],[0.28,0.92],[0.12,0.70],[0.15,0.37]]},
+    "salsa_tank": {"label": "Salsa Tank", "token": "S", "base": "cc7865", "shadow": "914851", "points": [[0.03,0.87],[0.17,0.38],[0.31,0.17],[0.49,0.28],[0.69,0.16],[0.83,0.39],[0.98,0.87]]},
+    "swift_hopper": {"label": "Swift Hopper", "token": "H", "base": "82b879", "shadow": "467c63", "points": [[0.08,0.89],[0.27,0.51],[0.57,0.15],[0.87,0.07],[0.92,0.32],[0.62,0.56],[0.86,0.81],[0.68,0.94],[0.45,0.69],[0.30,0.94]]},
+    "boss_big_glutton": {"label": "Gran Glotón", "token": "B", "base": "cea078", "shadow": "96694f", "points": [[0.05,0.76],[0.12,0.48],[0.32,0.28],[0.51,0.20],[0.76,0.33],[0.91,0.58],[0.96,0.86],[0.70,0.96],[0.28,0.96]]}
+  },
+  "boss_pose_points": {
+    "phase2_transition_cue_cosmetic_only": [[0.04,0.83],[0.16,0.56],[0.40,0.32],[0.68,0.07],[0.91,0.19],[0.96,0.48],[0.89,0.86],[0.63,0.96],[0.25,0.96]],
+    "final_bite": [[0.03,0.80],[0.09,0.53],[0.31,0.30],[0.72,0.30],[0.96,0.50],[0.98,0.76],[0.83,0.96],[0.42,0.96],[0.20,0.91]]
+  }
+}
