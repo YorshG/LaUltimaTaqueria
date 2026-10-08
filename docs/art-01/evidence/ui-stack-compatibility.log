@@ -1,0 +1,121 @@
+Disposable overlay of PR #62 snapshot e894b438939e6260a4c8cc6c566373c351ddc2a7 (includes #61); no git merge, source worktrees unchanged.
+import
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialización del proyecto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando la estructura del archivo...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Cargando nombres de clases globales...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creando scripts de carga automática...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneo de archivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registrando clases globales... (67 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | BoardState[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | BoardView[39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | ChainPath[39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | ContentRegistry[39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | LaneField[39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | LaneMotion[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | LaneRunner[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | MonsterState[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | RecipeResolver[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | SaveService[39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | ReputationState[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | FeedbackCoordinator[39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | UpgradeModifiers[39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | UpgradeSelector[39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | WaveDirector[39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Cargando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Cargando diseño del editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Cargando docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+
+ui_mobile_layout_test
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+UI-MOBILE-01 PASS: 30 checks; lanes above board, compact top restart and adaptive mobile layout.
+
+art_01_visual_test
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_LAYOUT height=1620 board=[P: (270.5, 1033.0), S: (539.0, 539.0)] cell=(95.0, 95.0) synthetic_safe_board=false hud=false
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_LAYOUT height=1920 board=[P: (195.5, 1183.0), S: (689.0, 689.0)] cell=(125.0, 125.0) synthetic_safe_board=false hud=false
+La Última Taquería — BOSS-01 temporary wiring ready.
+ART_LAYOUT height=2400 board=[P: (75.5, 1423.0), S: (929.0, 929.0)] cell=(173.0, 173.0) synthetic_safe_board=false hud=false
+ART_VISUAL 276 checks 0 failures
+
+board_input_test
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+La Última Taquería — BOSS-01 temporary wiring ready.
+Board input tests passed: 403 checks; real viewport mouse/touch, translated/scaled layouts, borders and orthogonal chains.
+
+lane_integration_test
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+La Última Taquería — BOSS-01 temporary wiring ready.
+LANE-02 integration tests passed: board bridge, events and scoped 5+ effects.

@@ -1,0 +1,9 @@
+TST-02 restart suite
+
+Main restart cycles: 10/10 PASS
+Cross-process valid persistence: PASS
+Cross-process recovery: PASS
+Repeated valid loads: PASS
+Abandoned temporary preservation: PASS
+
+TST-02 AUTOMATED PASS
